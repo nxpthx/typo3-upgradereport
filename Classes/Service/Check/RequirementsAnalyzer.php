@@ -26,6 +26,9 @@ class Tx_Upgradereport_Service_Check_RequirementsAnalyzer implements t3lib_Singl
 	 */
 	protected $installedTypo3Extensions = array();
 
+	/**
+	 * Creating the RequirementsAnalyzer
+	 */
 	public function __construct() {
 		$this->runningTypo3Version = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version);
 		$this->runningPhpVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger(phpversion());
