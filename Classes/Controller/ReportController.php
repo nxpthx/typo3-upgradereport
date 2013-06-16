@@ -34,6 +34,9 @@ class Tx_Upgradereport_Controller_ReportController extends Tx_Upgradereport_Cont
 	 * @return void
 	 */
 	public function indexAction() {
+		/** @var Tx_Upgradereport_Service_Check_Registry $checkRegistry */
+		$checkRegistry = $this->objectManager->get('Tx_Upgradereport_Service_Check_Registry');
+		$this->view->assign('checks', $checkRegistry->getActiveChecks());
 	}
 
 	/**

@@ -2,6 +2,11 @@
 
 <f:section name="main">
 
-	<h1>Hello World</h1>
-
+	<h1>Registered Checks</h1>
+	<f:debug>{checks}</f:debug>
+	<ul>
+		<f:for each="{checks}" as="check">
+			<li><h4>{check.title}</h4><p>{check.shortDescription}</p></li>
+		</f:for>
+	</ul>
 </f:section>
