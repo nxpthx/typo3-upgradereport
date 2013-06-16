@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Steffen Ritter, rs websystems <steffen.ritter@typo3.org>
+ *  (c) 2013 Steffen Ritter, rs websystems (steffen.ritter@typo3.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,37 +26,47 @@
  ***************************************************************/
 
 /**
- * Interface Tx_Upgradereport_Domain_Interface_CheckProcessor
+ * Class Tx_Upgradereport_Checks_AbstractCheckDefinition
  *
  * @author Steffen Ritter
  */
-interface Tx_Upgradereport_Domain_Interface_ResultAnalyzer extends t3lib_Singleton {
+abstract class Tx_Upgradereport_Checks_AbstractCheckDefinition implements Tx_Upgradereport_Domain_Interface_Check {
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_Check $check
-	 */
-	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check);
-
-	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * Returns the name of the check
 	 *
 	 * @return string
 	 */
-	public function getSeverity(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function getTitle() {
+		return $this->getLanguageLabelForCheck('title');
+	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * Returns a string which describes the check in one sentence.
 	 *
 	 * @return string
 	 */
-	public function getExplanation(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function getShortDescription() {
+		return $this->getLanguageLabelForCheck('shortDescription');
+	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * Returns a string which contains an elaborate description
+	 * of what the check does.
 	 *
 	 * @return string
 	 */
-	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function getDescription() {
+		return $this->getLanguageLabelForCheck('description');
+	}
+
+	protected function getLanguageLabelForCheck($field) {
+		$classParts = explode('_', __CLASS__);
+		$extensionName = strtolower($classParts[1]);
+		return $GLOBALS['LANG']->sL(
+			'LLL:EXT:' . $extensionName . '/Resources/Private/Language/locallang.xml:check.' . $this->getIdentifier() . '.' . $field
+		);
+	}
 }
 
 ?>

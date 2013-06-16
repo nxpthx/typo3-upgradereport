@@ -30,7 +30,12 @@
  *
  * @author Steffen Ritter
  */
-interface Tx_Upgradereport_Domain_Interface_CheckProcessor {
+interface Tx_Upgradereport_Domain_Interface_CheckProcessor extends t3lib_Singleton {
+
+	/**
+	 * @param Tx_Upgradereport_Domain_Interface_Check $check
+	 */
+	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check);
 
 	/**
 	 * @return mixed

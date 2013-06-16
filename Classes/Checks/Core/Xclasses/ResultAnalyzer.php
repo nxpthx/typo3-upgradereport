@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Steffen Ritter, rs websystems <steffen.ritter@typo3.org>
+ *  (c) 2013 Steffen Ritter, rs websystems (steffen.ritter@typo3.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,37 +26,52 @@
  ***************************************************************/
 
 /**
- * Interface Tx_Upgradereport_Domain_Interface_CheckProcessor
+ * Class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer
  *
  * @author Steffen Ritter
  */
-interface Tx_Upgradereport_Domain_Interface_ResultAnalyzer extends t3lib_Singleton {
+class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Upgradereport_Domain_Interface_ResultAnalyzer {
+
+	/**
+	 * @var Tx_Upgradereport_Checks_Core_Xclasses_Definition
+	 */
+	protected $parentCheck;
 
 	/**
 	 * @param Tx_Upgradereport_Domain_Interface_Check $check
 	 */
-	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check);
+	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check) {
+		$this->parentCheck = $check;
+	}
+
 
 	/**
 	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getSeverity(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function getSeverity(Tx_Upgradereport_Domain_Model_Issue $issue) {
+		// TODO: Implement getSeverity() method.
+	}
 
 	/**
 	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getExplanation(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function getExplanation(Tx_Upgradereport_Domain_Model_Issue $issue) {
+		// TODO: Implement getExplanation() method.
+	}
 
 	/**
 	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue) {
+		// TODO: Implement getSolution() method.
+	}
+
 }
 
 ?>

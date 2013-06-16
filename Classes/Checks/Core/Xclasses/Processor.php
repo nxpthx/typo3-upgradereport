@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Steffen Ritter, rs websystems <steffen.ritter@typo3.org>
+ *  (c) 2013 Steffen Ritter, rs websystems (steffen.ritter@typo3.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,37 +26,54 @@
  ***************************************************************/
 
 /**
- * Interface Tx_Upgradereport_Domain_Interface_CheckProcessor
+ * Class Tx_Upgradereport_Checks_Core_Xclasses_Definition
  *
  * @author Steffen Ritter
  */
-interface Tx_Upgradereport_Domain_Interface_ResultAnalyzer extends t3lib_Singleton {
+class Tx_Upgradereport_Checks_Core_Xclasses_Definition implements Tx_Upgradereport_Domain_Interface_CheckProcessor {
+
+	/**
+	 * @var Tx_Upgradereport_Checks_Core_Xclasses_Definition
+	 */
+	protected $parentCheck;
 
 	/**
 	 * @param Tx_Upgradereport_Domain_Interface_Check $check
 	 */
-	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check);
+	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check) {
+		$this->parentCheck = $check;
+	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
-	 *
-	 * @return string
+	 * @var Tx_Upgradereport_Domain_Model_Issue[]
 	 */
-	public function getSeverity(Tx_Upgradereport_Domain_Model_Issue $issue);
+	protected $issues = array();
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
-	 *
-	 * @return string
+	 * @return void
 	 */
-	public function getExplanation(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function executeCheck() {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']) && count($GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']) > 0) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS'] AS $targetClass => $implementationClass) {
+				// todo: generate issues
+			}
+		}
+	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
-	 *
-	 * @return string
+	 * @return boolean
 	 */
-	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function hasIssues() {
+		return count($this->issues) > 0;
+	}
+
+	/**
+	 * @return Tx_Upgradereport_Domain_Model_Issue[]
+	 */
+	public function getIssues() {
+		return $this->issues;
+	}
+
 }
 
 ?>

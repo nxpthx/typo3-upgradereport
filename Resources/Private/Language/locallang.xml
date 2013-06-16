@@ -6,7 +6,12 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="check.typo3-core-code-xclasses.title">Check for xClasses</label>
+			<label index="check.typo3-core-code-xclasses.shortDescription">The way of registering xClasses has been changed. Check if xClassing is used.</label>
+			<label index="check.typo3-core-code-xclasses.description">The way of registering xClasses has been changed. Check if xClassing is used.
 
+				asdfsd
+			</label>
 		</languageKey>
 	</data>
 </T3locallang>
