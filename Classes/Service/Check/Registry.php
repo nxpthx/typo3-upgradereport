@@ -4,7 +4,7 @@
 /**
  * Class CheckRegistry
  */
-class Tx_Upgradereport_Service_CheckRegistry implements t3lib_Singleton {
+class Tx_Upgradereport_Service_Check_Registry implements t3lib_Singleton {
 
 	protected $registeredChecks = array();
 
