@@ -26,67 +26,18 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Domain_Interface_CheckProcessor
+ * Interface Tx_Upgradereport_Domain_Interface_IssueDetails
  *
  * @author Steffen Ritter
  */
-class Tx_Upgradereport_Domain_Model_Issue {
+interface Tx_Upgradereport_Domain_Interface_IssueDetails extends Serializable {
 
 	/**
-	 * @var string
-	 */
-	protected $checkIdentifier;
-
-	/**
-	 * @var string
-	 */
-	protected $issueIdentifier;
-
-	/**
-	 * @var Tx_Upgradereport_Domain_Interface_IssueDetails
-	 */
-	protected $details;
-
-	/**
+	 * Creates ID which identifies the occurence of that issue
+	 *
 	 * @return string
 	 */
-	public function getIssueIdentifier() {
-		return $this->issueIdentifier;
-	}
-
-	/**
-	 * @param string $checkIdentifier
-	 *
-	 * @return void
-	 */
-	public function setCheckIdentifier($checkIdentifier) {
-		$this->checkIdentifier = $checkIdentifier;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getCheckIdentifier() {
-		return $this->checkIdentifier;
-	}
-
-	/**
-	 * @param \Tx_Upgradereport_Domain_Interface_IssueDetails $details
-	 *
-	 * @return void
-	 */
-	public function setDetails($details) {
-		$this->details = $details;
-	}
-
-	/**
-	 * @return \Tx_Upgradereport_Domain_Interface_IssueDetails
-	 */
-	public function getDetails() {
-		return $this->details;
-	}
-
-
+	public function createIssueIdentifier();
 }
 
 ?>
