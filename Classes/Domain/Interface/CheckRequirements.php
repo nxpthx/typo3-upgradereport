@@ -83,9 +83,9 @@ interface Tx_Upgradereport_Domain_Interface_CheckRequirements {
 	/**
 	 * Returns an array of Extensions which are required by this check.
 	 *
-	 * The array may either contain the extension-key as array while a
-	 * a version-range is provided as value or only the extension-key as value
-	 * which then will just check for presence of the given extension.
+	 * The array may either contain the extension-key as array key while a
+	 * a version-range (x.x.x-y.y.y)is provided as value or only the extension-key
+	 * as value which then will just check for presence of the given extension.
 	 *
 	 * @return array
 	 */
