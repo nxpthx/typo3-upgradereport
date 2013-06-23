@@ -11,3 +11,4 @@ For further information see **Anouncement Kickoff** und **Announcement Smooth Mi
 
 ## Participating in Development
 
+The extensions is mainly developed by Steffen Ritter in spare time. If you like it feel free to flattr me: [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=sritterkh&url=https://github.com/nxpthx/typo3-upgradereport&title=TYPO3 Upgrade Report Extension&language=&tags=github&category=software)
