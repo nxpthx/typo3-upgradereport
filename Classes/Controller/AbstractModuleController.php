@@ -33,7 +33,7 @@ require_once(PATH_site . TYPO3_mainDir . 'template.php');
  * @author Steffen Ritter
 
  */
-class Tx_Upgradereport_Controller_AbstractController extends Tx_Extbase_MVC_Controller_ActionController {
+class Tx_Upgradereport_Controller_AbstractModuleController extends Tx_Extbase_MVC_Controller_ActionController {
 	/**
 	 * @var string Key of the extension this controller belongs to
 	 */
@@ -52,7 +52,7 @@ class Tx_Upgradereport_Controller_AbstractController extends Tx_Extbase_MVC_Cont
 		$this->pageRenderer->addCssFile(t3lib_extMgm::extRelPath('upgradereport') . 'Resources/Public/StyleSheet/module.css');
 		$this->pageRenderer->addInlineLanguageLabelFile('EXT:upgradereport/Resources/Private/Language/locallang.xml');
 		$this->pageRenderer->addJsFooterLibrary('jquery', 'EXT:upgradereport/Resources/Public/JavaScript/jquery-1.10.1.min.js');
-		$this->pageRenderer->addJsFooter('general', 'EXT:upgradereport/Resources/Public/JavaScript/General.js');
+		$this->pageRenderer->addJsFooterFile('EXT:upgradereport/Resources/Public/JavaScript/General.js');
 	}
 
 	/**
