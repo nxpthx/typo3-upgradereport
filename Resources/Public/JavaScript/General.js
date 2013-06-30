@@ -1,7 +1,8 @@
 var UpgradeReport = function() {
 	var self = this;
+
 	self._runTest = function(testIdentifier) {
-		$listElement = $('li[data-checkid=' + testIdentifier + ']');
+		var $listElement = $('li[data-checkid=' + testIdentifier + ']');
 		$.ajax({
 			type: "POST",
 			url: "mod.php?M=tools_UpgradereportUpgradereport",
@@ -36,10 +37,16 @@ var UpgradeReport = function() {
 		return false;
 	};
 
+	self.click_runAllButton = function(event) {
+		$('li[data-checkid]').each(function(index, element) {
+			self._runTest($(element).attr('data-checkid'));
+		});
+	}
+
 }
 
 $(document).ready(function() {
 	var functionality = new UpgradeReport;
-	console.log(functionality);
 	$('.t3-upgradereport-runCheck').click(functionality.click_runButton);
+	$('.t3-upgradereport-runAllChecks').click(functionality.click_runAllButton);
 });
