@@ -28,7 +28,7 @@
 /**
  * Class Tx_Upgradereport_Controller_ReportController
  */
-class Tx_Upgradereport_Controller_ReportController extends Tx_Upgradereport_Controller_AbstractController {
+class Tx_Upgradereport_Controller_ReportController extends Tx_Upgradereport_Controller_AbstractModuleController {
 
 	/**
 	 * @return void

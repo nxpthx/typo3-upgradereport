@@ -51,6 +51,8 @@ class Tx_Upgradereport_Controller_AbstractController extends Tx_Extbase_MVC_Cont
 	protected function initializeAction() {
 		$this->pageRenderer->addCssFile(t3lib_extMgm::extRelPath('upgradereport') . 'Resources/Public/StyleSheet/module.css');
 		$this->pageRenderer->addInlineLanguageLabelFile('EXT:upgradereport/Resources/Private/Language/locallang.xml');
+		$this->pageRenderer->addJsFooterLibrary('jquery', 'EXT:upgradereport/Resources/Public/JavaScript/jquery-1.10.1.min.js');
+		$this->pageRenderer->addJsFooter('general', 'EXT:upgradereport/Resources/Public/JavaScript/General.js');
 	}
 
 	/**
