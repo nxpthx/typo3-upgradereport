@@ -15,6 +15,7 @@ if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		array(
 				// An array holding the controller-action-combinations that are accessible
 			'Report'		=> 'index',
+			'Ajax'			=> 'runTest,getResults'
 		),
 		array(
 			'access' => 'user,group',
