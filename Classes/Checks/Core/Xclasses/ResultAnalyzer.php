@@ -51,7 +51,7 @@ class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Upgrade
 	 * @return string
 	 */
 	public function getSeverity(Tx_Upgradereport_Domain_Model_Issue $issue) {
-		// TODO: Implement getSeverity() method.
+		return 0;
 	}
 
 	/**
@@ -60,7 +60,14 @@ class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Upgrade
 	 * @return string
 	 */
 	public function getExplanation(Tx_Upgradereport_Domain_Model_Issue $issue) {
-		// TODO: Implement getExplanation() method.
+		$information = $issue->getAdditionalInformation();
+
+		$data = array(
+			'EXTENSION' => $issue->getLocation()->getExtension() ?: 'Core',
+		);
+		$data = array_merge($data, $information);
+		return str_replace(array_keys($data), array_values($data), 'The Class "IMPLEMENTATION_CLASS" is registered as replacement for "ORIGINAL_CLASS" via xClass-Mechanism. The new class won\'t be executed after upgrading to 6.2 as the method of registering xclasses has changed in TYPO3 CMS 6.0. Please check if the xclass-code is still needed in after upgrading to TYPO3 6.2 LTS and in that case register it the new way.');
+
 	}
 
 	/**
@@ -69,8 +76,14 @@ class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Upgrade
 	 * @return string
 	 */
 	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue) {
-		// TODO: Implement getSolution() method.
+		$information = $issue->getAdditionalInformation();
+
+		$originalClass = $information['ORIGINAL_CLASS'];
+		$newClass = $information['IMPLEMENTATION_CLASS'];
+		return 'Remove the XCLASS Code at ' . $issue->getLocation()->getPhysicalLocation()->getFilePath() . ($issue->getLocation()->getPhysicalLocation()->getLineNumber() > -1 ? ' line ' . $issue->getLocation()->getPhysicalLocation()->getLineNumber() : '') . ". Add the following code there:\n" .
+			'$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'Objects\'][\'' . $originalClass . '\'] = array(\'className\' => \'' . $newClass . '\');';
 	}
+
 
 }
 

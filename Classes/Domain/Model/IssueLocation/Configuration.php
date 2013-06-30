@@ -146,7 +146,19 @@ class Tx_Upgradereport_Domain_Model_IssueLocation_Configuration implements Tx_Up
 		return $this->type;
 	}
 
-
+	/**
+	 * Developers want to group by Extension/not by test,
+	 * implement that later
+	 *
+	 * @return string|NULL
+	 */
+	public function getExtension() {
+		if ($this->physicalLocation !== NULL) {
+			return $this->physicalLocation->getExtension();
+		} else {
+			return NULL;
+		}
+	}
 
 
 }

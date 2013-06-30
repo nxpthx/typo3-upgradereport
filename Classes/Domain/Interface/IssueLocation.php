@@ -45,7 +45,7 @@ interface Tx_Upgradereport_Domain_Interface_IssueLocation{
 	 *
 	 * @return string|NULL
 	 */
-//	public function getExtension();
+	public function getExtension();
 }
 
 ?>

@@ -52,10 +52,18 @@ class Tx_Upgradereport_Controller_AjaxController extends Tx_Extbase_MVC_Controll
 		if ($check !== NULL) {
 			$processor = $check->getProcessor();
 			$processor->executeCheck();
+
+			$issues = array();
+			foreach ($processor->getIssues() as $issue) {
+				$issues[] = array(
+					'explenation' => $check->getResultAnalyzer()->getExplanation($issue),
+					'solution' => $check->getResultAnalyzer()->getSolution($issue)
+				);
+			}
 			return json_encode(array(
 				'result' => 'OK',
 				'issueCount' => count($processor->getIssues()),
-				'issues' => $processor->getIssues()
+				'issues' => $issues
 			));
 		} else {
 			$this->response->setStatus(404, 'Check not found');

@@ -48,6 +48,11 @@ class Tx_Upgradereport_Domain_Model_Issue {
 	protected $location;
 
 	/**
+	 * @var array
+	 */
+	protected $additionalInformation = array();
+
+	/**
 	 * @param string $checkIdentifier
 	 * @param Tx_Upgradereport_Domain_Interface_IssueLocation $issueDetails
 	 */
@@ -85,6 +90,22 @@ class Tx_Upgradereport_Domain_Model_Issue {
 	 */
 	public function getLocation() {
 		return $this->location;
+	}
+
+	/**
+	 * @param array $additionalInformation
+	 *
+	 * @return void
+	 */
+	public function setAdditionalInformation(array $additionalInformation) {
+		$this->additionalInformation = $additionalInformation;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAdditionalInformation() {
+		return $this->additionalInformation;
 	}
 
 

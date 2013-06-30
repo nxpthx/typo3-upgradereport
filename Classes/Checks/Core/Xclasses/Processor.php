@@ -88,7 +88,9 @@ class Tx_Upgradereport_Checks_Core_Xclasses_Processor implements Tx_Upgraderepor
 	 * @return Tx_Upgradereport_Domain_Model_Issue
 	 */
 	protected function createIssue($context, $targetClass, $implementationClass) {
-		$physicalLocation = new Tx_Upgradereport_Domain_Model_IssueLocation_File('-', '-', 0);
+		$extKey = t3lib_extMgm::getExtensionKeyByPrefix(strtolower($implementationClass));
+
+		$physicalLocation = new Tx_Upgradereport_Domain_Model_IssueLocation_File($extKey, 'EXT:' . $extKey . '/ext_localconf.php');
 
 		$details = new Tx_Upgradereport_Domain_Model_IssueLocation_Configuration(
 			Tx_Upgradereport_Domain_Model_IssueLocation_Configuration::TYPE_PHP,
@@ -97,7 +99,12 @@ class Tx_Upgradereport_Checks_Core_Xclasses_Processor implements Tx_Upgraderepor
 			$physicalLocation
 		);
 
-		return new Tx_Upgradereport_Domain_Model_Issue($this->parentCheck->getIdentifier(), $details);
+		$issue = new Tx_Upgradereport_Domain_Model_Issue($this->parentCheck->getIdentifier(), $details);
+		$issue->setAdditionalInformation(array(
+			'ORIGINAL_CLASS' => $targetClass,
+			'IMPLEMENTATION_CLASS' => $implementationClass
+		));
+		return $issue;
 	}
 }
 
