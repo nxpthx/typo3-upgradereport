@@ -30,7 +30,7 @@
  *
  * @author Steffen Ritter
  */
-class Tx_Upgradereport_Checks_Core_Xclasses_Definition implements Tx_Upgradereport_Domain_Interface_CheckProcessor {
+class Tx_Upgradereport_Checks_Core_Xclasses_Processor implements Tx_Upgradereport_Domain_Interface_CheckProcessor {
 
 	/**
 	 * @var Tx_Upgradereport_Checks_Core_Xclasses_Definition
@@ -53,11 +53,16 @@ class Tx_Upgradereport_Checks_Core_Xclasses_Definition implements Tx_Upgraderepo
 	 * @return void
 	 */
 	public function executeCheck() {
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']) && count($GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']) > 0) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS'] AS $targetClass => $implementationClass) {
-				// todo: generate issues
+		$contexts = array('BE', 'FE');
+
+		foreach ($contexts as $context) {
+			if (is_array($GLOBALS['TYPO3_CONF_VARS'][$context]['XCLASS']) && count($GLOBALS['TYPO3_CONF_VARS'][$context]['XCLASS']) > 0) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS'][$context]['XCLASS'] AS $targetClass => $implementationClass) {
+					$this->issues[] = $this->createIssue($context, $targetClass, $implementationClass);
+				}
 			}
 		}
+
 	}
 
 	/**
@@ -74,6 +79,26 @@ class Tx_Upgradereport_Checks_Core_Xclasses_Definition implements Tx_Upgraderepo
 		return $this->issues;
 	}
 
+
+	/**
+	 * @param string $context
+	 * @param string $targetClass
+	 * @param string $implementationClass
+	 *
+	 * @return Tx_Upgradereport_Domain_Model_Issue
+	 */
+	protected function createIssue($context, $targetClass, $implementationClass) {
+		$physicalLocation = new Tx_Upgradereport_Domain_Model_IssueLocation_File('-', '-', 0);
+
+		$details = new Tx_Upgradereport_Domain_Model_IssueLocation_Configuration(
+			Tx_Upgradereport_Domain_Model_IssueLocation_Configuration::TYPE_PHP,
+			'$GLOBALS[TYPO3_CONF_VARS][' . $context . '][XCLASS][' . $targetClass . ']',
+			$implementationClass,
+			$physicalLocation
+		);
+
+		return new Tx_Upgradereport_Domain_Model_Issue($this->parentCheck->getIdentifier(), $details);
+	}
 }
 
 ?>
