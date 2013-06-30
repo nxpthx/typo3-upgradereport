@@ -30,62 +30,88 @@
  *
  * @author Steffen Ritter
  */
-class Tx_Upgradereport_Domain_Model_Issue {
+class Tx_Upgradereport_Domain_Model_IssueLocation_Database extends Tx_Upgradereport_Domain_Model_IssueLocation_PhysicalLocation {
 
 	/**
 	 * @var string
 	 */
-	protected $check;
+	protected $table;
+
+	/**
+	 * @var integer
+	 */
+	protected $record;
 
 	/**
 	 * @var string
 	 */
-	protected $issueIdentifier;
+	protected $field;
 
 	/**
-	 * @var Tx_Upgradereport_Domain_Interface_IssueLocation
-	 */
-	protected $location;
-
-	/**
-	 * @param string $checkIdentifier
-	 * @param Tx_Upgradereport_Domain_Interface_IssueLocation $issueDetails
-	 */
-	public function __construct($checkIdentifier, Tx_Upgradereport_Domain_Interface_IssueLocation $issueDetails) {
-		$this->location = $issueDetails;
-		$this->check = $checkIdentifier;
-		$this->issueIdentifier = $this->location->createIssueIdentifier();
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getIssueIdentifier() {
-		return $this->issueIdentifier;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getCheck() {
-		return $this->check;
-	}
-
-	/**
-	 * @param \Tx_Upgradereport_Domain_Interface_IssueLocation $details
+	 * Creates ID which identifies the occurence of that issue
 	 *
+	 * @return string
+	 */
+	public function createIssueIdentifier() {
+		return $this->table . ':' . $this->record . ':' . $this->field;
+	}
+
+	/**
+	 * @param string $table
+	 * @param integer $recordUid
+	 * @param string $field
+	 */
+	public function __construct($table, $recordUid, $field) {
+		$this->table = $table;
+		$this->record = $recordUid;
+		$this->field = $field;
+	}
+
+	/**
+	 * @param string $field
 	 * @return void
 	 */
-	public function setLocation($details) {
-		$this->location = $details;
+	public function setField($field) {
+		$this->field = $field;
 	}
 
 	/**
-	 * @return \Tx_Upgradereport_Domain_Interface_IssueLocation
+	 * @return string
 	 */
-	public function getLocation() {
-		return $this->location;
+	public function getField() {
+		return $this->field;
 	}
+
+	/**
+	 * @param int $record
+	 * @return void
+	 */
+	public function setRecord($record) {
+		$this->record = $record;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getRecord() {
+		return $this->record;
+	}
+
+	/**
+	 * @param string $table
+	 * @return void
+	 */
+	public function setTable($table) {
+		$this->table = $table;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTable() {
+		return $this->table;
+	}
+
 
 
 }

@@ -26,18 +26,13 @@
  ***************************************************************/
 
 /**
- * Interface Tx_Upgradereport_Domain_Interface_IssueDetails
+ * Class Tx_Upgradereport_Domain_Interface_CheckProcessor
  *
  * @author Steffen Ritter
  */
-interface Tx_Upgradereport_Domain_Interface_IssueDetails extends Serializable {
+abstract class Tx_Upgradereport_Domain_Model_IssueLocation_PhysicalLocation implements Tx_Upgradereport_Domain_Interface_IssueLocation {
 
-	/**
-	 * Creates ID which identifies the occurence of that issue
-	 *
-	 * @return string
-	 */
-	public function createIssueIdentifier();
+
 }
 
 ?>

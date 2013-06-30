@@ -26,68 +26,18 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Domain_Interface_CheckProcessor
+ * Interface Tx_Upgradereport_Domain_Interface_IssueDetails
  *
  * @author Steffen Ritter
  */
-class Tx_Upgradereport_Domain_Model_Issue {
+interface Tx_Upgradereport_Domain_Interface_IssueLocation{
 
 	/**
-	 * @var string
-	 */
-	protected $check;
-
-	/**
-	 * @var string
-	 */
-	protected $issueIdentifier;
-
-	/**
-	 * @var Tx_Upgradereport_Domain_Interface_IssueLocation
-	 */
-	protected $location;
-
-	/**
-	 * @param string $checkIdentifier
-	 * @param Tx_Upgradereport_Domain_Interface_IssueLocation $issueDetails
-	 */
-	public function __construct($checkIdentifier, Tx_Upgradereport_Domain_Interface_IssueLocation $issueDetails) {
-		$this->location = $issueDetails;
-		$this->check = $checkIdentifier;
-		$this->issueIdentifier = $this->location->createIssueIdentifier();
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getIssueIdentifier() {
-		return $this->issueIdentifier;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getCheck() {
-		return $this->check;
-	}
-
-	/**
-	 * @param \Tx_Upgradereport_Domain_Interface_IssueLocation $details
+	 * Creates ID which identifies the occurence of that issue
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function setLocation($details) {
-		$this->location = $details;
-	}
-
-	/**
-	 * @return \Tx_Upgradereport_Domain_Interface_IssueLocation
-	 */
-	public function getLocation() {
-		return $this->location;
-	}
-
-
+	public function createIssueIdentifier();
 }
 
 ?>
