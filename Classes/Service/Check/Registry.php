@@ -52,6 +52,21 @@ class Tx_Upgradereport_Service_Check_Registry implements t3lib_Singleton {
 	}
 
 	/**
+	 * @param $searchedIdentifier
+	 *
+	 * @return null|Tx_Upgradereport_Domain_Interface_Check
+	 */
+	public function getActiveCheckByIdentifier($searchedIdentifier) {
+		$checks = $this->getActiveChecks();
+		foreach ($checks as $check) {
+			if ($check->getIdentifier() == $searchedIdentifier) {
+				return $check;
+			}
+		}
+		return NULL;
+	}
+
+	/**
 	 * @return Tx_Upgradereport_Service_Check_Registry
 	 */
 	public static function getInstance() {

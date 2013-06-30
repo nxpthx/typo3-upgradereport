@@ -122,6 +122,13 @@ class Tx_Upgradereport_Domain_Model_IssueLocation_File extends Tx_Upgradereport_
 		return $this->lineNumber;
 	}
 
+	/**
+	 *
+	 * @return string|NULL
+	 */
+	public function getExtension() {
+		return $this->getExtensionName() == '__ROOT' ? NULL : $this->getExtensionName();
+	}
 
 
 }

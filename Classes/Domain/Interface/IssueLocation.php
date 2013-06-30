@@ -38,6 +38,14 @@ interface Tx_Upgradereport_Domain_Interface_IssueLocation{
 	 * @return string
 	 */
 	public function createIssueIdentifier();
+
+	/**
+	 * Developers want to group by Extension/not by test,
+	 * implement that later
+	 *
+	 * @return string|NULL
+	 */
+//	public function getExtension();
 }
 
 ?>

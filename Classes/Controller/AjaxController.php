@@ -38,15 +38,30 @@ class Tx_Upgradereport_Controller_AjaxController extends Tx_Extbase_MVC_Controll
 	 */
 	protected function initializeAction() {
 		parent::initializeAction();
+		$this->response->setHeader('Content-type', 'application/json');
 	}
 
 	/**
-	 * @param $checkIdentifier
+	 * @param string $checkIdentifier
 	 *
 	 * @return string
 	 */
 	public function runTestAction($checkIdentifier) {
-		return json_encode(array('result' => 'OK'));
+		$registry = Tx_Upgradereport_Service_Check_Registry::getInstance();
+		$check = $registry->getActiveCheckByIdentifier($checkIdentifier);
+		if ($check !== NULL) {
+			$processor = $check->getProcessor();
+			$processor->executeCheck();
+			return json_encode(array(
+				'result' => 'OK',
+				'issueCount' => count($processor->getIssues()),
+				'issues' => $processor->getIssues()
+			));
+		} else {
+			$this->response->setStatus(404, 'Check not found');
+			return json_encode(array('result' => 'ERROR'));
+		}
+
 	}
 }
 
