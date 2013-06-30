@@ -31,11 +31,12 @@
  * @author Steffen Ritter
  */
 class Tx_Upgradereport_Checks_Core_Xclasses_Definition extends Tx_Upgradereport_Checks_AbstractCheckDefinition {
+
 	/**
 	 * @return Tx_Upgradereport_Domain_Interface_CheckProcessor
 	 */
 	public function getProcessor() {
-		// TODO: Implement getProcessor() method.
+		return t3lib_div::makeInstance('Tx_Upgradereport_Checks_Core_Xclasses_Processor', $this);
 	}
 
 	/**
