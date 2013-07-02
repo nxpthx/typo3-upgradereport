@@ -7,8 +7,8 @@ For further information see **[TYPO3 CMS 6.2 LTS Kickoff](http://typo3.org/news/
 
 ## Extension Usage
 
-Just install the extension into a TYPO3 4.5 LTS instance from TER. Go to the new module shipped and run the tests.
-We plan on having a more versatile Interface allowing to export the results.
+Just install the extension into a TYPO3 4.5 LTS instance from TER. If cloning from github, make sure your extension folder is named "upgradereport".
+Afterwards go to the new module shipped and run the tests. We plan on having a more versatile Interface allowing to export the results.
 
 ## Extension Development
 
