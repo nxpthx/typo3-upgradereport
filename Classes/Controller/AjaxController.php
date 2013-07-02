@@ -46,7 +46,7 @@ class Tx_Upgradereport_Controller_AjaxController extends Tx_Extbase_MVC_Controll
 	 */
 	protected function initializeAction() {
 		parent::initializeAction();
-		$this->response->setHeader('Content-type', 'application/json');
+	//	$this->response->setHeader('Content-type', 'application/json');
 	}
 
 	/**

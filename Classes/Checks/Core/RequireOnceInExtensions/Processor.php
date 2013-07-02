@@ -53,7 +53,12 @@ class Tx_Upgradereport_Checks_Core_RequireOnceInExtensions_Processor implements 
 	 * @return void
 	 */
 	public function executeCheck() {
-		/** todo */
+		/** @var Tx_Upgradereport_Service_FileLocatorService $fileLocatorService */
+		$fileLocatorService = t3lib_div::makeInstance('Tx_Upgradereport_Service_FileLocatorService');
+		$locations = $fileLocatorService->searchInExtensions('.*\.(php|inc)$', '(require|require_once|include|include_once)(\w*\(|\w+)');
+		foreach ($locations as $location) {
+			$this->issues[] = new Tx_Upgradereport_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
+		}
 	}
 
 	/**
