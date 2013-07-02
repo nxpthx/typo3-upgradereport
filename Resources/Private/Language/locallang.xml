@@ -8,10 +8,10 @@
 		<languageKey index="default" type="array">
 			<label index="check.typo3-core-code-xclasses.title">Check for xClasses</label>
 			<label index="check.typo3-core-code-xclasses.shortDescription">The way of registering xClasses has been changed. Check if xClassing is used.</label>
-			<label index="check.typo3-core-code-xclasses.description">The way of registering xClasses has been changed. Check if xClassing is used.
-
-				asdfsd
-			</label>
+			<label index="check.typo3-core-code-xclasses.description">The way of registering xClasses has been changed. Check if xClassing is used.</label>
+			<label index="check.typo3-core-code-requireOnceInExtensions.title">require_once // include_once</label>
+			<label index="check.typo3-core-code-requireOnceInExtensions.shortDescription">Using require_once, include_once, include or require will fail since files have been renamed.</label>
+			<label index="check.typo3-core-code-requireOnceInExtensions.description">While namespacing all the classes have been restructured, relocated and renamed. Including old files therefore will fail. Since TYPO3 CMS 4.3 there is an autoloader which makes manual requiring superfluous.</label>
 		</languageKey>
 	</data>
 </T3locallang>
