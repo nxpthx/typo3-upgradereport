@@ -58,25 +58,16 @@ class Tx_Upgradereport_Controller_AjaxController extends Tx_Extbase_MVC_Controll
 		$registry = Tx_Upgradereport_Service_Check_Registry::getInstance();
 		$check = $registry->getActiveCheckByIdentifier($checkIdentifier);
 
-		// prepare Issue object to persist test results
-		$issue = t3lib_div::makeInstance('Tx_Upgradereport_Domain_Model_Issue');
-		$this->issueRepository->add($issue);
-
 		if ($check !== NULL) {
 			$processor = $check->getProcessor();
 			$processor->executeCheck();
 
-			$issues = array();
 			foreach ($processor->getIssues() as $issue) {
-				$issues[] = array(
-					'explenation' => $check->getResultAnalyzer()->getExplanation($issue),
-					'solution' => $check->getResultAnalyzer()->getSolution($issue)
-				);
+				$this->issueRepository->add($issue);
 			}
 			return json_encode(array(
 				'result' => 'OK',
 				'issueCount' => count($processor->getIssues()),
-				'issues' => $issues
 			));
 		} else {
 			$this->response->setStatus(404, 'Check not found');
