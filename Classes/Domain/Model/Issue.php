@@ -30,7 +30,7 @@
  *
  * @author Steffen Ritter
  */
-class Tx_Upgradereport_Domain_Model_Issue {
+class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
 	 * @var string
