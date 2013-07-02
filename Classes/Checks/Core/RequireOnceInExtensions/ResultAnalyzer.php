@@ -60,6 +60,7 @@ class Tx_Upgradereport_Checks_Core_RequireOnceInExtensions_ResultAnalyzer implem
 	 * @return string
 	 */
 	public function getExplanation(Tx_Upgradereport_Domain_Model_Issue $issue) {
+		return 'Jo ne: noch keine Beschreibung';
 	}
 
 	/**
@@ -68,6 +69,7 @@ class Tx_Upgradereport_Checks_Core_RequireOnceInExtensions_ResultAnalyzer implem
 	 * @return string
 	 */
 	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue) {
+		return "Remove the require/include statement at " . $issue->getLocation()->getFilePath() . ' in line ' . $issue->getLocation()->getLineNumber();
 	}
 
 	/**
