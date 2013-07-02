@@ -35,12 +35,17 @@ class Tx_Upgradereport_Domain_Model_Issue {
 	/**
 	 * @var string
 	 */
-	protected $check;
+	protected $inspection;
 
 	/**
 	 * @var string
 	 */
 	protected $issueIdentifier;
+
+	/**
+	 * @var string
+	 */
+	protected $extension;
 
 	/**
 	 * @var Tx_Upgradereport_Domain_Interface_IssueLocation
@@ -58,7 +63,7 @@ class Tx_Upgradereport_Domain_Model_Issue {
 	 */
 	public function __construct($checkIdentifier, Tx_Upgradereport_Domain_Interface_IssueLocation $issueDetails) {
 		$this->location = $issueDetails;
-		$this->check = $checkIdentifier;
+		$this->inspection = $checkIdentifier;
 		$this->issueIdentifier = $this->location->createIssueIdentifier();
 	}
 
@@ -72,8 +77,8 @@ class Tx_Upgradereport_Domain_Model_Issue {
 	/**
 	 * @return string
 	 */
-	public function getCheck() {
-		return $this->check;
+	public function getInspection() {
+		return $this->inspection;
 	}
 
 	/**
@@ -106,6 +111,26 @@ class Tx_Upgradereport_Domain_Model_Issue {
 	 */
 	public function getAdditionalInformation() {
 		return $this->additionalInformation;
+	}
+
+	/**
+	 * sets the Extension
+	 *
+	 * @param string $extension
+	 *
+	 * @return void
+	 */
+	public function setExtension($extension) {
+		$this->extension = $extension;
+	}
+
+	/**
+	 * get the Extension
+	 *
+	 * @return string
+	 */
+	public function getExtension() {
+		return $this->extension;
 	}
 
 

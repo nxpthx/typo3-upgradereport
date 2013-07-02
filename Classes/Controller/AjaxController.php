@@ -30,6 +30,14 @@
  */
 class Tx_Upgradereport_Controller_AjaxController extends Tx_Extbase_MVC_Controller_ActionController {
 
+	/**
+	 * @var Tx_Upgradereport_Domain_Repository_IssueRepository {
+	 */
+	protected $issueRepository;
+
+	public function injectIssueRepository(Tx_Upgradereport_Domain_Repository_IssueRepository $issueRepository) {
+		$this->issueRepository = $issueRepository;
+	}
 
 	/**
 	 * Initializes the controller before invoking an action method.
@@ -49,6 +57,11 @@ class Tx_Upgradereport_Controller_AjaxController extends Tx_Extbase_MVC_Controll
 	public function runTestAction($checkIdentifier) {
 		$registry = Tx_Upgradereport_Service_Check_Registry::getInstance();
 		$check = $registry->getActiveCheckByIdentifier($checkIdentifier);
+
+		// prepare Issue object to persist test results
+		$issue = t3lib_div::makeInstance('Tx_Upgradereport_Domain_Model_Issue');
+		$this->issueRepository->add($issue);
+
 		if ($check !== NULL) {
 			$processor = $check->getProcessor();
 			$processor->executeCheck();

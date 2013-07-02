@@ -25,6 +25,23 @@ if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	);
 }
 
+$TCA['tx_upgradereport_domain_model_issue'] = array(
+	'ctrl' => array(
+		'title' => 'recognized upgrade issues',
+		'label' => ($confArr['label']) ? $confArr['label'] : 'check',
+		'crdate' => 'crdate',
+		'tstamp' => 'tstamp',
+		'delete' => 'deleted',
+		'cruser_id' => 'cruser_id',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+		),
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_upgradereport_domain_model_issue.php'
+	)
+);
+
 	// Add Icons
 $icons = array(
 //	'sendtonextstage' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtonextstage.png',
