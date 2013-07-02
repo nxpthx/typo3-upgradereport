@@ -39,7 +39,7 @@ class Tx_Upgradereport_Domain_Repository_IssueRepository extends Tx_Extbase_Pers
 			$groups[$issue->getInspection()][] = $issue;
 		}
 
-		return $issue;
+		return $groups;
 	}
 
 	/**
