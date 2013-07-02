@@ -3,10 +3,10 @@
 $TCA['tx_upgradereport_domain_model_issue'] = array(
 	'crtl' => $TCA['tx_upgradereport_domain_model_issue']['crtl'],
 	'interface' => array(
-		'showRecordFieldList' => 'inspection, issue_identifier, extension, location, additional_information',
+		'showRecordFieldList' => 'inspection, issuer, extension, location_info, additional_infon',
 	),
 	'types' => Array(
-		'0' => Array('showitem' => 'hidden, inspection, issue_identifier, extension, location, additional_information')
+		'0' => Array('showitem' => 'inspection, issue, extension, location_info, additional_info')
 	),
 	'columns' => array(
 		'inspection' => array(
@@ -17,7 +17,7 @@ $TCA['tx_upgradereport_domain_model_issue'] = array(
 				'max' => '256',
 			)
 		),
-		'issue_identifier' => array(
+		'identifier' => array(
 			'label' => 'issue_identifier',
 			'config' => Array(
 				'type' => 'input',
@@ -33,7 +33,7 @@ $TCA['tx_upgradereport_domain_model_issue'] = array(
 				'max' => '256',
 			)
 		),
-		'location' => array(
+		'location_info' => array(
 			'label' => 'location',
 			'config' => Array(
 				'type' => 'text',
@@ -41,7 +41,7 @@ $TCA['tx_upgradereport_domain_model_issue'] = array(
 				'rows' => '3'
 			)
 		),
-		'additional_information' => array(
+		'additional_info' => array(
 			'label' => ' additional information',
 			'config' => Array(
 				'type' => 'text',

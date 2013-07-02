@@ -40,7 +40,7 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * @var string
 	 */
-	protected $issueIdentifier;
+	protected $identifier;
 
 	/**
 	 * @var string
@@ -58,20 +58,33 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	protected $additionalInformation = array();
 
 	/**
+	 * @var string
+	 */
+	protected $additionalInfo;
+
+	/**
+	 * @var string
+	 */
+	protected $locationInfo = 'Test';
+
+	/**
 	 * @param string $checkIdentifier
 	 * @param Tx_Upgradereport_Domain_Interface_IssueLocation $issueDetails
 	 */
 	public function __construct($checkIdentifier, Tx_Upgradereport_Domain_Interface_IssueLocation $issueDetails) {
-		$this->location = $issueDetails;
+		$this->setLocation($issueDetails);
 		$this->inspection = $checkIdentifier;
-		$this->issueIdentifier = $this->location->createIssueIdentifier();
 	}
 
+	public function initializeObject() {
+		$this->additionalInformation = unserialize($this->additionalInfo);
+		$this->location = unserialize($this->locationInfo);
+	}
 	/**
 	 * @return string
 	 */
-	public function getIssueIdentifier() {
-		return $this->issueIdentifier;
+	public function getIdentifier() {
+		return $this->identifier;
 	}
 
 	/**
@@ -88,6 +101,9 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	 */
 	public function setLocation($details) {
 		$this->location = $details;
+		$this->extension = $details->getExtension();
+		$this->identifier = $this->location->createIssueIdentifier();
+		$this->locationInfo = serialize($details);
 	}
 
 	/**
@@ -104,6 +120,7 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	 */
 	public function setAdditionalInformation(array $additionalInformation) {
 		$this->additionalInformation = $additionalInformation;
+		$this->additionalInfo = serialize($additionalInformation);
 	}
 
 	/**
@@ -133,6 +150,33 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 		return $this->extension;
 	}
 
+	/**
+	 * @param string $additionalInfo
+	 */
+	public function setAdditionalInfo($additionalInfo) {
+		$this->additionalInfo = $additionalInfo;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAdditionalInfo() {
+		return $this->additionalInfo;
+	}
+
+	/**
+	 * @param string $locationInfo
+	 */
+	public function setLocationInfo($locationInfo) {
+		$this->locationInfo = $locationInfo;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLocationInfo() {
+		return $this->locationInfo;
+	}
 
 }
 

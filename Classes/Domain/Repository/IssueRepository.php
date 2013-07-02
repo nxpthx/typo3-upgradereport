@@ -28,5 +28,19 @@
  */
 class Tx_Upgradereport_Domain_Repository_IssueRepository extends Tx_Extbase_Persistence_Repository {
 
+	public function findAllGroupedByInspection() {
+		$issues = $this->findAll();
+		$groups = array();
+		/** @var Tx_Upgradereport_Domain_Model_Issue $issue */
+		foreach ($issues as $issue) {
+			if (!array_key_exists($issue->getInspection(), $groups)) {
+				$groups[$issue->getInspection()] = array();
+			}
+			$groups[$issue->getInspection()][] = $issue;
+		}
+
+		return $issue;
+	}
 }
+
 ?>

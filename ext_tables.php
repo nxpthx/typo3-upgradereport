@@ -29,8 +29,6 @@ $TCA['tx_upgradereport_domain_model_issue'] = array(
 	'ctrl' => array(
 		'title' => 'recognized upgrade issues',
 		'label' => 'check',
-		'crdate' => 'crdate',
-		'tstamp' => 'tstamp',
 		'enablecolumns' => array(
 		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_upgradereport_domain_model_issue.php'
