@@ -21,11 +21,12 @@ var UpgradeReport = function() {
 				$content.append('<p>Found ' + result.issueCount + ' issues.</p>');
 				if (result.issueCount > 0) {
 					$listElement.removeClass('message-notice').addClass('message-warning');
-					$content.append('<ul></ul>')
+				/*	$content.append('<ul></ul>')
 					var $list = $content.children('ul');
 					for (var i = 0; i < result.issueCount; i++) {
 						$list.append('<li><p class="explenation">' + result.issues[i].explenation + '</p><p class="solution">' + result.issues[i].solution + '</p></li>')
 					}
+				*/
 				} else {
 					$listElement.removeClass('message-notice').addClass('message-ok');
 				}
