@@ -5,6 +5,9 @@ $TCA['tx_upgradereport_domain_model_issue'] = array(
 	'interface' => array(
 		'showRecordFieldList' => 'inspection, issue_identifier, extension, location, additional_information',
 	),
+	'types' => Array(
+		'0' => Array('showitem' => 'hidden, inspection, issue_identifier, extension, location, additional_information')
+	),
 	'columns' => array(
 		'inspection' => array(
 			'label' => 'inspection',

@@ -37,6 +37,9 @@ $TCA['tx_upgradereport_domain_model_issue'] = array(
 	)
 );
 
+// allow test results on normal pages
+t3lib_extMgm::allowTableOnStandardPages('tx_upgradereport_domain_model_issue');
+
 	// Add Icons
 $icons = array(
 //	'sendtonextstage' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtonextstage.png',
