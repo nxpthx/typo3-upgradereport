@@ -31,12 +31,22 @@
 class Tx_Upgradereport_Controller_ReportController extends Tx_Upgradereport_Controller_AbstractModuleController {
 
 	/**
+	 * @var Tx_Upgradereport_Domain_Repository_IssueRepository {
+	 */
+	protected $issueRepository;
+
+	public function injectIssueRepository(Tx_Upgradereport_Domain_Repository_IssueRepository $issueRepository) {
+		$this->issueRepository = $issueRepository;
+	}
+
+	/**
 	 * @return void
 	 */
 	public function indexAction() {
 		/** @var Tx_Upgradereport_Service_Check_Registry $checkRegistry */
 		$checkRegistry = $this->objectManager->get('Tx_Upgradereport_Service_Check_Registry');
 		$this->view->assign('checks', $checkRegistry->getActiveChecks());
+		$this->view->assign('issuesByCheck', $this->issueRepository->findAllGroupedByInspection());
 	}
 
 	/**
