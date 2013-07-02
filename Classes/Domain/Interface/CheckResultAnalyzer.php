@@ -57,6 +57,14 @@ interface Tx_Upgradereport_Domain_Interface_ResultAnalyzer extends t3lib_Singlet
 	 * @return string
 	 */
 	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue);
+
+	/**
+	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 *
+	 * @return string
+	 */
+	public function getRawTextForCopyPaste(Tx_Upgradereport_Domain_Model_Issue $issue);
+
 }
 
 ?>

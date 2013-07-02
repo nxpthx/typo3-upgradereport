@@ -84,6 +84,20 @@ class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Upgrade
 			'$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'Objects\'][\'' . $originalClass . '\'] = array(\'className\' => \'' . $newClass . '\');';
 	}
 
+	/**
+	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 *
+	 * @return string
+	 */
+	public function getRawTextForCopyPaste(Tx_Upgradereport_Domain_Model_Issue $issue) {
+		$information = $issue->getAdditionalInformation();
+
+		$originalClass = $information['ORIGINAL_CLASS'];
+		$newClass = $information['IMPLEMENTATION_CLASS'];
+		return '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'Objects\'][\'' . $originalClass . '\'] = array(\'className\' => \'' . $newClass . '\');';
+
+	}
+
 
 }
 
