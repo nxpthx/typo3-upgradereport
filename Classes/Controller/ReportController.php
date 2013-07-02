@@ -50,6 +50,16 @@ class Tx_Upgradereport_Controller_ReportController extends Tx_Upgradereport_Cont
 	}
 
 	/**
+	 *
+	 */
+	public function reportOverviewAction() {
+		$this->view->assign('issueCount', $this->issueRepository->findAll()->count());
+	}
+
+	public function showAction() {
+		$this->view->assign('groupedIssues', $this->issueRepository->findAllGroupedByExtensionAndInspection());
+	}
+	/**
 	 * Initializes the controller before invoking an action method.
 	 *
 	 * @return void

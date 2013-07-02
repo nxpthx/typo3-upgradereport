@@ -1,0 +1,19 @@
+<f:layout name="module" />
+
+<f:section name="main">
+
+	<h1>Upgrade Report Report</h1>
+	<f:for each="{groupedIssues}" as="tests" key="extension">
+		<h2>{extension}</h2>
+		<f:for each="{tests}" as="issues" key="testName">
+			<h3>{testName}</h3>
+			<ul>
+				<f:for each="{issues}" as="issue">
+					<li>
+						{issue.identifier}
+					</li>
+				</f:for>
+			</ul>
+		</f:for>
+	</f:for>
+</f:section>

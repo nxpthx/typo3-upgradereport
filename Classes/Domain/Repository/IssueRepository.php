@@ -42,6 +42,23 @@ class Tx_Upgradereport_Domain_Repository_IssueRepository extends Tx_Extbase_Pers
 		return $groups;
 	}
 
+	public function findAllGroupedByExtensionAndInspection() {
+		$issues = $this->findAll();
+		$groups = array();
+		/** @var Tx_Upgradereport_Domain_Model_Issue $issue */
+		foreach ($issues as $issue) {
+			if (!array_key_exists($issue->getExtension(), $groups)) {
+				$groups[$issue->getExtension()] = array();
+			}
+			if (!array_key_exists($issue->getInspection(), $groups[$issue->getExtension()])) {
+				$groups[$issue->getExtension()][$issue->getInspection()] = array();
+			}
+			$groups[$issue->getExtension()][$issue->getInspection()][] = $issue;
+		}
+
+		return $groups;
+	}
+
 	/**
 	 * @param Tx_Upgradereport_Domain_Model_Issue $object
 	 */

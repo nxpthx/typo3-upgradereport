@@ -14,7 +14,7 @@ if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		'after:reports',
 		array(
 				// An array holding the controller-action-combinations that are accessible
-			'Report'		=> 'index',
+			'Report'		=> 'index,reportOverview,show,download',
 			'Ajax'			=> 'runTest,getResults'
 		),
 		array(

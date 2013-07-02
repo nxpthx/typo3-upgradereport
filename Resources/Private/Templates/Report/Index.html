@@ -3,7 +3,7 @@
 <f:section name="main">
 
 	<h1>Registered Checks</h1>
-	<p style="text-align:right;"><a href="#" class="t3-upgradereport-runAllChecks">Run all</a></p>
+	<p style="text-align:right;"><f:link.action action="reportOverview">Generate Report</f:link.action>&nbsp;|&nbsp;<a href="#" class="t3-upgradereport-runAllChecks">Run all</a></p>
 	<ul>
 		<f:for each="{checks}" as="check">
 			<li  class="typo3-message message-notice" data-checkId="{check.identifier}">
