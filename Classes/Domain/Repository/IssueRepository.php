@@ -41,6 +41,22 @@ class Tx_Upgradereport_Domain_Repository_IssueRepository extends Tx_Extbase_Pers
 
 		return $issue;
 	}
+
+	/**
+	 * @param Tx_Upgradereport_Domain_Model_Issue $object
+	 */
+	public function add($object) {
+		if ($GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'*',
+				'tx_upgradereport_domain_model_issue',
+				'inspection = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getInspection(), 'tx_upgradereport_domain_model_issue')
+				. ' AND identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getIdentifier(), 'tx_upgradereport_domain_model_issue')
+			) == 0) {
+			parent::add($object);
+		}
+	}
+
+
 }
 
 ?>
