@@ -110,6 +110,9 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	 * @return \Tx_Upgradereport_Domain_Interface_IssueLocation
 	 */
 	public function getLocation() {
+		if ($this->location == NULL && $this->locationInfo !== NULL) {
+			$this->location = unserialize($this->locationInfo);
+		}
 		return $this->location;
 	}
 
@@ -127,6 +130,10 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	 * @return array
 	 */
 	public function getAdditionalInformation() {
+		if ($this->additionalInformation == NULL && $this->additionalInfo !== NULL) {
+			$this->additionalInformation = unserialize($this->additionalInfo);
+		}
+
 		return $this->additionalInformation;
 	}
 
@@ -155,6 +162,7 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	 */
 	public function setAdditionalInfo($additionalInfo) {
 		$this->additionalInfo = $additionalInfo;
+		$this->setAdditionalInformation(unserialize($additionalInfo));
 	}
 
 	/**
@@ -169,6 +177,7 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	 */
 	public function setLocationInfo($locationInfo) {
 		$this->locationInfo = $locationInfo;
+		$this->setLocation(unserialize($locationInfo));
 	}
 
 	/**
