@@ -25,16 +25,17 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 require_once(PATH_t3lib . 'class.t3lib_cli.php');
 
-
-
-
+/**
+ * Class tx_upgradereport_cli
+ */
 class tx_upgradereport_cli extends t3lib_cli {
 
-
-
+	/**
+	 * @var Tx_Upgradereport_Domain_Repository_IssueRepository
+	 */
+	protected $issueRepository;
 
 	/**
 	 * Constructor
@@ -43,11 +44,9 @@ class tx_upgradereport_cli extends t3lib_cli {
 	 */
 	public function tx_upgradereport_cli() {
 		// Running parent class constructor
-
-
 		parent::t3lib_cli();
-		$this->issueRepository = t3lib_div::makeInstance('Tx_Upgradereport_Domain_Repository_IssueRepository');
 
+		$this->issueRepository = t3lib_div::makeInstance('Tx_Upgradereport_Domain_Repository_IssueRepository');
 
 		// Adding options to help archive:
 		$this->cli_options = array();
@@ -56,9 +55,8 @@ class tx_upgradereport_cli extends t3lib_cli {
 		$this->cli_options[] = array('help ', 'Display this message');
 
 		// Setting help texts:
-		$this->cli_help['name'] = 'Upgradereport Reporct CLI Agent';
-		$this->cli_help['synopsis'] = 'cli_dispatch.phpsh upgradereport {task}' ."\n";
-
+		$this->cli_help['name'] = 'CLI Upgradereport Agent';
+		$this->cli_help['synopsis'] = 'cli_dispatch.phpsh upgradereport {task}' . "\n";
 
 		$this->cli_help['description'] = 'Executes the report of the upgradereport extension on CLI Basis';
 		$this->cli_help['examples'] = './typo3/cli_dispatch.phpsh upgradereport report';
@@ -72,33 +70,25 @@ class tx_upgradereport_cli extends t3lib_cli {
 	 * @return string
 	 */
 	public function cli_main($argv) {
-		// Force user to admin state and set workspace to "Live":
-
-
-		// Print Howto:
-
-		// Print help
-		$task = (string) $this->cli_args['_DEFAULT'][1];
-		if (!$task) {
-			$this->cli_validateArgs();
-			$this->cli_help();
-			exit;
-		}
+		$task = ((string)$this->cli_args['_DEFAULT'][1]) ?: '';
 
 		// Analysis type:
-		switch ((string) $task) {
+		switch ($task) {
 			case 'overview':
 				$this->cli_echo($this->overview());
-			break;
+				break;
 			case 'report':
 				$this->cli_echo($this->report());
-			break;
-			break;
+				break;
+			default:
+				$this->cli_validateArgs();
+				$this->cli_help();
+				exit;
 		}
 	}
 
 	/**
-	 * Renders a Report of Extensions as ASCI
+	 * Renders a Report of Extensions as ASCII
 	 *
 	 * @return string
 	 */
@@ -106,23 +96,24 @@ class tx_upgradereport_cli extends t3lib_cli {
 		$report = '';
 		$registry = Tx_Upgradereport_Service_Check_Registry::getInstance();
 		$issuesWithInspections = $this->issueRepository->findAllGroupedByExtensionAndInspection();
-		foreach ($issuesWithInspections as $Inspections) {
-			$count=0;
-			foreach ($Inspections as $Issues) {
-				foreach($Issues as $oneIssue) {
+		foreach ($issuesWithInspections as $extensionKey => $inspections) {
+			$count = 0;
+			foreach ($inspections as $issues) {
+				/** @var Tx_Upgradereport_Domain_Model_Issue $singleIssue */
+				foreach ($issues as $singleIssue) {
 					if ($count == 0) {
 						// Render Extension Key
 						$report .= '----------------------------------------------------------------' . "\n";
-						$report .= '+ Extension : ' . sprintf("%-49s" ,$oneIssue->getExtension()). '+'. "\n";
+						$report .= '+ Extension : ' . sprintf('%-49s', $singleIssue->getExtension()) . "+\n";
 						$report .= '----------------------------------------------------------------' . "\n";
 
 					}
-					$check = $registry->getActiveCheckByIdentifier($oneIssue->getInspection());
-					$report .= $check->getResultAnalyzer()->getSolution($oneIssue) ."\n";
+					$check = $registry->getActiveCheckByIdentifier($singleIssue->getInspection());
+					$report .= $check->getResultAnalyzer()->getSolution($singleIssue) . "\n";
 					$count ++;
 				}
 			}
-			$report .= 'Total : ' .$count . ' Issues in ' . $oneIssue->getExtension();
+			$report .= 'Total : ' . $count . ' issues in ' . $extensionKey;
 			$report .= "\n";
 			$report .= "\n";
 		}
@@ -137,14 +128,14 @@ class tx_upgradereport_cli extends t3lib_cli {
 		$issues = 0;
 		$registry = Tx_Upgradereport_Service_Check_Registry::getInstance();
 		$checks = $registry->getActiveChecks();
-		foreach($checks as $oneCheck) {
-			$processor = $oneCheck->getProcessor();
+		foreach ($checks as $singleCheck) {
+			$processor = $singleCheck->getProcessor();
 			$processor->executeCheck();
 			foreach ($processor->getIssues() as $issue) {
 				$this->issueRepository->add($issue);
 			}
 			$issues = $issues + count($processor->getIssues());
-			$report .= 'Check:' .$oneCheck->getTitle() . ' Has ' . count($processor->getIssues()) .' Issues ';
+			$report .= 'Check:' . $singleCheck->getTitle() . ' has ' . count($processor->getIssues()) . ' issues ';
 			$report .= "\n";
 		}
 		$report .= "\n" . 'Total Issues : ' . $issues . "\n";
@@ -156,7 +147,4 @@ class tx_upgradereport_cli extends t3lib_cli {
 $cleanerObj = t3lib_div::makeInstance('tx_upgradereport_cli');
 $cleanerObj->cli_main($_SERVER['argv']);
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/upgradereport/Classes/cli/class.upgradereport_cli.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/upgradereport/Classes/cli/class.upgradereport_cli.php']);
-}
 ?>
