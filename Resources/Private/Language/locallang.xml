@@ -15,6 +15,9 @@
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.title">Deprecated static methods</label>
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.shortDescription">Calling deprecated methods will give an error as they have been removed.</label>
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.description">From the 4.5 release multiple methods have been deprecated. Changing them to their respective new methods would solve the issue.</label>
+			<label index="check.typo3-core-code-callToDeprecatedViewHelpers.title">Deprecated view helpers</label>
+			<label index="check.typo3-core-code-callToDeprecatedViewHelpers.shortDescription">Calling deprecated view helpers will give an error as they have been removed.</label>
+			<label index="check.typo3-core-code-callToDeprecatedViewHelpers.description">From the 4.5 release some view helpers have been deprecated. Changing them to their respective new view helpers would solve the issue.</label>
 		</languageKey>
 	</data>
 </T3locallang>

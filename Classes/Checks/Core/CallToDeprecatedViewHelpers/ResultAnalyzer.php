@@ -26,14 +26,14 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyzer
+ * Class Tx_Upgradereport_Checks_Core_CallToDeprecatedViewHelpers_ResultAnalyzer
  *
  * @author Peter Beernink
  */
-class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyzer implements Tx_Upgradereport_Domain_Interface_ResultAnalyzer {
+class Tx_Upgradereport_Checks_Core_CallToDeprecatedViewHelpers_ResultAnalyzer implements Tx_Upgradereport_Domain_Interface_ResultAnalyzer {
 
 	/**
-	 * @var Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_Definition
+	 * @var Tx_Upgradereport_Checks_Core_CallToDeprecatedViewHelpers_Definition
 	 */
 	protected $parentCheck;
 
@@ -60,7 +60,7 @@ class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyzer 
 	 * @return string
 	 */
 	public function getExplanation(Tx_Upgradereport_Domain_Model_Issue $issue) {
-		return 'Call to deprecated static method';
+		return 'Call to deprecated viewhelper';
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyzer 
 	 * @return string
 	 */
 	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue) {
-		return 'Replace the static method ' . substr($issue->getLocation()->getMatchedString(), 0, -1) .' in ' . $issue->getLocation()->getFilePath() . ' on line ' . $issue->getLocation()->getLineNumber();
+		return 'Replace the viewhelper ' . substr($issue->getLocation()->getMatchedString(), 1) .' in ' . $issue->getLocation()->getFilePath() . ' on line ' . $issue->getLocation()->getLineNumber();
 	}
 
 	/**

@@ -40,9 +40,8 @@ class Tx_Upgradereport_Service_FileLocatorService {
 		$positions = array();
 		foreach (new SplFileObject($haystackFilePath) as $lineNumber => $lineContent) {
 			$matches = array();
-			if (preg_match('/' . trim($searchPattern, '/') . '/', $lineContent, $matches)) {
-				$match = substr($matches[0], 0, -1);
-				$positions[] =  array('line' => $lineNumber + 1, 'match' => $match);
+			if (preg_match('/' . trim($searchPattern, '/') . '/i', $lineContent, $matches)) {
+				$positions[] =  array('line' => $lineNumber + 1, 'match' => $matches[0]);
 			}
 		}
 		return $positions;
