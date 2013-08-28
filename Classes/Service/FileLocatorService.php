@@ -40,7 +40,7 @@ class Tx_Upgradereport_Service_FileLocatorService {
 		$positions = array();
 		foreach (new SplFileObject($haystackFilePath) as $lineNumber => $lineContent) {
 			if (preg_match('/' . trim($searchPattern, '/') . '/', $lineContent)) {
-				$positions[] =  $lineNumber;
+				$positions[] =  $lineNumber + 1;
 			}
 		}
 		return $positions;
@@ -61,7 +61,7 @@ class Tx_Upgradereport_Service_FileLocatorService {
 			if ($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'] == 'S') {
 				continue;
 			}
-			$locations += $this->searchInExtension($extensionKey, $fileNamePattern, $searchPattern);
+			$locations = array_merge($locations, $this->searchInExtension($extensionKey, $fileNamePattern, $searchPattern));
 		}
 		return $locations;
 	}
