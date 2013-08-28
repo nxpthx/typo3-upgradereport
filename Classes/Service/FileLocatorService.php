@@ -61,7 +61,8 @@ class Tx_Upgradereport_Service_FileLocatorService {
 			if ($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'] == 'S') {
 				continue;
 			}
-			$locations += $this->searchInExtension($extensionKey, $fileNamePattern, $searchPattern);
+			$locations = array_merge($this->searchInExtension($extensionKey, $fileNamePattern, $searchPattern), $locations);
+
 		}
 		return $locations;
 	}
