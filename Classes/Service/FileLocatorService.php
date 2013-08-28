@@ -34,13 +34,15 @@ class Tx_Upgradereport_Service_FileLocatorService {
 	 * @param string $searchPattern
 	 * @param string $haystackFilePath
 	 *
-	 * @return int[]
+	 * @return array
 	 */
 	public function findLineNumbersOfStringInPhpFile($searchPattern, $haystackFilePath) {
 		$positions = array();
 		foreach (new SplFileObject($haystackFilePath) as $lineNumber => $lineContent) {
-			if (preg_match('/' . trim($searchPattern, '/') . '/', $lineContent)) {
-				$positions[] =  $lineNumber + 1;
+			$matches = array();
+			if (preg_match('/' . trim($searchPattern, '/') . '/', $lineContent, $matches)) {
+				$match = substr($matches[0], 0, -1);
+				$positions[] =  array('line' => $lineNumber + 1, 'match' => $match);
 			}
 		}
 		return $positions;
@@ -82,10 +84,10 @@ class Tx_Upgradereport_Service_FileLocatorService {
 
 		$positions = array();
 		foreach ($regularExpressionIterator as $fileInfo) {
-			$lineNumbers = $this->findLineNumbersOfStringInPhpFile($searchPattern, $fileInfo->getPathname());
+			$locations = $this->findLineNumbersOfStringInPhpFile($searchPattern, $fileInfo->getPathname());
 
-			foreach ($lineNumbers as $line) {
-				$positions[] = new Tx_Upgradereport_Domain_Model_IssueLocation_File($extensionKey, str_replace(PATH_site, '', $fileInfo->getPathname()), $line);
+			foreach ($locations as $location) {
+				$positions[] = new Tx_Upgradereport_Domain_Model_IssueLocation_File($extensionKey, str_replace(PATH_site, '', $fileInfo->getPathname()), $location['line'], $location['match']);
 			}
 		}
 		return $positions;

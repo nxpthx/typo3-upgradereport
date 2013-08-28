@@ -55,14 +55,23 @@ class Tx_Upgradereport_Domain_Model_IssueLocation_File extends Tx_Upgradereport_
 	protected $lineNumber;
 
 	/**
+	 * The string found on the given line causing the issue
+	 *
+	 * @var string
+	 */
+	protected $matchedString;
+
+	/**
 	 * @param string $extension
 	 * @param string $path
 	 * @param integer $lineNumber
+	 * @param string $matchedString
 	 */
-	public function __construct($extension, $path, $lineNumber = -1) {
+	public function __construct($extension, $path, $lineNumber = -1, $matchedString = '') {
 		$this->extensionName = $extension;
 		$this->filePath = $path;
 		$this->lineNumber = $lineNumber;
+		$this->matchedString = $matchedString;
 	}
 
 	/**
@@ -130,7 +139,24 @@ class Tx_Upgradereport_Domain_Model_IssueLocation_File extends Tx_Upgradereport_
 		return $this->getExtensionName() == '__ROOT' ? NULL : $this->getExtensionName();
 	}
 
+	/**
+	 * Get the matched string
+	 *
+	 * @return string
+	 */
+	public function getMatchedString() {
+		return $this->matchedString;
+	}
 
+	/**
+	 * Set the matches string
+	 *
+	 * @param string $matchedString
+	 * @return void
+	 */
+	public function setMatchedString($matchedString) {
+		$this->matchedString = $matchedString;
+	}
 }
 
 ?>
