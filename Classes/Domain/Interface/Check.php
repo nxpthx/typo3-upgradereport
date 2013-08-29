@@ -38,7 +38,7 @@ interface Tx_Smoothmigration_Domain_Interface_Check extends Tx_Smoothmigration_D
 	public function getProcessor();
 
 	/**
-	 * @return Tx_Smoothmigration_Domain_Interface_ResultAnalyzer
+	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
 	 */
 	public function getResultAnalyzer();
 }

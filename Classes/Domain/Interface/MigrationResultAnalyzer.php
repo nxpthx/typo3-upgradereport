@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Steffen Ritter, rs websystems <steffen.ritter@typo3.org>
+ *  (c) 2013 Michiel Roos <michiel@maxserv.nl>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -13,24 +13,25 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
 /**
- * Interface Tx_Smoothmigration_Domain_Interface_CheckDescription
+ * Interface Tx_Smoothmigration_Domain_Interface_MigrationProcessor
  *
- * @author Steffen Ritter
+ * @author Michiel Roos
  */
-interface Tx_Smoothmigration_Domain_Interface_CheckDescription extends Tx_Smoothmigration_Domain_Interface_Description {
-}
+interface Tx_Smoothmigration_Domain_Interface_MigrationResultAnalyzer extends Tx_Smoothmigration_Domain_Interface_ResultAnalyzer {
+
+	/**
+	 * @param Tx_Smoothmigration_Domain_Interface_Migration $migration
+	 */
+	public function __construct(Tx_Smoothmigration_Domain_Interface_Migration $migration);}
 
 ?>

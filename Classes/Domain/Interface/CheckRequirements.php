@@ -30,75 +30,7 @@
  *
  * @author Steffen Ritter
  */
-interface Tx_Smoothmigration_Domain_Interface_CheckRequirements {
-
-	/**
-	 * Return the minimum TYPO3 Version the checks needs to be executed on.
-	 *
-	 * @return string
-	 */
-	public function getMinimalTypo3Version();
-
-	/**
-	 * Return the maximal TYPO3 Version the checks needs to be executed on.
-	 *
-	 * @return string
-	 */
-	public function getMaximalTypo3Version();
-
-	/**
-	 * Return the minimum PHP Version the checks needs to be executed on.
-	 *
-	 * @return string
-	 */
-	public function getMinimalPhpVersion();
-
-	/**
-	 * Return the maximal PHP Version the checks needs to be executed on.
-	 *
-	 * @return string
-	 */
-	public function getMaximalPhpVersion();
-
-	/**
-	 * Returns an array of php-modules, which need to be available
-	 * to activate this check;
-	 *
-	 * Empty array is returned if no special modules are needed
-	 *
-	 * @return string[]
-	 */
-	public function getRequiredAvailablePhpModules();
-
-	/**
-	 * Returns an array of php-modules, which need to be absent
-	 * to activate this check
-	 *
-	 * Empty array is returned if there are no missing php-modules
-	 *
-	 * @return string[]
-	 */
-	public function getRequiredAbsentPhpModules();
-
-	/**
-	 * Returns an array of Extensions which are required by this check.
-	 *
-	 * The array may either contain the extension-key as array key while a
-	 * a version-range (x.x.x-y.y.y)is provided as value or only the extension-key
-	 * as value which then will just check for presence of the given extension.
-	 *
-	 * @return array
-	 */
-	public function getRequiredExtensions();
-
-	/**
-	 * Returns an array of Extensions which make this check either obsolete,
-	 * or this check is incompatible to.
-	 *
-	 * @return array
-	 */
-	public function getConflictingExtensions();
-
+interface Tx_Smoothmigration_Domain_Interface_CheckRequirements extends Tx_Smoothmigration_Domain_Interface_Requirements {
 }
 
 ?>

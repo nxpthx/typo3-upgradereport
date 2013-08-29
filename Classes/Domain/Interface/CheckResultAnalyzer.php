@@ -30,41 +30,12 @@
  *
  * @author Steffen Ritter
  */
-interface Tx_Smoothmigration_Domain_Interface_ResultAnalyzer extends t3lib_Singleton {
+interface Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer extends Tx_Smoothmigration_Domain_Interface_ResultAnalyzer {
 
 	/**
 	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
 	 */
 	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check);
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
-	 *
-	 * @return string
-	 */
-	public function getSeverity(Tx_Smoothmigration_Domain_Model_Issue $issue);
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
-	 *
-	 * @return string
-	 */
-	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue);
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
-	 *
-	 * @return string
-	 */
-	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue);
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
-	 *
-	 * @return string
-	 */
-	public function getRawTextForCopyPaste(Tx_Smoothmigration_Domain_Model_Issue $issue);
-
 }
 
 ?>

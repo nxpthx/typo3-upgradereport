@@ -60,7 +60,7 @@ class Tx_Smoothmigration_Controller_AjaxController extends Tx_Extbase_MVC_Contro
 
 		if ($check !== NULL) {
 			$processor = $check->getProcessor();
-			$processor->executeCheck();
+			$processor->execute();
 
 			foreach ($processor->getIssues() as $issue) {
 				$this->issueRepository->add($issue);

@@ -30,27 +30,12 @@
  *
  * @author Steffen Ritter
  */
-interface Tx_Smoothmigration_Domain_Interface_CheckProcessor {
+interface Tx_Smoothmigration_Domain_Interface_CheckProcessor extends Tx_Smoothmigration_Domain_Interface_Processor {
 
 	/**
 	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
 	 */
 	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check);
-
-	/**
-	 * @return mixed
-	 */
-	public function executeCheck();
-
-	/**
-	 * @return boolean
-	 */
-	public function hasIssues();
-
-	/**
-	 * @return Tx_Smoothmigration_Domain_Model_Issue[]
-	 */
-	public function getIssues();
 }
 
 ?>

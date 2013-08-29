@@ -130,7 +130,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 		$checks = $registry->getActiveChecks();
 		foreach ($checks as $singleCheck) {
 			$processor = $singleCheck->getProcessor();
-			$processor->executeCheck();
+			$processor->execute();
 			foreach ($processor->getIssues() as $issue) {
 				$this->issueRepository->add($issue);
 			}

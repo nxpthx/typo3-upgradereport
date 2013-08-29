@@ -52,7 +52,7 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Processor implements Tx_Smoothmigr
 	/**
 	 * @return void
 	 */
-	public function executeCheck() {
+	public function execute() {
 		$contexts = array('BE', 'FE');
 
 		foreach ($contexts as $context) {

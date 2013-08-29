@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Steffen Ritter, rs websystems (steffen.ritter@typo3.org)
+ *  (c) 2013 Michiel Roos <michiel@maxserv.nl>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -13,37 +13,33 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_ResultAnalyzer
+ * Class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_ResultAnalyzer
  *
- * @author Steffen Ritter
+ * @author Michiel Roos
  */
-class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_ResultAnalyzer implements Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer {
+class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_ResultAnalyzer implements Tx_Smoothmigration_Domain_Interface_MigrationResultAnalyzer {
 
 	/**
-	 * @var Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition
+	 * @var Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition
 	 */
-	protected $parentCheck;
+	protected $parentMigration;
 
 	/**
-	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
+	 * @param Tx_Smoothmigration_Domain_Interface_Migration $migration
 	 */
-	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
-		$this->parentCheck = $check;
+	public function __construct(Tx_Smoothmigration_Domain_Interface_Migration $migration) {
+		$this->parentMigration = $migration;
 	}
-
 
 	/**
 	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
@@ -60,7 +56,7 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_ResultAnalyzer impl
 	 * @return string
 	 */
 	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Jo ne: noch keine Beschreibung';
+		return 'Call to deprecated static method';
 	}
 
 	/**
@@ -69,7 +65,7 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_ResultAnalyzer impl
 	 * @return string
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Remove the ' . $issue->getLocation()->getMatchedString() . ' statement at ' . $issue->getLocation()->getFilePath() . ' in line ' . $issue->getLocation()->getLineNumber();
+		return 'Replace the static method ' . substr($issue->getLocation()->getMatchedString(), 0, -1) . ' in ' . $issue->getLocation()->getFilePath() . ' on line ' . $issue->getLocation()->getLineNumber();
 	}
 
 	/**
@@ -80,8 +76,6 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_ResultAnalyzer impl
 	public function getRawTextForCopyPaste(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		return '';
 	}
-
-
 }
 
 ?>

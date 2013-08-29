@@ -40,7 +40,7 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Definition extends Tx_Smoothmigrat
 	}
 
 	/**
-	 * @return Tx_Smoothmigration_Domain_Interface_ResultAnalyzer
+	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
 	 */
 	public function getResultAnalyzer() {
 		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer', $this);

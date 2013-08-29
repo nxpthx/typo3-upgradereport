@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Peter Beernink, Drecomm (p.beernink@drecomm.nl)
+ *  (c) 2013 Michiel Roos <michiel@maxserv.nl>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -13,35 +13,47 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Checks_Core_Mysql_Definition
+ * Class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
  *
- * @author Peter Beernink
+ * @author Michiel Roos
  */
-class Tx_Smoothmigration_Checks_Core_Mysql_Processor implements Tx_Smoothmigration_Domain_Interface_CheckProcessor {
+class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor implements Tx_Smoothmigration_Domain_Interface_MigrationProcessor {
 
 	/**
-	 * @var Tx_Smoothmigration_Checks_Core_Mysql_Definition
+	 * @var Tx_Smoothmigration_Domain_Repository_DeprecationRepository
 	 */
-	protected $parentCheck;
+	protected $deprecationRepository;
 
 	/**
-	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
+	 * Inject the deprecation repository
+	 *
+	 * @param Tx_Smoothmigration_Domain_Repository_DeprecationRepository $deprecationRepository
+	 * @return void
 	 */
-	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
-		$this->parentCheck = $check;
+	public function injectDeprecationRepository(Tx_Smoothmigration_Domain_Repository_DeprecationRepository $deprecationRepository) {
+		$this->deprecationRepository = $deprecationRepository;
+	}
+
+	/**
+	 * @var Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition
+	 */
+	protected $parentMigration;
+
+	/**
+	 * @param Tx_Smoothmigration_Domain_Interface_Migration $migration
+	 */
+	public function __construct(Tx_Smoothmigration_Domain_Interface_Migration $migration) {
+		$this->parentMigration = $migration;
 	}
 
 	/**
@@ -53,14 +65,6 @@ class Tx_Smoothmigration_Checks_Core_Mysql_Processor implements Tx_Smoothmigrati
 	 * @return void
 	 */
 	public function execute() {
-		/** @var Tx_Smoothmigration_Service_FileLocatorService $fileLocatorService */
-		$fileLocatorService = t3lib_div::makeInstance('Tx_Smoothmigration_Service_FileLocatorService');
-		$locations = $fileLocatorService->searchInExtensions('.*\.(php|inc)$',
-			'/(mysql_[a-z_]*)\s?\(/'
-		);
-		foreach ($locations as $location) {
-			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
-		}
 	}
 
 	/**
@@ -76,6 +80,7 @@ class Tx_Smoothmigration_Checks_Core_Mysql_Processor implements Tx_Smoothmigrati
 	public function getIssues() {
 		return $this->issues;
 	}
+
 }
 
 ?>

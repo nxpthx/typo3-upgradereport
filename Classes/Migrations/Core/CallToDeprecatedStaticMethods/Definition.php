@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Steffen Ritter, rs websystems (steffen.ritter@typo3.org)
+ *  (c) 2013 Michiel Roos <michiel@maxserv.nl>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -13,61 +13,58 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition
+ * Class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition
  *
- * @author Steffen Ritter
+ * @author Michiel Roos
  */
-class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition extends Tx_Smoothmigration_Checks_AbstractCheckDefinition {
+class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition extends Tx_Smoothmigration_Migrations_MigrationDefinition {
 
 	/**
-	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
+	 * @return Tx_Smoothmigration_Domain_Interface_MigrationProcessor
 	 */
 	public function getProcessor() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Processor', $this);
+		return $this->objectManagager->get('Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor', $this);
 	}
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
 	 */
 	public function getResultAnalyzer() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_ResultAnalyzer', $this);
+		return t3lib_div::makeInstance('Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_ResultAnalyzer', $this);
 	}
 
 	/**
-	 * Returns an CheckIdentifier
+	 * Returns an MigrationIdentifier
 	 * Has to be unique
 	 *
 	 * @return string
 	 */
 	public function getIdentifier() {
-		return 'typo3-core-code-requireOnceInExtensions';
+		return 'typo3-core-code-callToDeprecatedStaticMethods';
 	}
 
 	/**
-	 * Returns the Type of the Check
+	 * Returns the Type of the Migration
 	 * One of the Constants Defined in that interface
 	 *
 	 * @return int
 	 */
 	public function getType() {
-		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
+		return Tx_Smoothmigration_Domain_Interface_MigrationDescription::TYPE_PHP_CODE;
 	}
 
 	/**
-	 * Return the minimum TYPO3 Version the checks needs to be executed on.
+	 * Return the minimum TYPO3 Version the migrations needs to be executed on.
 	 *
 	 * @return string
 	 */
@@ -76,7 +73,7 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition extends 
 	}
 
 	/**
-	 * Return the maximal TYPO3 Version the checks needs to be executed on.
+	 * Return the maximal TYPO3 Version the migrations needs to be executed on.
 	 *
 	 * @return string
 	 */
@@ -85,7 +82,7 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition extends 
 	}
 
 	/**
-	 * Return the minimum PHP Version the checks needs to be executed on.
+	 * Return the minimum PHP Version the migrations needs to be executed on.
 	 *
 	 * @return string
 	 */
@@ -94,7 +91,7 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition extends 
 	}
 
 	/**
-	 * Return the maximal PHP Version the checks needs to be executed on.
+	 * Return the maximal PHP Version the migrations needs to be executed on.
 	 *
 	 * @return string
 	 */
@@ -104,7 +101,7 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition extends 
 
 	/**
 	 * Returns an array of php-modules, which need to be available
-	 * to activate this check;
+	 * to activate this migration;
 	 *
 	 * Empty array is returned if no special modules are needed
 	 *
@@ -116,7 +113,7 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition extends 
 
 	/**
 	 * Returns an array of php-modules, which need to be absent
-	 * to activate this check
+	 * to activate this migration
 	 *
 	 * Empty array is returned if there are no missing php-modules
 	 *
@@ -127,11 +124,11 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition extends 
 	}
 
 	/**
-	 * Returns an array of Extensions which are required by this check.
+	 * Returns an array of Extensions which are required by this migration.
 	 *
 	 * The array may either contain the extension-key as array key while a
 	 * a version-range (x.x.x-y.y.y)is provided as value or only the extension-key
-	 * as value which then will just check for presence of the given extension.
+	 * as value which then will just migration for presence of the given extension.
 	 *
 	 * @return array
 	 */
@@ -140,15 +137,14 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition extends 
 	}
 
 	/**
-	 * Returns an array of Extensions which make this check either obsolete,
-	 * or this check is incompatible to.
+	 * Returns an array of Extensions which make this migration either obsolete,
+	 * or this migration is incompatible to.
 	 *
 	 * @return array
 	 */
 	public function getConflictingExtensions() {
 		return array();
 	}
-
 }
 
 ?>

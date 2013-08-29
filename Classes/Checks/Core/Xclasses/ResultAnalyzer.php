@@ -30,7 +30,7 @@
  *
  * @author Steffen Ritter
  */
-class Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Smoothmigration_Domain_Interface_ResultAnalyzer {
+class Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer {
 
 	/**
 	 * @var Tx_Smoothmigration_Checks_Core_Xclasses_Definition
