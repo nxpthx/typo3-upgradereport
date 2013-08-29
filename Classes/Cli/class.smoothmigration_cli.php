@@ -52,6 +52,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 		$this->cli_options = array();
 		$this->cli_options[] = array('report ', 'Detailed Report including extension, codeline and check');
 		$this->cli_options[] = array('overview ', 'Just an overall overview');
+		$this->cli_options[] = array('migrate ', 'Try to migrate your code');
 		$this->cli_options[] = array('help ', 'Display this message');
 
 		// Setting help texts:
@@ -79,6 +80,10 @@ class tx_smoothmigration_cli extends t3lib_cli {
 				break;
 			case 'report':
 				$this->cli_echo($this->report());
+				break;
+			case 'migrate':
+				$migrationTask = ((string)$this->cli_args['_DEFAULT'][2]) ?: '';
+				$this->cli_echo($this->migrate($migrationTask));
 				break;
 			default:
 				$this->cli_validateArgs();
@@ -140,6 +145,30 @@ class tx_smoothmigration_cli extends t3lib_cli {
 		}
 		$report .= "\n" . 'Total Issues : ' . $issues . "\n";
 		return $report;
+	}
+
+	private function migrate($migrationTaskKey) {
+		$migrationTask = NULL;
+		$registry = Tx_Smoothmigration_Service_Migration_Registry::getInstance();
+
+		if (!empty($migrationTaskKey)) {
+			$migrationTask = $registry->getActiveMigrationByIdentifier($migrationTaskKey);
+		}
+		if ($migrationTask === NULL) {
+			return $this->getMigrations();
+		}
+
+		return $migrationTask->getProcessor()->execute();
+	}
+
+	private function getMigrations() {
+		$output = '';
+		$registry = Tx_Smoothmigration_Service_Migration_Registry::getInstance();
+		$migrations = $registry->getActiveMigrations();
+		foreach ($migrations as $migration) {
+			$output .= $migration->getIdentifier() . "\n";
+		}
+		return $output;
 	}
 
 }

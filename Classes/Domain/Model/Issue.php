@@ -68,6 +68,11 @@ class Tx_Smoothmigration_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abst
 	protected $locationInfo = 'Test';
 
 	/**
+	 * @var integer
+	 */
+	protected $migrationStatus;
+
+	/**
 	 * @param string $checkIdentifier
 	 * @param Tx_Smoothmigration_Domain_Interface_IssueLocation $issueDetails
 	 */
@@ -186,6 +191,27 @@ class Tx_Smoothmigration_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abst
 	public function getLocationInfo() {
 		return $this->locationInfo;
 	}
+
+	/**
+	 * Get the migration status
+	 *
+	 * @return integer
+	 */
+	public function getMigrationStatus() {
+		return $this->migrationStatus;
+	}
+
+	/**
+	 * Set the migration status
+	 *
+	 * @param integer $migrationStatus
+	 * @return void
+	 */
+	public function setMigrationStatus($migrationStatus) {
+		$this->migrationStatus = $migrationStatus;
+	}
+
+
 
 }
 

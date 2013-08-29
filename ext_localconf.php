@@ -13,6 +13,11 @@ $checkArray = array(
 );
 Tx_Smoothmigration_Service_Check_Registry::getInstance()->registerChecks($checkArray);
 
+$migrationArray = array(
+	'Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Definition',
+);
+
+Tx_Smoothmigration_Service_Migration_Registry::getInstance()->registerMigrations($migrationArray);
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']['smoothmigration'] = array(
 	t3lib_extMgm::extPath('smoothmigration', 'Classes/Cli/class.smoothmigration_cli.php'),

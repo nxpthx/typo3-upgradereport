@@ -29,6 +29,11 @@
  */
 interface Tx_Smoothmigration_Domain_Interface_Migration extends Tx_Smoothmigration_Domain_Interface_MigrationDescription, Tx_Smoothmigration_Domain_Interface_MigrationRequirements, t3lib_Singleton {
 
+	const SUCCESS = 1;
+	const ERROR_FILE_NOT_FOUND = 2;
+	const ERROR_FILE_NOT_WRITABLE = 3;
+	const ERROR_FILE_NOT_CHANGED = 4;
+
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_MigrationProcessor
 	 */

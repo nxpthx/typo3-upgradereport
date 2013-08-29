@@ -37,13 +37,13 @@ class Tx_Smoothmigration_Service_Check_Registry implements t3lib_Singleton {
 	 */
 	public function getActiveChecks() {
 		$activeChecks = array();
-		/** @var Tx_Smoothmigration_Service_Check_RequirementsAnalyzer $requirementsAnalyzer */
-		$requirementsAnalyzer = t3lib_div::makeInstance('Tx_Smoothmigration_Service_Check_RequirementsAnalyzer');
+		/** @var Tx_Smoothmigration_Service_RequirementsAnalyzer $requirementsAnalyzer */
+		$requirementsAnalyzer = t3lib_div::makeInstance('Tx_Smoothmigration_Service_RequirementsAnalyzer');
 
 		foreach ($this->registeredChecks as $className) {
 			/** @var Tx_Smoothmigration_Domain_Interface_Check $check */
 			$check = t3lib_div::makeInstance($className);
-			if ($requirementsAnalyzer->isCheckActive($check)) {
+			if ($requirementsAnalyzer->isActive($check)) {
 				$activeChecks[] = $check;
 			}
 		}

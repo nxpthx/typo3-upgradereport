@@ -10,6 +10,7 @@ CREATE TABLE tx_smoothmigration_domain_model_issue (
 	extension varchar(255) DEFAULT '' NOT NULL,
 	location_info text,
 	additional_info text,
+	migration_status int(1) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

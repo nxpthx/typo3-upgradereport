@@ -48,6 +48,14 @@ $TCA['tx_smoothmigration_domain_model_issue'] = array(
 				'cols' => '40',
 				'rows' => '3'
 			)
-		)
+		),
+		'migration_status' => array(
+			'label' => 'Migration status',
+			'config' => Array(
+				'type' => 'input',
+				'cols' => '40',
+				'max' => '1',
+			),
+		),
 	),
 );
