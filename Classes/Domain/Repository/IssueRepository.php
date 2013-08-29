@@ -73,6 +73,29 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 		}
 	}
 
+	/**
+	 * @param string $inspection
+	 *
+	 * @return int	$issueCount	count of how many entries were deleted, -1 on error
+	 */
+	public function deleteAllByInspection($inspection) {
+		$issueCount =
+			$GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'*',
+				'tx_smoothmigration_domain_model_issue',
+				'inspection = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($inspection, 'tx_smoothmigration_domain_model_issue')
+			);
+		if ($issueCount > 0) {
+			if (!$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+					'tx_smoothmigration_domain_model_issue',
+					'inspection = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($inspection, 'tx_smoothmigration_domain_model_issue')
+				)
+			) {
+				return -1;
+			}
+		}
+		return $issueCount;
+	}
 
 }
 

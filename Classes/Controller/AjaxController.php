@@ -73,7 +73,26 @@ class Tx_Smoothmigration_Controller_AjaxController extends Tx_Extbase_MVC_Contro
 			$this->response->setStatus(404, 'Check not found');
 			return json_encode(array('result' => 'ERROR'));
 		}
+	}
 
+
+	/**
+	 * @param string $checkIdentifier
+	 *
+	 * @return string
+	 */
+	public function clearTestResultsAction($checkIdentifier) {
+		$deletedIssueCount = $this->issueRepository->deleteAllByInspection($checkIdentifier);
+
+		if ($deletedIssueCount !== -1) {
+			return json_encode(array(
+				'result' => 'OK',
+				'issueCount' => $deletedIssueCount,
+			));
+		} else {
+			$this->response->setStatus(404, 'Check not found');
+			return json_encode(array('result' => 'ERROR'));
+		}
 	}
 }
 
