@@ -18,6 +18,9 @@
 			<label index="check.typo3-core-code-callToDeprecatedViewHelpers.title">Deprecated view helpers</label>
 			<label index="check.typo3-core-code-callToDeprecatedViewHelpers.shortDescription">Calling deprecated view helpers will give an error as they have been removed.</label>
 			<label index="check.typo3-core-code-callToDeprecatedViewHelpers.description">From the 4.5 release some view helpers have been deprecated. Changing them to their respective new view helpers would solve the issue.</label>
+			<label index="check.typo3-core-code-mysql.title">Use of mysql_* functions</label>
+			<label index="check.typo3-core-code-mysql.shortDescription">Using mysql_* functions instead of the database API will give errors due the the change to MySQLi.</label>
+			<label index="check.typo3-core-code-mysql.description">As the database API has been switched to MySQLi, the mysql_* function don't work anymore. Replace them with API calls.</label>
 		</languageKey>
 	</data>
 </T3locallang>
