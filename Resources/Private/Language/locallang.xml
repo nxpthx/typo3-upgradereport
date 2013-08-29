@@ -21,6 +21,9 @@
 			<label index="check.typo3-core-code-mysql.title">Use of mysql_* functions</label>
 			<label index="check.typo3-core-code-mysql.shortDescription">Using mysql_* functions instead of the database API will give errors due the the change to MySQLi.</label>
 			<label index="check.typo3-core-code-mysql.description">As the database API has been switched to MySQLi, the mysql_* function don't work anymore. Replace them with API calls.</label>
+			<label index="check.typo3-dam-code-callToDamClasses.title">Dam Classes</label>
+			<label index="check.typo3-dam-code-callToDamClasses.shortDescription">Checks for Code that creates instances of DAM-Classes.</label>
+			<label index="check.typo3-dam-code-callToDamClasses.description">Since DAM won't be usable in 6.2 anymore, you should remove all calls to DAM-Methods and change them to use FAL/Media.</label>
 		</languageKey>
 	</data>
 </T3locallang>
