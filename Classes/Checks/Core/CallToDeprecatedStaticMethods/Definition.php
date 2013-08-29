@@ -36,7 +36,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition ex
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
 	 */
 	public function getProcessor() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor', $this);
+		return $this->objectManagager->get('Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor', $this);
 	}
 
 	/**

@@ -33,6 +33,21 @@
 abstract class Tx_Smoothmigration_Checks_AbstractCheckDefinition implements Tx_Smoothmigration_Domain_Interface_Check {
 
 	/**
+	 *
+	 * @var Tx_Extbase_Object_Manager
+	 */
+	protected $objectManagager;
+
+	/**
+	 * Constructor
+	 *
+	 * @return void
+	 */
+	public function __construct() {
+		$this->objectManagager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
+	}
+
+		/**
 	 * Returns the name of the check
 	 *
 	 * @return string

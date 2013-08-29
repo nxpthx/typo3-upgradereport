@@ -38,6 +38,19 @@ $TCA['tx_smoothmigration_domain_model_issue'] = array(
 // allow test results on normal pages
 t3lib_extMgm::allowTableOnStandardPages('tx_smoothmigration_domain_model_issue');
 
+$TCA['tx_smoothmigration_domain_model_deprecation'] = array(
+	'ctrl' => array(
+		'title' => 'Deprecated methods',
+		'label' => 'check',
+		'enablecolumns' => array(
+		),
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_smoothmigration_domain_model_deprecation.php'
+	)
+);
+
+// allow test results on normal pages
+t3lib_extMgm::allowTableOnStandardPages('tx_smoothmigration_domain_model_deprecation');
+
 	// Add Icons
 $icons = array(
 //	'sendtonextstage' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtonextstage.png',

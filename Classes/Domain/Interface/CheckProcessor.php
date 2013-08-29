@@ -30,7 +30,7 @@
  *
  * @author Steffen Ritter
  */
-interface Tx_Smoothmigration_Domain_Interface_CheckProcessor extends t3lib_Singleton {
+interface Tx_Smoothmigration_Domain_Interface_CheckProcessor {
 
 	/**
 	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
