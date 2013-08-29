@@ -88,10 +88,13 @@ class Tx_Upgradereport_Checks_Core_Xclasses_Processor implements Tx_Upgraderepor
 	 * @return Tx_Upgradereport_Domain_Model_Issue
 	 */
 	protected function createIssue($context, $targetClass, $implementationClass) {
-		$extKey = t3lib_extMgm::getExtensionKeyByPrefix(strtolower($implementationClass));
-
+		if (is_file($implementationClass)) {
+			$path = str_replace(PATH_typo3conf . 'ext/', '', $implementationClass);
+			$extKey = current(explode('/', $path));
+		} else {
+			$extKey = t3lib_extMgm::getExtensionKeyByPrefix(strtolower($implementationClass));
+		}
 		$physicalLocation = new Tx_Upgradereport_Domain_Model_IssueLocation_File($extKey, 'EXT:' . $extKey . '/ext_localconf.php');
-
 		$details = new Tx_Upgradereport_Domain_Model_IssueLocation_Configuration(
 			Tx_Upgradereport_Domain_Model_IssueLocation_Configuration::TYPE_PHP,
 			'$GLOBALS[TYPO3_CONF_VARS][' . $context . '][XCLASS][' . $targetClass . ']',

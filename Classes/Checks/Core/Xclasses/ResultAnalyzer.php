@@ -80,6 +80,18 @@ class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Upgrade
 
 		$originalClass = $information['ORIGINAL_CLASS'];
 		$newClass = $information['IMPLEMENTATION_CLASS'];
+
+		if (is_file($newClass)) {
+			$pattern = '/^\s?class\s+([A-Za-z0-9_\\\\]+)\s+extends\s+([A-Za-z0-9_\\\\]+)/';
+			foreach (new SplFileObject($newClass) as $lineContent) {
+				$matches = array();
+				if (preg_match($pattern, $lineContent, $matches)) {
+					$newClass = $matches[1];
+					$originalClass = $matches[2];
+					break;
+				}
+			}
+		}
 		return 'Remove the XCLASS Code at ' . $issue->getLocation()->getPhysicalLocation()->getFilePath() . ($issue->getLocation()->getPhysicalLocation()->getLineNumber() > -1 ? ' line ' . $issue->getLocation()->getPhysicalLocation()->getLineNumber() : '') . ". Add the following code there:\n" .
 			'$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'Objects\'][\'' . $originalClass . '\'] = array(\'className\' => \'' . $newClass . '\');';
 	}
