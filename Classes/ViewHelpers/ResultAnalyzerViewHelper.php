@@ -26,7 +26,7 @@
  ***************************************************************/
 
 
-class Tx_Upgradereport_ViewHelpers_ResultAnalyzerViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Smoothmigration_ViewHelpers_ResultAnalyzerViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 
 	/**
@@ -39,10 +39,10 @@ class Tx_Upgradereport_ViewHelpers_ResultAnalyzerViewHelper extends Tx_Fluid_Cor
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 */
 	public function render($issue) {
-		$check = Tx_Upgradereport_Service_Check_Registry::getInstance()->getActiveCheckByIdentifier($issue->getInspection());
+		$check = Tx_Smoothmigration_Service_Check_Registry::getInstance()->getActiveCheckByIdentifier($issue->getInspection());
 
 		$this->templateVariableContainer->add('explanation', $check->getResultAnalyzer()->getExplanation($issue));
 		$this->templateVariableContainer->add('solution', $check->getResultAnalyzer()->getSolution($issue));

@@ -28,12 +28,12 @@
 require_once(PATH_t3lib . 'class.t3lib_cli.php');
 
 /**
- * Class tx_upgradereport_cli
+ * Class tx_smoothmigration_cli
  */
-class tx_upgradereport_cli extends t3lib_cli {
+class tx_smoothmigration_cli extends t3lib_cli {
 
 	/**
-	 * @var Tx_Upgradereport_Domain_Repository_IssueRepository
+	 * @var Tx_Smoothmigration_Domain_Repository_IssueRepository
 	 */
 	protected $issueRepository;
 
@@ -42,11 +42,11 @@ class tx_upgradereport_cli extends t3lib_cli {
 	 *
 	 * @return	void
 	 */
-	public function tx_upgradereport_cli() {
+	public function tx_smoothmigration_cli() {
 		// Running parent class constructor
 		parent::t3lib_cli();
 
-		$this->issueRepository = t3lib_div::makeInstance('Tx_Upgradereport_Domain_Repository_IssueRepository');
+		$this->issueRepository = t3lib_div::makeInstance('Tx_Smoothmigration_Domain_Repository_IssueRepository');
 
 		// Adding options to help archive:
 		$this->cli_options = array();
@@ -55,11 +55,11 @@ class tx_upgradereport_cli extends t3lib_cli {
 		$this->cli_options[] = array('help ', 'Display this message');
 
 		// Setting help texts:
-		$this->cli_help['name'] = 'CLI Upgradereport Agent';
-		$this->cli_help['synopsis'] = 'cli_dispatch.phpsh upgradereport {task}' . "\n";
+		$this->cli_help['name'] = 'CLI Smoothmigration Agent';
+		$this->cli_help['synopsis'] = 'cli_dispatch.phpsh smoothmigration {task}' . "\n";
 
-		$this->cli_help['description'] = 'Executes the report of the upgradereport extension on CLI Basis';
-		$this->cli_help['examples'] = './typo3/cli_dispatch.phpsh upgradereport report';
+		$this->cli_help['description'] = 'Executes the report of the smoothmigration extension on CLI Basis';
+		$this->cli_help['examples'] = './typo3/cli_dispatch.phpsh smoothmigration report';
 		$this->cli_help['author'] = 'Ingo Schmitt <is@marketing-factory.de>';
 	}
 
@@ -94,12 +94,12 @@ class tx_upgradereport_cli extends t3lib_cli {
 	 */
 	private function report() {
 		$report = '';
-		$registry = Tx_Upgradereport_Service_Check_Registry::getInstance();
+		$registry = Tx_Smoothmigration_Service_Check_Registry::getInstance();
 		$issuesWithInspections = $this->issueRepository->findAllGroupedByExtensionAndInspection();
 		foreach ($issuesWithInspections as $extensionKey => $inspections) {
 			$count = 0;
 			foreach ($inspections as $issues) {
-				/** @var Tx_Upgradereport_Domain_Model_Issue $singleIssue */
+				/** @var Tx_Smoothmigration_Domain_Model_Issue $singleIssue */
 				foreach ($issues as $singleIssue) {
 					if ($count == 0) {
 						// Render Extension Key
@@ -126,7 +126,7 @@ class tx_upgradereport_cli extends t3lib_cli {
 	private function overview() {
 		$report = '';
 		$issues = 0;
-		$registry = Tx_Upgradereport_Service_Check_Registry::getInstance();
+		$registry = Tx_Smoothmigration_Service_Check_Registry::getInstance();
 		$checks = $registry->getActiveChecks();
 		foreach ($checks as $singleCheck) {
 			$processor = $singleCheck->getProcessor();
@@ -144,7 +144,7 @@ class tx_upgradereport_cli extends t3lib_cli {
 
 }
 
-$cleanerObj = t3lib_div::makeInstance('tx_upgradereport_cli');
+$cleanerObj = t3lib_div::makeInstance('tx_smoothmigration_cli');
 $cleanerObj->cli_main($_SERVER['argv']);
 
 ?>

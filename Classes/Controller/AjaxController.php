@@ -26,16 +26,16 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Controller_ReportController
+ * Class Tx_Smoothmigration_Controller_ReportController
  */
-class Tx_Upgradereport_Controller_AjaxController extends Tx_Extbase_MVC_Controller_ActionController {
+class Tx_Smoothmigration_Controller_AjaxController extends Tx_Extbase_MVC_Controller_ActionController {
 
 	/**
-	 * @var Tx_Upgradereport_Domain_Repository_IssueRepository {
+	 * @var Tx_Smoothmigration_Domain_Repository_IssueRepository {
 	 */
 	protected $issueRepository;
 
-	public function injectIssueRepository(Tx_Upgradereport_Domain_Repository_IssueRepository $issueRepository) {
+	public function injectIssueRepository(Tx_Smoothmigration_Domain_Repository_IssueRepository $issueRepository) {
 		$this->issueRepository = $issueRepository;
 	}
 
@@ -55,7 +55,7 @@ class Tx_Upgradereport_Controller_AjaxController extends Tx_Extbase_MVC_Controll
 	 * @return string
 	 */
 	public function runTestAction($checkIdentifier) {
-		$registry = Tx_Upgradereport_Service_Check_Registry::getInstance();
+		$registry = Tx_Smoothmigration_Service_Check_Registry::getInstance();
 		$check = $registry->getActiveCheckByIdentifier($checkIdentifier);
 
 		if ($check !== NULL) {
@@ -78,8 +78,8 @@ class Tx_Upgradereport_Controller_AjaxController extends Tx_Extbase_MVC_Controll
 }
 
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/upgradereport/Classes/Controller/AjaxController.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/upgradereport/Classes/Controller/AjaxController.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/smoothmigration/Classes/Controller/AjaxController.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/smoothmigration/Classes/Controller/AjaxController.php']);
 }
 
 ?>

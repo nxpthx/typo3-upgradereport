@@ -2,7 +2,7 @@
 <T3locallang>
 	<meta type="array">
 		<type>module</type>
-		<description>Language labels for module &quot;web_txupgradereportM1&quot;</description>
+		<description>Language labels for module &quot;web_txsmoothmigrationM1&quot;</description>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">

@@ -26,40 +26,40 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer
+ * Class Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer
  *
  * @author Steffen Ritter
  */
-class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Upgradereport_Domain_Interface_ResultAnalyzer {
+class Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Smoothmigration_Domain_Interface_ResultAnalyzer {
 
 	/**
-	 * @var Tx_Upgradereport_Checks_Core_Xclasses_Definition
+	 * @var Tx_Smoothmigration_Checks_Core_Xclasses_Definition
 	 */
 	protected $parentCheck;
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_Check $check
+	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
 	 */
-	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check) {
+	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
 		$this->parentCheck = $check;
 	}
 
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getSeverity(Tx_Upgradereport_Domain_Model_Issue $issue) {
+	public function getSeverity(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		return 0;
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getExplanation(Tx_Upgradereport_Domain_Model_Issue $issue) {
+	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		$information = $issue->getAdditionalInformation();
 
 		$data = array(
@@ -71,11 +71,11 @@ class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Upgrade
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue) {
+	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		$information = $issue->getAdditionalInformation();
 
 		$originalClass = $information['ORIGINAL_CLASS'];
@@ -97,11 +97,11 @@ class Tx_Upgradereport_Checks_Core_Xclasses_ResultAnalyzer implements Tx_Upgrade
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getRawTextForCopyPaste(Tx_Upgradereport_Domain_Model_Issue $issue) {
+	public function getRawTextForCopyPaste(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		$information = $issue->getAdditionalInformation();
 
 		$originalClass = $information['ORIGINAL_CLASS'];

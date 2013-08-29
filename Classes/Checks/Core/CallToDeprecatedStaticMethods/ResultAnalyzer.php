@@ -26,58 +26,58 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyzer
+ * Class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyzer
  *
  * @author Peter Beernink
  */
-class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyzer implements Tx_Upgradereport_Domain_Interface_ResultAnalyzer {
+class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyzer implements Tx_Smoothmigration_Domain_Interface_ResultAnalyzer {
 
 	/**
-	 * @var Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_Definition
+	 * @var Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition
 	 */
 	protected $parentCheck;
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_Check $check
+	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
 	 */
-	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check) {
+	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
 		$this->parentCheck = $check;
 	}
 
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getSeverity(Tx_Upgradereport_Domain_Model_Issue $issue) {
+	public function getSeverity(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		return 0;
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getExplanation(Tx_Upgradereport_Domain_Model_Issue $issue) {
+	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		return 'Call to deprecated static method';
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue) {
+	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		return 'Replace the static method ' . substr($issue->getLocation()->getMatchedString(), 0, -1) .' in ' . $issue->getLocation()->getFilePath() . ' on line ' . $issue->getLocation()->getLineNumber();
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getRawTextForCopyPaste(Tx_Upgradereport_Domain_Model_Issue $issue) {
+	public function getRawTextForCopyPaste(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		return '';
 	}
 

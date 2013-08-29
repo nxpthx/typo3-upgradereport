@@ -26,11 +26,11 @@
  ***************************************************************/
 
 /**
- * Interface Tx_Upgradereport_Domain_Interface_IssueDetails
+ * Interface Tx_Smoothmigration_Domain_Interface_IssueDetails
  *
  * @author Steffen Ritter
  */
-interface Tx_Upgradereport_Domain_Interface_IssueLocation {
+interface Tx_Smoothmigration_Domain_Interface_IssueLocation {
 
 	/**
 	 * Creates ID which identifies the occurence of that issue

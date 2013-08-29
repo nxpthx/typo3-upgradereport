@@ -26,26 +26,26 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Checks_Core_Mysql_Definition
+ * Class Tx_Smoothmigration_Checks_Core_Mysql_Definition
  *
  * @author Peter Beernink
  */
-class Tx_Upgradereport_Checks_Core_Mysql_Processor implements Tx_Upgradereport_Domain_Interface_CheckProcessor {
+class Tx_Smoothmigration_Checks_Core_Mysql_Processor implements Tx_Smoothmigration_Domain_Interface_CheckProcessor {
 
 	/**
-	 * @var Tx_Upgradereport_Checks_Core_Mysql_Definition
+	 * @var Tx_Smoothmigration_Checks_Core_Mysql_Definition
 	 */
 	protected $parentCheck;
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_Check $check
+	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
 	 */
-	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check) {
+	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
 		$this->parentCheck = $check;
 	}
 
 	/**
-	 * @var Tx_Upgradereport_Domain_Model_Issue[]
+	 * @var Tx_Smoothmigration_Domain_Model_Issue[]
 	 */
 	protected $issues = array();
 
@@ -53,13 +53,13 @@ class Tx_Upgradereport_Checks_Core_Mysql_Processor implements Tx_Upgradereport_D
 	 * @return void
 	 */
 	public function executeCheck() {
-		/** @var Tx_Upgradereport_Service_FileLocatorService $fileLocatorService */
-		$fileLocatorService = t3lib_div::makeInstance('Tx_Upgradereport_Service_FileLocatorService');
+		/** @var Tx_Smoothmigration_Service_FileLocatorService $fileLocatorService */
+		$fileLocatorService = t3lib_div::makeInstance('Tx_Smoothmigration_Service_FileLocatorService');
 		$locations = $fileLocatorService->searchInExtensions('.*\.(php|inc)$',
 			'/(mysql_[a-z_]*)\s?\(/'
 		);
 		foreach ($locations as $location) {
-			$this->issues[] = new Tx_Upgradereport_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
+			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}
 	}
 
@@ -71,7 +71,7 @@ class Tx_Upgradereport_Checks_Core_Mysql_Processor implements Tx_Upgradereport_D
 	}
 
 	/**
-	 * @return Tx_Upgradereport_Domain_Model_Issue[]
+	 * @return Tx_Smoothmigration_Domain_Model_Issue[]
 	 */
 	public function getIssues() {
 		return $this->issues;

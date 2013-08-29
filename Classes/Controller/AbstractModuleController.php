@@ -33,11 +33,11 @@ require_once(PATH_site . TYPO3_mainDir . 'template.php');
  * @author Steffen Ritter
 
  */
-class Tx_Upgradereport_Controller_AbstractModuleController extends Tx_Extbase_MVC_Controller_ActionController {
+class Tx_Smoothmigration_Controller_AbstractModuleController extends Tx_Extbase_MVC_Controller_ActionController {
 	/**
 	 * @var string Key of the extension this controller belongs to
 	 */
-	protected $extensionName = 'Upgradereport';
+	protected $extensionName = 'Smoothmigration';
 
 	/**
 	 * @var t3lib_PageRenderer
@@ -49,10 +49,10 @@ class Tx_Upgradereport_Controller_AbstractModuleController extends Tx_Extbase_MV
 	 * @return void
 	 */
 	protected function initializeAction() {
-		$this->pageRenderer->addCssFile(t3lib_extMgm::extRelPath('upgradereport') . 'Resources/Public/StyleSheet/module.css');
-		$this->pageRenderer->addInlineLanguageLabelFile('EXT:upgradereport/Resources/Private/Language/locallang.xml');
-		$this->pageRenderer->addJsLibrary('jquery', t3lib_extMgm::extRelPath('upgradereport') . 'Resources/Public/JavaScript/jquery-1.10.1.min.js');
-		$this->pageRenderer->addJsFile(t3lib_extMgm::extRelPath('upgradereport') . 'Resources/Public/JavaScript/General.js');
+		$this->pageRenderer->addCssFile(t3lib_extMgm::extRelPath('smoothmigration') . 'Resources/Public/StyleSheet/module.css');
+		$this->pageRenderer->addInlineLanguageLabelFile('EXT:smoothmigration/Resources/Private/Language/locallang.xml');
+		$this->pageRenderer->addJsLibrary('jquery', t3lib_extMgm::extRelPath('smoothmigration') . 'Resources/Public/JavaScript/jquery-1.10.1.min.js');
+		$this->pageRenderer->addJsFile(t3lib_extMgm::extRelPath('smoothmigration') . 'Resources/Public/JavaScript/General.js');
 	}
 
 	/**
@@ -73,7 +73,7 @@ class Tx_Upgradereport_Controller_AbstractModuleController extends Tx_Extbase_MV
 		parent::processRequest($request, $response);
 
 		$pageHeader = $this->template->startpage(
-			$GLOBALS['LANG']->sL('LLL:EXT:upgradereport/Resources/Private/Language/locallang.xml:module.title')
+			$GLOBALS['LANG']->sL('LLL:EXT:smoothmigration/Resources/Private/Language/locallang.xml:module.title')
 		);
 		$pageEnd = $this->template->endPage();
 
@@ -82,7 +82,7 @@ class Tx_Upgradereport_Controller_AbstractModuleController extends Tx_Extbase_MV
 }
 
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/upgradereport/Classes/Controller/AbstractController.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/upgradereport/Classes/Controller/AbstractController.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/smoothmigration/Classes/Controller/AbstractController.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/smoothmigration/Classes/Controller/AbstractController.php']);
 }
 ?>

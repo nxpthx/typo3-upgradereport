@@ -26,16 +26,16 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Controller_ReportController
+ * Class Tx_Smoothmigration_Controller_ReportController
  */
-class Tx_Upgradereport_Controller_ReportController extends Tx_Upgradereport_Controller_AbstractModuleController {
+class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_Controller_AbstractModuleController {
 
 	/**
-	 * @var Tx_Upgradereport_Domain_Repository_IssueRepository {
+	 * @var Tx_Smoothmigration_Domain_Repository_IssueRepository {
 	 */
 	protected $issueRepository;
 
-	public function injectIssueRepository(Tx_Upgradereport_Domain_Repository_IssueRepository $issueRepository) {
+	public function injectIssueRepository(Tx_Smoothmigration_Domain_Repository_IssueRepository $issueRepository) {
 		$this->issueRepository = $issueRepository;
 	}
 
@@ -43,8 +43,8 @@ class Tx_Upgradereport_Controller_ReportController extends Tx_Upgradereport_Cont
 	 * @return void
 	 */
 	public function indexAction() {
-		/** @var Tx_Upgradereport_Service_Check_Registry $checkRegistry */
-		$checkRegistry = $this->objectManager->get('Tx_Upgradereport_Service_Check_Registry');
+		/** @var Tx_Smoothmigration_Service_Check_Registry $checkRegistry */
+		$checkRegistry = $this->objectManager->get('Tx_Smoothmigration_Service_Check_Registry');
 		$this->view->assign('checks', $checkRegistry->getActiveChecks());
 		$this->view->assign('issuesByCheck', $this->issueRepository->findAllGroupedByInspection());
 	}
@@ -69,7 +69,7 @@ class Tx_Upgradereport_Controller_ReportController extends Tx_Upgradereport_Cont
 
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 
-		$resourcePath = t3lib_extMgm::extRelPath('upgradereport') . 'Resources/Public/JavaScript/';
+		$resourcePath = t3lib_extMgm::extRelPath('smoothmigration') . 'Resources/Public/JavaScript/';
 
 		$this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/GridFilters.css');
 
@@ -83,8 +83,8 @@ class Tx_Upgradereport_Controller_ReportController extends Tx_Upgradereport_Cont
 }
 
 
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/upgradereport/Classes/Controller/ReviewController.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/upgradereport/Classes/Controller/ReviewController.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/smoothmigration/Classes/Controller/ReviewController.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/smoothmigration/Classes/Controller/ReviewController.php']);
 }
 
 ?>

@@ -26,11 +26,11 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Checks_AbstractCheckDefinition
+ * Class Tx_Smoothmigration_Checks_AbstractCheckDefinition
  *
  * @author Steffen Ritter
  */
-abstract class Tx_Upgradereport_Checks_AbstractCheckDefinition implements Tx_Upgradereport_Domain_Interface_Check {
+abstract class Tx_Smoothmigration_Checks_AbstractCheckDefinition implements Tx_Smoothmigration_Domain_Interface_Check {
 
 	/**
 	 * Returns the name of the check

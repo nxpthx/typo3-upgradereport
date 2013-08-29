@@ -26,11 +26,11 @@
  ***************************************************************/
 
 /**
- * Interface Tx_Upgradereport_Domain_Interface_CheckDescription
+ * Interface Tx_Smoothmigration_Domain_Interface_CheckDescription
  *
  * @author Steffen Ritter
  */
-interface Tx_Upgradereport_Domain_Interface_CheckDescription {
+interface Tx_Smoothmigration_Domain_Interface_CheckDescription {
 
 	const TYPE_SETTINGS = 0;
 	const TYPE_PHP_CODE = 1;

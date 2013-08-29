@@ -25,9 +25,9 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Class Tx_Upgradereport_Service_FileLocatorService
+ * Class Tx_Smoothmigration_Service_FileLocatorService
  */
-class Tx_Upgradereport_Service_FileLocatorService {
+class Tx_Smoothmigration_Service_FileLocatorService {
 
 
 	/**
@@ -51,7 +51,7 @@ class Tx_Upgradereport_Service_FileLocatorService {
 	 * @param string $fileNamePattern
 	 * @param string $searchPattern
 	 *
-	 * @return Tx_Upgradereport_Domain_Interface_IssueLocation[]
+	 * @return Tx_Smoothmigration_Domain_Interface_IssueLocation[]
 	 */
 	public function searchInExtensions($fileNamePattern, $searchPattern) {
 		$locations = array();
@@ -73,7 +73,7 @@ class Tx_Upgradereport_Service_FileLocatorService {
 	 * @param string $fileNamePattern
 	 * @param string $searchPattern
 	 *
-	 * @return Tx_Upgradereport_Domain_Interface_IssueLocation[]
+	 * @return Tx_Smoothmigration_Domain_Interface_IssueLocation[]
 	 *
 	 */
 	public function searchInExtension($extensionKey, $fileNamePattern, $searchPattern) {
@@ -86,7 +86,7 @@ class Tx_Upgradereport_Service_FileLocatorService {
 			$locations = $this->findLineNumbersOfStringInPhpFile($searchPattern, $fileInfo->getPathname());
 
 			foreach ($locations as $location) {
-				$positions[] = new Tx_Upgradereport_Domain_Model_IssueLocation_File($extensionKey, str_replace(PATH_site, '', $fileInfo->getPathname()), $location['line'], $location['match']);
+				$positions[] = new Tx_Smoothmigration_Domain_Model_IssueLocation_File($extensionKey, str_replace(PATH_site, '', $fileInfo->getPathname()), $location['line'], $location['match']);
 			}
 		}
 		return $positions;

@@ -1,7 +1,7 @@
 <?php
 
-$TCA['tx_upgradereport_domain_model_issue'] = array(
-	'crtl' => $TCA['tx_upgradereport_domain_model_issue']['crtl'],
+$TCA['tx_smoothmigration_domain_model_issue'] = array(
+	'crtl' => $TCA['tx_smoothmigration_domain_model_issue']['crtl'],
 	'interface' => array(
 		'showRecordFieldList' => 'inspection, issuer, extension, location_info, additional_infon',
 	),

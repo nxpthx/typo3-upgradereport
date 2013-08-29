@@ -26,11 +26,11 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Domain_Interface_CheckProcessor
+ * Class Tx_Smoothmigration_Domain_Interface_CheckProcessor
  *
  * @author Steffen Ritter
  */
-abstract class Tx_Upgradereport_Domain_Model_IssueLocation_PhysicalLocation implements Tx_Upgradereport_Domain_Interface_IssueLocation {
+abstract class Tx_Smoothmigration_Domain_Model_IssueLocation_PhysicalLocation implements Tx_Smoothmigration_Domain_Interface_IssueLocation {
 
 
 }

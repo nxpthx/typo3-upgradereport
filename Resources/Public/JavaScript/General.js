@@ -5,10 +5,10 @@ var UpgradeReport = function() {
 		var $listElement = $('li[data-checkid=' + testIdentifier + ']');
 		$.ajax({
 			type: "POST",
-			url: "mod.php?M=tools_UpgradereportUpgradereport",
+			url: "mod.php?M=tools_SmoothmigrationSmoothmigration",
 			dataType: 'json',
 			data: {
-				tx_upgradereport_tools_upgradereportupgradereport: {
+				tx_smoothmigration_tools_smoothmigrationsmoothmigration: {
 					action: 'runTest',
 					controller: 'Ajax',
 					checkIdentifier: testIdentifier
@@ -53,6 +53,6 @@ var UpgradeReport = function() {
 
 $(document).ready(function() {
 	var functionality = new UpgradeReport;
-	$('.t3-upgradereport-runCheck').click(functionality.click_runButton);
-	$('.t3-upgradereport-runAllChecks').click(functionality.click_runAllButton);
+	$('.t3-smoothmigration-runCheck').click(functionality.click_runButton);
+	$('.t3-smoothmigration-runAllChecks').click(functionality.click_runAllButton);
 });

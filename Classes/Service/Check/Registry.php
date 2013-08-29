@@ -4,7 +4,7 @@
 /**
  * Class CheckRegistry
  */
-class Tx_Upgradereport_Service_Check_Registry implements t3lib_Singleton {
+class Tx_Smoothmigration_Service_Check_Registry implements t3lib_Singleton {
 
 	protected $registeredChecks = array();
 
@@ -14,7 +14,7 @@ class Tx_Upgradereport_Service_Check_Registry implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function registerCheck($className) {
-		if (class_exists($className) && in_array('Tx_Upgradereport_Domain_Interface_Check', class_implements($className))) {
+		if (class_exists($className) && in_array('Tx_Smoothmigration_Domain_Interface_Check', class_implements($className))) {
 			$this->registeredChecks[] = $className;
 		}
 	}
@@ -33,15 +33,15 @@ class Tx_Upgradereport_Service_Check_Registry implements t3lib_Singleton {
 	/**
 	 * Returns Instances of all registered checks which apply to this instance.
 	 *
-	 * @return Tx_Upgradereport_Domain_Interface_Check[]
+	 * @return Tx_Smoothmigration_Domain_Interface_Check[]
 	 */
 	public function getActiveChecks() {
 		$activeChecks = array();
-		/** @var Tx_Upgradereport_Service_Check_RequirementsAnalyzer $requirementsAnalyzer */
-		$requirementsAnalyzer = t3lib_div::makeInstance('Tx_Upgradereport_Service_Check_RequirementsAnalyzer');
+		/** @var Tx_Smoothmigration_Service_Check_RequirementsAnalyzer $requirementsAnalyzer */
+		$requirementsAnalyzer = t3lib_div::makeInstance('Tx_Smoothmigration_Service_Check_RequirementsAnalyzer');
 
 		foreach ($this->registeredChecks as $className) {
-			/** @var Tx_Upgradereport_Domain_Interface_Check $check */
+			/** @var Tx_Smoothmigration_Domain_Interface_Check $check */
 			$check = t3lib_div::makeInstance($className);
 			if ($requirementsAnalyzer->isCheckActive($check)) {
 				$activeChecks[] = $check;
@@ -54,7 +54,7 @@ class Tx_Upgradereport_Service_Check_Registry implements t3lib_Singleton {
 	/**
 	 * @param $searchedIdentifier
 	 *
-	 * @return null|Tx_Upgradereport_Domain_Interface_Check
+	 * @return null|Tx_Smoothmigration_Domain_Interface_Check
 	 */
 	public function getActiveCheckByIdentifier($searchedIdentifier) {
 		$checks = $this->getActiveChecks();
@@ -67,10 +67,10 @@ class Tx_Upgradereport_Service_Check_Registry implements t3lib_Singleton {
 	}
 
 	/**
-	 * @return Tx_Upgradereport_Service_Check_Registry
+	 * @return Tx_Smoothmigration_Service_Check_Registry
 	 */
 	public static function getInstance() {
-		return t3lib_div::makeInstance('Tx_Upgradereport_Service_Check_Registry');
+		return t3lib_div::makeInstance('Tx_Smoothmigration_Service_Check_Registry');
 	}
 }
 

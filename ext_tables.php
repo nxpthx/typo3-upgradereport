@@ -25,18 +25,18 @@ if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	);
 }
 
-$TCA['tx_upgradereport_domain_model_issue'] = array(
+$TCA['tx_smoothmigration_domain_model_issue'] = array(
 	'ctrl' => array(
 		'title' => 'recognized upgrade issues',
 		'label' => 'check',
 		'enablecolumns' => array(
 		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_upgradereport_domain_model_issue.php'
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_smoothmigration_domain_model_issue.php'
 	)
 );
 
 // allow test results on normal pages
-t3lib_extMgm::allowTableOnStandardPages('tx_upgradereport_domain_model_issue');
+t3lib_extMgm::allowTableOnStandardPages('tx_smoothmigration_domain_model_issue');
 
 	// Add Icons
 $icons = array(

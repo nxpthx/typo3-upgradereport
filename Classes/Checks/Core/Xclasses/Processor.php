@@ -26,26 +26,26 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Checks_Core_Xclasses_Definition
+ * Class Tx_Smoothmigration_Checks_Core_Xclasses_Definition
  *
  * @author Steffen Ritter
  */
-class Tx_Upgradereport_Checks_Core_Xclasses_Processor implements Tx_Upgradereport_Domain_Interface_CheckProcessor {
+class Tx_Smoothmigration_Checks_Core_Xclasses_Processor implements Tx_Smoothmigration_Domain_Interface_CheckProcessor {
 
 	/**
-	 * @var Tx_Upgradereport_Checks_Core_Xclasses_Definition
+	 * @var Tx_Smoothmigration_Checks_Core_Xclasses_Definition
 	 */
 	protected $parentCheck;
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_Check $check
+	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
 	 */
-	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check) {
+	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
 		$this->parentCheck = $check;
 	}
 
 	/**
-	 * @var Tx_Upgradereport_Domain_Model_Issue[]
+	 * @var Tx_Smoothmigration_Domain_Model_Issue[]
 	 */
 	protected $issues = array();
 
@@ -73,7 +73,7 @@ class Tx_Upgradereport_Checks_Core_Xclasses_Processor implements Tx_Upgraderepor
 	}
 
 	/**
-	 * @return Tx_Upgradereport_Domain_Model_Issue[]
+	 * @return Tx_Smoothmigration_Domain_Model_Issue[]
 	 */
 	public function getIssues() {
 		return $this->issues;
@@ -85,7 +85,7 @@ class Tx_Upgradereport_Checks_Core_Xclasses_Processor implements Tx_Upgraderepor
 	 * @param string $targetClass
 	 * @param string $implementationClass
 	 *
-	 * @return Tx_Upgradereport_Domain_Model_Issue
+	 * @return Tx_Smoothmigration_Domain_Model_Issue
 	 */
 	protected function createIssue($context, $targetClass, $implementationClass) {
 		if (is_file($implementationClass)) {
@@ -94,15 +94,15 @@ class Tx_Upgradereport_Checks_Core_Xclasses_Processor implements Tx_Upgraderepor
 		} else {
 			$extKey = t3lib_extMgm::getExtensionKeyByPrefix(strtolower($implementationClass));
 		}
-		$physicalLocation = new Tx_Upgradereport_Domain_Model_IssueLocation_File($extKey, 'EXT:' . $extKey . '/ext_localconf.php');
-		$details = new Tx_Upgradereport_Domain_Model_IssueLocation_Configuration(
-			Tx_Upgradereport_Domain_Model_IssueLocation_Configuration::TYPE_PHP,
+		$physicalLocation = new Tx_Smoothmigration_Domain_Model_IssueLocation_File($extKey, 'EXT:' . $extKey . '/ext_localconf.php');
+		$details = new Tx_Smoothmigration_Domain_Model_IssueLocation_Configuration(
+			Tx_Smoothmigration_Domain_Model_IssueLocation_Configuration::TYPE_PHP,
 			'$GLOBALS[TYPO3_CONF_VARS][' . $context . '][XCLASS][' . $targetClass . ']',
 			$implementationClass,
 			$physicalLocation
 		);
 
-		$issue = new Tx_Upgradereport_Domain_Model_Issue($this->parentCheck->getIdentifier(), $details);
+		$issue = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $details);
 		$issue->setAdditionalInformation(array(
 			'ORIGINAL_CLASS' => $targetClass,
 			'IMPLEMENTATION_CLASS' => $implementationClass

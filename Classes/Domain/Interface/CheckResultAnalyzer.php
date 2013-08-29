@@ -26,44 +26,44 @@
  ***************************************************************/
 
 /**
- * Interface Tx_Upgradereport_Domain_Interface_CheckProcessor
+ * Interface Tx_Smoothmigration_Domain_Interface_CheckProcessor
  *
  * @author Steffen Ritter
  */
-interface Tx_Upgradereport_Domain_Interface_ResultAnalyzer extends t3lib_Singleton {
+interface Tx_Smoothmigration_Domain_Interface_ResultAnalyzer extends t3lib_Singleton {
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_Check $check
+	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
 	 */
-	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check);
+	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check);
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getSeverity(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function getSeverity(Tx_Smoothmigration_Domain_Model_Issue $issue);
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getExplanation(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue);
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getSolution(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue);
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $issue
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
 	 * @return string
 	 */
-	public function getRawTextForCopyPaste(Tx_Upgradereport_Domain_Model_Issue $issue);
+	public function getRawTextForCopyPaste(Tx_Smoothmigration_Domain_Model_Issue $issue);
 
 }
 

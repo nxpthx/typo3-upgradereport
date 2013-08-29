@@ -26,16 +26,16 @@
  ***************************************************************/
 
 /**
- * Interface Tx_Upgradereport_Domain_Interface_CheckProcessor
+ * Interface Tx_Smoothmigration_Domain_Interface_CheckProcessor
  *
  * @author Steffen Ritter
  */
-interface Tx_Upgradereport_Domain_Interface_CheckProcessor extends t3lib_Singleton {
+interface Tx_Smoothmigration_Domain_Interface_CheckProcessor extends t3lib_Singleton {
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_Check $check
+	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
 	 */
-	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check);
+	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check);
 
 	/**
 	 * @return mixed
@@ -48,7 +48,7 @@ interface Tx_Upgradereport_Domain_Interface_CheckProcessor extends t3lib_Singlet
 	public function hasIssues();
 
 	/**
-	 * @return Tx_Upgradereport_Domain_Model_Issue[]
+	 * @return Tx_Smoothmigration_Domain_Model_Issue[]
 	 */
 	public function getIssues();
 }

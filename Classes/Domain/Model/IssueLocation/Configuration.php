@@ -26,11 +26,11 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Domain_Interface_CheckProcessor
+ * Class Tx_Smoothmigration_Domain_Interface_CheckProcessor
  *
  * @author Steffen Ritter
  */
-class Tx_Upgradereport_Domain_Model_IssueLocation_Configuration implements Tx_Upgradereport_Domain_Interface_IssueLocation {
+class Tx_Smoothmigration_Domain_Model_IssueLocation_Configuration implements Tx_Smoothmigration_Domain_Interface_IssueLocation {
 
 
 	const TYPE_TCA = 1;
@@ -55,7 +55,7 @@ class Tx_Upgradereport_Domain_Model_IssueLocation_Configuration implements Tx_Up
 	protected $currentValue;
 
 	/**
-	 * @var Tx_Upgradereport_Domain_Model_IssueLocation_PhysicalLocation
+	 * @var Tx_Smoothmigration_Domain_Model_IssueLocation_PhysicalLocation
 	 */
 	protected $physicalLocation;
 
@@ -73,9 +73,9 @@ class Tx_Upgradereport_Domain_Model_IssueLocation_Configuration implements Tx_Up
 	 * @param integer $type
 	 * @param string $path
 	 * @param string $currentValue
-	 * @param Tx_Upgradereport_Domain_Model_IssueLocation_PhysicalLocation $location
+	 * @param Tx_Smoothmigration_Domain_Model_IssueLocation_PhysicalLocation $location
 	 */
-	public function __construct($type, $path, $currentValue = '', Tx_Upgradereport_Domain_Model_IssueLocation_PhysicalLocation $location = NULL) {
+	public function __construct($type, $path, $currentValue = '', Tx_Smoothmigration_Domain_Model_IssueLocation_PhysicalLocation $location = NULL) {
 		$this->type = $type;
 		$this->path = $path;
 		$this->currentValue = $currentValue;
@@ -115,16 +115,16 @@ class Tx_Upgradereport_Domain_Model_IssueLocation_Configuration implements Tx_Up
 	}
 
 	/**
-	 * @param \Tx_Upgradereport_Domain_Model_IssueLocation_PhysicalLocation $physicalLocation
+	 * @param \Tx_Smoothmigration_Domain_Model_IssueLocation_PhysicalLocation $physicalLocation
 	 *
 	 * @return void
 	 */
-	public function setPhysicalLocation(Tx_Upgradereport_Domain_Model_IssueLocation_PhysicalLocation $physicalLocation) {
+	public function setPhysicalLocation(Tx_Smoothmigration_Domain_Model_IssueLocation_PhysicalLocation $physicalLocation) {
 		$this->physicalLocation = $physicalLocation;
 	}
 
 	/**
-	 * @return \Tx_Upgradereport_Domain_Model_IssueLocation_PhysicalLocation
+	 * @return \Tx_Smoothmigration_Domain_Model_IssueLocation_PhysicalLocation
 	 */
 	public function getPhysicalLocation() {
 		return $this->physicalLocation;

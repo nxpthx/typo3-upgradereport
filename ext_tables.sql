@@ -1,7 +1,7 @@
 #
 # Table structure for table ''
 #
-CREATE TABLE tx_upgradereport_domain_model_issue (
+CREATE TABLE tx_smoothmigration_domain_model_issue (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 

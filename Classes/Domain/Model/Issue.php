@@ -26,11 +26,11 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Domain_Interface_CheckProcessor
+ * Class Tx_Smoothmigration_Domain_Interface_CheckProcessor
  *
  * @author Steffen Ritter
  */
-class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_Smoothmigration_Domain_Model_Issue extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
 	 * @var string
@@ -48,7 +48,7 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	protected $extension;
 
 	/**
-	 * @var Tx_Upgradereport_Domain_Interface_IssueLocation
+	 * @var Tx_Smoothmigration_Domain_Interface_IssueLocation
 	 */
 	protected $location;
 
@@ -69,9 +69,9 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 
 	/**
 	 * @param string $checkIdentifier
-	 * @param Tx_Upgradereport_Domain_Interface_IssueLocation $issueDetails
+	 * @param Tx_Smoothmigration_Domain_Interface_IssueLocation $issueDetails
 	 */
-	public function __construct($checkIdentifier, Tx_Upgradereport_Domain_Interface_IssueLocation $issueDetails) {
+	public function __construct($checkIdentifier, Tx_Smoothmigration_Domain_Interface_IssueLocation $issueDetails) {
 		$this->setLocation($issueDetails);
 		$this->inspection = $checkIdentifier;
 	}
@@ -95,7 +95,7 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	}
 
 	/**
-	 * @param \Tx_Upgradereport_Domain_Interface_IssueLocation $details
+	 * @param \Tx_Smoothmigration_Domain_Interface_IssueLocation $details
 	 *
 	 * @return void
 	 */
@@ -107,7 +107,7 @@ class Tx_Upgradereport_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abstra
 	}
 
 	/**
-	 * @return \Tx_Upgradereport_Domain_Interface_IssueLocation
+	 * @return \Tx_Smoothmigration_Domain_Interface_IssueLocation
 	 */
 	public function getLocation() {
 		if ($this->location == NULL && $this->locationInfo !== NULL) {

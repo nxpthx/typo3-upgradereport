@@ -4,7 +4,7 @@
 /**
  * Class CheckRegistry
  */
-class Tx_Upgradereport_Service_Check_RequirementsAnalyzer implements t3lib_Singleton {
+class Tx_Smoothmigration_Service_Check_RequirementsAnalyzer implements t3lib_Singleton {
 
 	/**
 	 * @var integer
@@ -36,11 +36,11 @@ class Tx_Upgradereport_Service_Check_RequirementsAnalyzer implements t3lib_Singl
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_CheckRequirements $check
+	 * @param Tx_Smoothmigration_Domain_Interface_CheckRequirements $check
 	 *
 	 * @return boolean
 	 */
-	public function isCheckActive(Tx_Upgradereport_Domain_Interface_CheckRequirements $check) {
+	public function isCheckActive(Tx_Smoothmigration_Domain_Interface_CheckRequirements $check) {
 		$active = TRUE;
 
 		$active = ($active && $this->checkTypo3Version($check));
@@ -52,11 +52,11 @@ class Tx_Upgradereport_Service_Check_RequirementsAnalyzer implements t3lib_Singl
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_CheckRequirements $check
+	 * @param Tx_Smoothmigration_Domain_Interface_CheckRequirements $check
 	 *
 	 * @return boolean
 	 */
-	protected function checkTypo3Version(Tx_Upgradereport_Domain_Interface_CheckRequirements $check) {
+	protected function checkTypo3Version(Tx_Smoothmigration_Domain_Interface_CheckRequirements $check) {
 		$minimalTypo3Version = t3lib_utility_VersionNumber::convertVersionNumberToInteger(trim($check->getMinimalTypo3Version()) ?: '0.0.0');
 		$maximalTypo3Version = t3lib_utility_VersionNumber::convertVersionNumberToInteger(trim($check->getMaximalTypo3Version()) ?: '99.0.0');
 
@@ -64,11 +64,11 @@ class Tx_Upgradereport_Service_Check_RequirementsAnalyzer implements t3lib_Singl
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_CheckRequirements $check
+	 * @param Tx_Smoothmigration_Domain_Interface_CheckRequirements $check
 	 *
 	 * @return boolean
 	 */
-	protected function checkPhpVersion(Tx_Upgradereport_Domain_Interface_CheckRequirements $check) {
+	protected function checkPhpVersion(Tx_Smoothmigration_Domain_Interface_CheckRequirements $check) {
 		$minimalPhpVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger(trim($check->getMinimalPhpVersion()) ?: '0.0.0');
 		$maximalPhpVersion = t3lib_utility_VersionNumber::convertVersionNumberToInteger(trim($check->getMaximalPhpVersion()) ?: '99.0.0');
 
@@ -76,11 +76,11 @@ class Tx_Upgradereport_Service_Check_RequirementsAnalyzer implements t3lib_Singl
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_CheckRequirements $check
+	 * @param Tx_Smoothmigration_Domain_Interface_CheckRequirements $check
 	 *
 	 * @return boolean
 	 */
-	protected function checkPhpExtensions(Tx_Upgradereport_Domain_Interface_CheckRequirements $check) {
+	protected function checkPhpExtensions(Tx_Smoothmigration_Domain_Interface_CheckRequirements $check) {
 		$checkActive = TRUE;
 
 		$requiredExtensions = $check->getRequiredAvailablePhpModules();
@@ -103,11 +103,11 @@ class Tx_Upgradereport_Service_Check_RequirementsAnalyzer implements t3lib_Singl
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_CheckRequirements $check
+	 * @param Tx_Smoothmigration_Domain_Interface_CheckRequirements $check
 	 *
 	 * @return boolean
 	 */
-	protected function checkTypo3Extensions(Tx_Upgradereport_Domain_Interface_CheckRequirements $check) {
+	protected function checkTypo3Extensions(Tx_Smoothmigration_Domain_Interface_CheckRequirements $check) {
 		if (count($this->installedTypo3Extensions) == 0) {
 			$this->initializeTypo3ExtensionArray();
 		}

@@ -1,7 +1,7 @@
 <?php
 
 /***************************************************************
- * Extension Manager/Repository config file for ext "upgradereport".
+ * Extension Manager/Repository config file for ext "smoothmigration".
  *
  * Auto generated 15-06-2013 11:14
  *
@@ -11,7 +11,7 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'LTS to LTS upgrade report',
+	'title' => 'LTS to LTS smooth migration report',
 	'description' => 'The module analyses your current setup, extensions and configuration in regard to features, functions and configuration which have been removed or changed since the release of TYPO3 4.5 LTS.',
 	'category' => 'be',
 	'author' => 'Steffen Ritter',

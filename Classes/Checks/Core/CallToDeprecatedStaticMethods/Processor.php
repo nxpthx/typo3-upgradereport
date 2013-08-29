@@ -26,11 +26,11 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_Definition
+ * Class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition
  *
  * @author Peter Beernink
  */
-class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_Processor implements Tx_Upgradereport_Domain_Interface_CheckProcessor {
+class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor implements Tx_Smoothmigration_Domain_Interface_CheckProcessor {
 
 	/**
 	 * Array of all deprecated static methods
@@ -141,19 +141,19 @@ class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_Processor imple
 	);
 
 	/**
-	 * @var Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_Definition
+	 * @var Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition
 	 */
 	protected $parentCheck;
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Interface_Check $check
+	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
 	 */
-	public function __construct(Tx_Upgradereport_Domain_Interface_Check $check) {
+	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
 		$this->parentCheck = $check;
 	}
 
 	/**
-	 * @var Tx_Upgradereport_Domain_Model_Issue[]
+	 * @var Tx_Smoothmigration_Domain_Model_Issue[]
 	 */
 	protected $issues = array();
 
@@ -161,13 +161,13 @@ class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_Processor imple
 	 * @return void
 	 */
 	public function executeCheck() {
-		/** @var Tx_Upgradereport_Service_FileLocatorService $fileLocatorService */
-		$fileLocatorService = t3lib_div::makeInstance('Tx_Upgradereport_Service_FileLocatorService');
+		/** @var Tx_Smoothmigration_Service_FileLocatorService $fileLocatorService */
+		$fileLocatorService = t3lib_div::makeInstance('Tx_Smoothmigration_Service_FileLocatorService');
 		$locations = $fileLocatorService->searchInExtensions('.*\.(php|inc)$',
 			$this->generateRegularExpression()
 		);
 		foreach ($locations as $location) {
-			$this->issues[] = new Tx_Upgradereport_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
+			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}
 	}
 
@@ -179,7 +179,7 @@ class Tx_Upgradereport_Checks_Core_CallToDeprecatedStaticMethods_Processor imple
 	}
 
 	/**
-	 * @return Tx_Upgradereport_Domain_Model_Issue[]
+	 * @return Tx_Smoothmigration_Domain_Model_Issue[]
 	 */
 	public function getIssues() {
 		return $this->issues;

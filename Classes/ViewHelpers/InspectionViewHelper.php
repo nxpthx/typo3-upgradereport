@@ -26,7 +26,7 @@
  ***************************************************************/
 
 
-class Tx_Upgradereport_ViewHelpers_InspectionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Smoothmigration_ViewHelpers_InspectionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 
 	/**
@@ -42,7 +42,7 @@ class Tx_Upgradereport_ViewHelpers_InspectionViewHelper extends Tx_Fluid_Core_Vi
 	 * @param string $inspectionIdentifier
 	 */
 	public function render($inspectionIdentifier) {
-		$check = Tx_Upgradereport_Service_Check_Registry::getInstance()->getActiveCheckByIdentifier($inspectionIdentifier);
+		$check = Tx_Smoothmigration_Service_Check_Registry::getInstance()->getActiveCheckByIdentifier($inspectionIdentifier);
 		$this->templateVariableContainer->add('inspection', $check);
 		$content = $this->renderChildren();
 		$this->templateVariableContainer->remove('inspection');

@@ -26,12 +26,12 @@
  * An Issue Repository
  *
  */
-class Tx_Upgradereport_Domain_Repository_IssueRepository extends Tx_Extbase_Persistence_Repository {
+class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Persistence_Repository {
 
 	public function findAllGroupedByInspection() {
 		$issues = $this->findAll();
 		$groups = array();
-		/** @var Tx_Upgradereport_Domain_Model_Issue $issue */
+		/** @var Tx_Smoothmigration_Domain_Model_Issue $issue */
 		foreach ($issues as $issue) {
 			if (!array_key_exists($issue->getInspection(), $groups)) {
 				$groups[$issue->getInspection()] = array();
@@ -45,7 +45,7 @@ class Tx_Upgradereport_Domain_Repository_IssueRepository extends Tx_Extbase_Pers
 	public function findAllGroupedByExtensionAndInspection() {
 		$issues = $this->findAll();
 		$groups = array();
-		/** @var Tx_Upgradereport_Domain_Model_Issue $issue */
+		/** @var Tx_Smoothmigration_Domain_Model_Issue $issue */
 		foreach ($issues as $issue) {
 			if (!array_key_exists($issue->getExtension(), $groups)) {
 				$groups[$issue->getExtension()] = array();
@@ -60,14 +60,14 @@ class Tx_Upgradereport_Domain_Repository_IssueRepository extends Tx_Extbase_Pers
 	}
 
 	/**
-	 * @param Tx_Upgradereport_Domain_Model_Issue $object
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $object
 	 */
 	public function add($object) {
 		if ($GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 				'*',
-				'tx_upgradereport_domain_model_issue',
-				'inspection = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getInspection(), 'tx_upgradereport_domain_model_issue')
-				. ' AND identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getIdentifier(), 'tx_upgradereport_domain_model_issue')
+				'tx_smoothmigration_domain_model_issue',
+				'inspection = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getInspection(), 'tx_smoothmigration_domain_model_issue')
+				. ' AND identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getIdentifier(), 'tx_smoothmigration_domain_model_issue')
 			) == 0) {
 			parent::add($object);
 		}

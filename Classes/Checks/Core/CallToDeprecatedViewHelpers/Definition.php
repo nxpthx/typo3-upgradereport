@@ -26,24 +26,24 @@
  ***************************************************************/
 
 /**
- * Class Tx_Upgradereport_Checks_Core_CallToDeprecatedViewHelpers_Definition
+ * Class Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_Definition
  *
  * @author Peter Beernink
  */
-class Tx_Upgradereport_Checks_Core_CallToDeprecatedViewHelpers_Definition extends Tx_Upgradereport_Checks_AbstractCheckDefinition {
+class Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_Definition extends Tx_Smoothmigration_Checks_AbstractCheckDefinition {
 
 	/**
-	 * @return Tx_Upgradereport_Domain_Interface_CheckProcessor
+	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
 	 */
 	public function getProcessor() {
-		return t3lib_div::makeInstance('Tx_Upgradereport_Checks_Core_CallToDeprecatedViewHelpers_Processor', $this);
+		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_Processor', $this);
 	}
 
 	/**
-	 * @return Tx_Upgradereport_Domain_Interface_ResultAnalyzer
+	 * @return Tx_Smoothmigration_Domain_Interface_ResultAnalyzer
 	 */
 	public function getResultAnalyzer() {
-		return t3lib_div::makeInstance('Tx_Upgradereport_Checks_Core_CallToDeprecatedViewHelpers_ResultAnalyzer', $this);
+		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_ResultAnalyzer', $this);
 	}
 
 	/**
@@ -63,7 +63,7 @@ class Tx_Upgradereport_Checks_Core_CallToDeprecatedViewHelpers_Definition extend
 	 * @return int
 	 */
 	public function getType() {
-		return Tx_Upgradereport_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
+		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
 	}
 
 	/**

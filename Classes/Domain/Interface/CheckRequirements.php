@@ -26,11 +26,11 @@
  ***************************************************************/
 
 /**
- * Interface Tx_Upgradereport_Domain_Interface_CheckRequirements
+ * Interface Tx_Smoothmigration_Domain_Interface_CheckRequirements
  *
  * @author Steffen Ritter
  */
-interface Tx_Upgradereport_Domain_Interface_CheckRequirements {
+interface Tx_Smoothmigration_Domain_Interface_CheckRequirements {
 
 	/**
 	 * Return the minimum TYPO3 Version the checks needs to be executed on.
