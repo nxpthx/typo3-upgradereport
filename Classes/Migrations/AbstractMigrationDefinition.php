@@ -179,6 +179,15 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationDefinition impleme
 			'LLL:EXT:' . $extensionName . '/Resources/Private/Language/locallang.xml:migration.' . $this->getIdentifier() . '.' . $field
 		);
 	}
+
+	/**
+	 * Get a key to identify the migration for CLI usage
+	 *
+	 * @return string
+	 */
+	public function getCliKey() {
+		return $this->getIdentifier();
+	}
 }
 
 ?>

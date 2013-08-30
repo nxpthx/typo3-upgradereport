@@ -52,6 +52,15 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Definition exte
 		return 'typo3-core-code-requireOnceInExtensions';
 	}
 
+	/**
+	 * Get a key to identify the migration for CLI usage (a short version of the identifier)
+	 *
+	 * @return string
+	 */
+	public function getCliKey() {
+		return 'requireOnce';
+	}
+
 }
 
 ?>

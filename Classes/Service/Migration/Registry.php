@@ -90,6 +90,21 @@ class Tx_Smoothmigration_Service_Migration_Registry implements t3lib_Singleton {
 	}
 
 	/**
+	 * @param $cliKey
+	 *
+	 * @return null|Tx_Smoothmigration_Domain_Interface_Migration
+	 */
+	public function getActiveMigrationByCliKey($cliKey) {
+		$migrations = $this->getActiveMigrations();
+		foreach ($migrations as $migration) {
+			if ($migration->getCliKey() == $cliKey) {
+				return $migration;
+			}
+		}
+		return NULL;
+	}
+
+	/**
 	 * @return Tx_Smoothmigration_Service_Check_Registry
 	 */
 	public static function getInstance() {

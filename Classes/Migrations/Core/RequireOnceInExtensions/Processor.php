@@ -27,98 +27,22 @@
  *
  * @author Peter Beernink
  */
-class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor implements Tx_Smoothmigration_Domain_Interface_MigrationProcessor {
-
-	/**
-	 * @var Tx_Smoothmigration_Domain_Repository_IssueRepository
-	 */
-	protected $issueRepository;
-
-	/**
-	 *
-	 * @var Tx_Extbase_Object_Manager
-	 */
-	protected $objectManager;
-
-	/**
-	 * The issues found
-	 *
-	 * @var array
-	 */
-	protected $issues;
-
-	/**
-	 * Inject the issue repository
-	 *
-	 * @param Tx_Smoothmigration_Domain_Repository_IssueRepository $issueRepository
-	 * @return void
-	 */
-	public function injectIssueRepository(Tx_Smoothmigration_Domain_Repository_IssueRepository $issueRepository) {
-		$this->issueRepository = $issueRepository;
-	}
-
-	/**
-	 * Inject the object manager
-	 *
-	 * @param Tx_Extbase_Object_Manager $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(Tx_Extbase_Object_Manager $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * @var Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Definition
-	 */
-	protected $parentMigration;
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Interface_Migration $migration
-	 */
-	public function __construct(Tx_Smoothmigration_Domain_Interface_Migration $migration) {
-		$this->parentMigration = $migration;
-	}
+class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor extends Tx_Smoothmigration_Migrations_AbstractMigrationProcessor {
 
 	/**
 	 * Execute migration
 	 *
-	 * @return string
+	 * @return void
 	 */
 	public function execute() {
-		$output = '';
 		$this->getIssues();
 		foreach ($this->issues as $issue) {
-			$output .= $this->handleIssue($issue) . "\n";
+			$this->cliDispatcher->cli_echo($this->handleIssue($issue) . LF);
 			$this->issueRepository->update($issue);
 		}
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
 		$persistenceManger->persistAll();
-		return $output;
-	}
-
-	/**
-	 * Any issues?
-	 *
-	 * @return boolean
-	 */
-	public function hasIssues() {
-		if ($this->issues === NULL) {
-			$this->getIssues();
-		}
-		return (count($this->issues) > 0);
-	}
-
-	/**
-	 * See if there are any issues
-	 *
-	 * @return array
-	 */
-	public function getIssues() {
-		if ($this->issues === NULL) {
-			$this->issues = $this->issueRepository->findByInspection($this->parentMigration->getIdentifier())->toArray();
-		}
-		return $this->issues;
 	}
 
 	/**

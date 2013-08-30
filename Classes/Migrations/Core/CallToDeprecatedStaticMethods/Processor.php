@@ -27,7 +27,7 @@
  *
  * @author Michiel Roos
  */
-class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor implements Tx_Smoothmigration_Domain_Interface_MigrationProcessor {
+class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor extends Tx_Smoothmigration_Migrations_AbstractMigrationProcessor {
 
 	/**
 	 * @var Tx_Smoothmigration_Domain_Repository_DeprecationRepository
@@ -45,42 +45,10 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 	}
 
 	/**
-	 * @var Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition
-	 */
-	protected $parentMigration;
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Interface_Migration $migration
-	 */
-	public function __construct(Tx_Smoothmigration_Domain_Interface_Migration $migration) {
-		$this->parentMigration = $migration;
-	}
-
-	/**
-	 * @var Tx_Smoothmigration_Domain_Model_Issue[]
-	 */
-	protected $issues = array();
-
-	/**
 	 * @return void
 	 */
 	public function execute() {
 	}
-
-	/**
-	 * @return boolean
-	 */
-	public function hasIssues() {
-		return count($this->issues) > 0;
-	}
-
-	/**
-	 * @return Tx_Smoothmigration_Domain_Model_Issue[]
-	 */
-	public function getIssues() {
-		return $this->issues;
-	}
-
 }
 
 ?>

@@ -29,6 +29,13 @@
  */
 interface Tx_Smoothmigration_Domain_Interface_MigrationDescription extends
 	Tx_Smoothmigration_Domain_Interface_Description {
+
+	/**
+	 * Get a key to identify the migration for CLI usage
+	 *
+	 * @return string
+	 */
+	public function getCliKey();
 }
 
 ?>

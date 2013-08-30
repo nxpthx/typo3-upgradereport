@@ -152,22 +152,33 @@ class tx_smoothmigration_cli extends t3lib_cli {
 		$registry = Tx_Smoothmigration_Service_Migration_Registry::getInstance();
 
 		if (!empty($migrationTaskKey)) {
-			$migrationTask = $registry->getActiveMigrationByIdentifier($migrationTaskKey);
+			$migrationTask = $registry->getActiveMigrationByCliKey($migrationTaskKey);
 		}
 		if ($migrationTask === NULL) {
-			return $this->getMigrations();
+			$output = 'Please choose a migration to execute.' . LF . LF . 'Possible options are:' .  LF. LF;
+			$output .= $this->getMigrations();
+			return $output;
 		}
 
-		return $migrationTask->getProcessor()->execute();
+		$processor = $migrationTask->getProcessor();
+		$processor ->setCliDispatcher($this);
+		$processor ->execute();
 	}
 
 	private function getMigrations() {
 		$output = '';
 		$registry = Tx_Smoothmigration_Service_Migration_Registry::getInstance();
 		$migrations = $registry->getActiveMigrations();
+		$maxLen = 0;
 		foreach ($migrations as $migration) {
-			$output .= $migration->getIdentifier() . "\n";
+			if (strlen($migration->getCliKey()) > $maxLen) {
+				$maxLen = strlen($migration->getCliKey());
+			}
 		}
+		foreach ($migrations as $migration) {
+			$output .= $migration->getCliKey() . substr($this->cli_indent(rtrim($migration->getTitle()), $maxLen + 4), strlen($migration->getCliKey())) . LF;
+		}
+
 		return $output;
 	}
 
