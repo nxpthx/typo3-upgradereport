@@ -13,19 +13,28 @@
 			<p>{inspection.description}</p>
 			<ul>
 				<f:for each="{issues}" as="issue"><this:resultAnalyzer issue="{issue}">
-					<f:if condition="{issue.migrationStatus} == 0">
-						<li class="typo3-message message-notice">
-					</f:if>
-					<f:if condition="{issue.migrationStatus} == 1">
-						<li class="typo3-message message-ok">
-					</f:if>
-					<f:if condition="{issue.migrationStatus} > 1">
-						<li class="typo3-message message-error">
-					</f:if>
-						{solution}<br />
-
-						<f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.{issue.migrationStatus}" />
-					</li>
+					<this:ifMigrationAvailable inspectionIdentifier="{testName}">
+						<f:then>
+							<f:if condition="{issue.migrationStatus} == 0">
+								<li class="typo3-message message-warning">
+							</f:if>
+							<f:if condition="{issue.migrationStatus} == 1">
+								<li class="typo3-message message-ok">
+							</f:if>
+							<f:if condition="{issue.migrationStatus} > 1">
+								<li class="typo3-message message-error">
+							</f:if>
+								{solution}<br />
+								<f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.{issue.migrationStatus}" />
+							</li>
+						</f:then>
+						<f:else>
+							<li class="typo3-message message-notice">
+								{solution}<br />
+								<f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.noMigrationAvailable" />
+							</li>
+						</f:else>
+					</this:ifMigrationAvailable>
 				</this:resultAnalyzer></f:for>
 			</ul>
 			</this:inspection>

@@ -31,6 +31,13 @@ class Tx_Smoothmigration_Service_Migration_Registry implements t3lib_Singleton {
 
 	protected $registeredMigrations = array();
 
+	/**
+	 * Array with active migrations
+	 *
+	 * @var array
+	 */
+	protected $activeMigrations = NULL;
+
 
 	/**
 	 * @param string $className
@@ -59,19 +66,20 @@ class Tx_Smoothmigration_Service_Migration_Registry implements t3lib_Singleton {
 	 * @return Tx_Smoothmigration_Domain_Interface_Migration[]
 	 */
 	public function getActiveMigrations() {
-		$activeMigrations = array();
-		/** @var Tx_Smoothmigration_Service_RequirementsAnalyzer $requirementsAnalyzer */
-		$requirementsAnalyzer = t3lib_div::makeInstance('Tx_Smoothmigration_Service_RequirementsAnalyzer');
+		if (!is_array($this->activeMigrations)) {
+			$this->activeMigrations = array();
+			/** @var Tx_Smoothmigration_Service_RequirementsAnalyzer $requirementsAnalyzer */
+			$requirementsAnalyzer = t3lib_div::makeInstance('Tx_Smoothmigration_Service_RequirementsAnalyzer');
 
-		foreach ($this->registeredMigrations as $className) {
-			/** @var Tx_Smoothmigration_Domain_Interface_Migration $check */
-			$migration = t3lib_div::makeInstance($className);
-			if ($requirementsAnalyzer->isActive($migration)) {
-				$activeMigrations[] = $migration;
+			foreach ($this->registeredMigrations as $className) {
+				/** @var Tx_Smoothmigration_Domain_Interface_Migration $check */
+				$migration = t3lib_div::makeInstance($className);
+				if ($requirementsAnalyzer->isActive($migration)) {
+					$this->activeMigrations[] = $migration;
+				}
 			}
 		}
-
-		return $activeMigrations;
+		return $this->activeMigrations;
 	}
 
 	/**

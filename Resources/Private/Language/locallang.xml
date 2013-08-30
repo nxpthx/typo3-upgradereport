@@ -31,6 +31,7 @@
 			<label index="migrationsstatus.2">Error, file not found</label>
 			<label index="migrationsstatus.3">Error, file not writable</label>
 			<label index="migrationsstatus.4">Error, file not changed</label>
+			<label index="migrationsstatus.noMigrationAvailable">No migration available, manual action required.</label>
 		</languageKey>
 	</data>
 </T3locallang>
