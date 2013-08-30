@@ -24,6 +24,12 @@
 			<label index="check.typo3-dam-code-callToDamClasses.title">Dam Classes</label>
 			<label index="check.typo3-dam-code-callToDamClasses.shortDescription">DAM will be gone in 6.x so you can't use it's Classes anymore.</label>
 			<label index="check.typo3-dam-code-callToDamClasses.description">Since DAM won't work in 6.x anymore, you should remove all calls to DAM-Methods and Instances of DAM-Classes and change them to use FAL/Media.</label>
+			<label index="migrationsstatus">Migration status:</label>
+			<label index="migrationsstatus.0">Not processed yet</label>
+			<label index="migrationsstatus.1">Succesfully processed</label>
+			<label index="migrationsstatus.2">Error, file not found</label>
+			<label index="migrationsstatus.3">Error, file not writable</label>
+			<label index="migrationsstatus.4">Error, file not changed</label>
 		</languageKey>
 	</data>
 </T3locallang>
