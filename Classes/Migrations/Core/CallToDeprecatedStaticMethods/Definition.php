@@ -27,7 +27,7 @@
  *
  * @author Michiel Roos
  */
-class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition extends Tx_Smoothmigration_Migrations_MigrationDefinition {
+class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition extends Tx_Smoothmigration_Migrations_AbstractMigrationDefinition {
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_MigrationProcessor
@@ -37,10 +37,9 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definitio
 	}
 
 	/**
-	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
+	 * @return void
 	 */
 	public function getResultAnalyzer() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_ResultAnalyzer', $this);
 	}
 
 	/**
@@ -51,6 +50,15 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definitio
 	 */
 	public function getIdentifier() {
 		return 'typo3-core-code-callToDeprecatedStaticMethods';
+	}
+
+	/**
+	 * Get a key to identify the migration for CLI usage (a short version of the identifier)
+	 *
+	 * @return string
+	 */
+	public function getCliKey() {
+		return 'replaceDeprecatedStaticMethods';
 	}
 
 }

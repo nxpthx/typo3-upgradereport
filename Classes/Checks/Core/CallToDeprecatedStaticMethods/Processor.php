@@ -75,10 +75,34 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor imp
 			$this->generateRegularExpression()
 		);
 		foreach ($locations as $location) {
-			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
+			$issue = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
+			$issue->setAdditionalInformation($this->getRepleacabilityReport($location));
+			$this->issues[] = $issue;
 		}
 	}
 
+	/**
+	 * See if we can replace the found deprecation
+	 * @param $location
+	 * @return array
+	 */
+	protected function getRepleacabilityReport($location) {
+		$report = array();
+		$match = $location->getMatchedString();
+		$match = rtrim($match, '(');
+		list($class, $method) = explode('::', $match);
+		$deprecation = $this->deprecationRepository->findOneStaticByClassAndMethod($class, $method);
+		if ($deprecation instanceof Tx_Smoothmigration_Domain_Model_Deprecation) {
+			$report['isReplaceable'] = $deprecation->getNoBrainer();
+			$report['replacementClass'] = $deprecation->getReplacementClass();
+			$report['replacementMethod'] = $deprecation->getReplacementMethod();
+			$report['replacementMessage'] = $deprecation->getReplacementMessage();
+			$report['deprecationMessage'] = $deprecation->getMessage();
+		} else {
+			$report['isReplaceable'] = FALSE;
+		}
+		return $report;
+	}
 	/**
 	 * @return boolean
 	 */

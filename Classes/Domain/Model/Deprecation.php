@@ -85,6 +85,11 @@ class Tx_Smoothmigration_Domain_Model_Deprecation extends Tx_Extbase_DomainObjec
 	protected $replacementInterface;
 
 	/**
+	 * @var string
+	 */
+	protected $replacementMethod;
+
+	/**
 	 * @var integer
 	 */
 	protected $noBrainer;
@@ -169,6 +174,13 @@ class Tx_Smoothmigration_Domain_Model_Deprecation extends Tx_Extbase_DomainObjec
 	 */
 	public function getReplacementInterface() {
 		return $this->replacementInterface;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getReplacementMethod() {
+		return $this->replacementMethod;
 	}
 
 	/**

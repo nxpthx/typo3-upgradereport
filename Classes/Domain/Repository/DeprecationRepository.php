@@ -27,6 +27,29 @@
  *
  */
 class Tx_Smoothmigration_Domain_Repository_DeprecationRepository extends Tx_Extbase_Persistence_Repository {
+
+	/**
+	 * Find replacements by Class and Method
+	 *
+	 * @param $class
+	 * @param $method
+	 * @return \Tx_Smoothmigration_Domain_Model_Deprecation
+	 */
+	public function findOneStaticByClassAndMethod($class, $method) {
+		$query = $this->createQuery();
+		$result = $query->matching(
+			$query->logicalAnd(
+				$query->equals('class', $class),
+				$query->equals('method', $method),
+				$query->equals('isStatic', TRUE)
+			)
+		)->execute();
+		if ($result instanceof Tx_Extbase_Persistence_QueryResultInterface) {
+			return $result->getFirst();
+		} elseif (is_array($result)) {
+			return isset($result[0]) ? $result[0] : NULL;
+		}
+	}
 }
 
 ?>

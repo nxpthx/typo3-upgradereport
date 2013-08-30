@@ -27,7 +27,7 @@
  *
  * @author Michiel Roos
  */
-class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor extends Tx_Smoothmigration_Migrations_AbstractMigrationProcessor {
+class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor extends Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implements Tx_Smoothmigration_Domain_Interface_MigrationProcessor {
 
 	/**
 	 * @var Tx_Smoothmigration_Domain_Repository_DeprecationRepository
@@ -48,7 +48,77 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 	 * @return void
 	 */
 	public function execute() {
+		$this->getIssues();
+		foreach ($this->issues as $issue) {
+			$this->cliDispatcher->cli_echo($this->handleIssue($issue) . LF);
+			$this->issueRepository->update($issue);
+		}
+
+		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
+		$persistenceManger->persistAll();
 	}
+
+	/**
+	 * Handle issue
+	 *
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
+	 * @return string
+	 */
+	protected function handleIssue(Tx_Smoothmigration_Domain_Model_Issue $issue) {
+		if (is_string($issue->getLocationInfo())) {
+			$locationInfo = unserialize($issue->getLocationInfo());
+		} else {
+			$locationInfo = $issue->getLocationInfo();
+		}
+
+		if (is_string($issue->getAdditionalInformation())) {
+			$additionalInformation = unserialize($issue->getAdditionalInformation());
+		} else {
+			$additionalInformation = $issue->getAdditionalInformation();
+		}
+
+		if ($additionalInformation['isReplaceable']) {
+			$output = $locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . PHP_EOL .
+			'Replacing [' . trim($locationInfo->getMatchedString()) . '] =>' .
+			' [' . $additionalInformation['replacementClass'] . '::' . $additionalInformation['replacementMethod'] . '(]' . PHP_EOL;
+
+			if ($issue->getMigrationStatus() != 0) {
+				return $output . 'already migrated';
+			}
+			$newFileContent = '';
+			if (!file_exists($locationInfo->getFilePath())) {
+				$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_FOUND);
+				return $output . 'Error, file not found';
+			}
+			if (!is_writable($locationInfo->getFilePath())) {
+				$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_WRITABLE);
+				return $output . 'Error, file not writable';
+			}
+			$fileObject = new SplFileObject($locationInfo->getFilePath());
+			$replacement = $additionalInformation['replacementClass'] . '::' . $additionalInformation['replacementMethod'] . '(';
+			foreach ($fileObject as $lineNumber => $lineContent) {
+				if ($lineNumber + 1 != $locationInfo->getLineNumber()) {
+					$newFileContent .= $lineContent;
+				} else {
+					$newLineContent = str_replace($locationInfo->getMatchedString(), $replacement, $lineContent);
+					if ($newLineContent == $lineContent) {
+						$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
+						return $output . 'Error, file not changed';
+					}
+					$newFileContent .= $newLineContent;
+				}
+			}
+			file_put_contents($locationInfo->getFilePath(), $newFileContent);
+			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
+			$output .= 'Succes' . PHP_EOL;
+		} else {
+			$output = $locationInfo->getFilePath() . $locationInfo->getLineNumber() . PHP_EOL .
+				'Method [' . trim($locationInfo->getMatchedString()) . '] is not easily replaceable.' . PHP_EOL .
+			$additionalInformation['replacementMessage'];
+		}
+		return $output;
+	}
+
 }
 
 ?>

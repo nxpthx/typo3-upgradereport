@@ -59,7 +59,8 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 		$extensionKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
 		array_pop($extensionKeys);
 		foreach ($extensionKeys as $extensionKey) {
-			if ($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'] == 'S') {
+			if ($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'] == 'S' ||
+				$extensionKey == 'smoothmigration') {
 				continue;
 			}
 			$locations = array_merge($this->searchInExtension($extensionKey, $fileNamePattern, $searchPattern), $locations);

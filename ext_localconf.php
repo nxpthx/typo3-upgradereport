@@ -15,6 +15,7 @@ $checkArray = array(
 Tx_Smoothmigration_Service_Check_Registry::getInstance()->registerChecks($checkArray);
 
 $migrationArray = array(
+	'Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition',
 	'Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Definition',
 );
 
