@@ -48,7 +48,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 	 * @return void
 	 */
 	public function execute() {
-		$this->getIssues();
+		$this->issues = $this->getIssues();
 		foreach ($this->issues as $issue) {
 			$this->cliDispatcher->cli_echo($this->handleIssue($issue) . LF);
 			$this->issueRepository->update($issue);
@@ -56,6 +56,18 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
 		$persistenceManger->persistAll();
+	}
+
+	/**
+	 * See if there are any issues
+	 *
+	 * @return array
+	 */
+	public function getIssues() {
+		if ($this->issues === NULL) {
+			$this->issues = $this->issueRepository->findPendingByInspection($this->parentMigration->getIdentifier())->toArray();
+		}
+		return $this->issues;
 	}
 
 	/**
@@ -83,16 +95,16 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 			' [' . $additionalInformation['replacementClass'] . '::' . $additionalInformation['replacementMethod'] . '(]' . PHP_EOL;
 
 			if ($issue->getMigrationStatus() != 0) {
-				return $output . 'already migrated';
+				return $output . 'already migrated' . PHP_EOL;
 			}
 			$newFileContent = '';
 			if (!file_exists($locationInfo->getFilePath())) {
 				$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_FOUND);
-				return $output . 'Error, file not found';
+				return $output . 'Error, file not found' . PHP_EOL;
 			}
 			if (!is_writable($locationInfo->getFilePath())) {
 				$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_WRITABLE);
-				return $output . 'Error, file not writable';
+				return $output . 'Error, file not writable' . PHP_EOL;
 			}
 			$fileObject = new SplFileObject($locationInfo->getFilePath());
 			$replacement = $additionalInformation['replacementClass'] . '::' . $additionalInformation['replacementMethod'] . '(';
@@ -103,7 +115,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 					$newLineContent = str_replace($locationInfo->getMatchedString(), $replacement, $lineContent);
 					if ($newLineContent == $lineContent) {
 						$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
-						return $output . 'Error, file not changed';
+						return $output . 'Error, file not changed' . PHP_EOL;
 					}
 					$newFileContent .= $newLineContent;
 				}
@@ -112,8 +124,10 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
 			$output .= 'Succes' . PHP_EOL;
 		} else {
-			$output = $locationInfo->getFilePath() . $locationInfo->getLineNumber() . PHP_EOL .
+			$output = $locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . PHP_EOL .
 				'Method [' . trim($locationInfo->getMatchedString()) . '] is not easily replaceable.' . PHP_EOL .
+				$additionalInformation['deprecationMessage'] . PHP_EOL .
+				$additionalInformation['replacementMessage'] . PHP_EOL;
 			$additionalInformation['replacementMessage'];
 		}
 		return $output;

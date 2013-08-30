@@ -30,24 +30,7 @@
  *
  * @author Steffen Ritter
  */
-class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Processor implements Tx_Smoothmigration_Domain_Interface_CheckProcessor {
-
-	/**
-	 * @var Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition
-	 */
-	protected $parentCheck;
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
-	 */
-	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
-		$this->parentCheck = $check;
-	}
-
-	/**
-	 * @var Tx_Smoothmigration_Domain_Model_Issue[]
-	 */
-	protected $issues = array();
+class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Processor extends Tx_Smoothmigration_Checks_AbstractCheckProcessor {
 
 	/**
 	 * @return void
@@ -62,21 +45,6 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Processor implement
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}
 	}
-
-	/**
-	 * @return boolean
-	 */
-	public function hasIssues() {
-		return count($this->issues) > 0;
-	}
-
-	/**
-	 * @return Tx_Smoothmigration_Domain_Model_Issue[]
-	 */
-	public function getIssues() {
-		return $this->issues;
-	}
-
 
 }
 

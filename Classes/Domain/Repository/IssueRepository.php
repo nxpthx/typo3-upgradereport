@@ -28,6 +28,11 @@
  */
 class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Persistence_Repository {
 
+	/**
+	 * Find all grouped by inspection
+	 *
+	 * @return array
+	 */
 	public function findAllGroupedByInspection() {
 		$issues = $this->findAll();
 		$groups = array();
@@ -42,6 +47,28 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 		return $groups;
 	}
 
+	/**
+	 * Find all pending issues grouped by inspection
+	 *
+	 * @return array
+	 */
+	public function findPendingByInspection($inspection) {
+		$query = $this->createQuery();
+		return $query->matching(
+			$query->logicalAnd(
+				$query->equals('inspection', $GLOBALS['TYPO3_DB']->fullQuoteStr($inspection, 'tx_smoothmigration_domain_model_issue')),
+				$query->logicalNot(
+					$query->equals('migrationStatus', Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS)
+				)
+			)
+		)->execute();
+	}
+
+	/**
+	 * Find all grouped by extension and inspection
+	 *
+	 * @return array
+	 */
 	public function findAllGroupedByExtensionAndInspection() {
 		$issues = $this->findAll();
 		$groups = array();
@@ -60,22 +87,26 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 	}
 
 	/**
+	 * Add an issue
+	 *
 	 * @param Tx_Smoothmigration_Domain_Model_Issue $object
+	 * @return void
 	 */
 	public function add($object) {
 		if ($GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 				'*',
 				'tx_smoothmigration_domain_model_issue',
-				'inspection = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getInspection(), 'tx_smoothmigration_domain_model_issue')
-				. ' AND identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getIdentifier(), 'tx_smoothmigration_domain_model_issue')
+				'inspection = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getInspection(), 'tx_smoothmigration_domain_model_issue') .
+				' AND identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getIdentifier(), 'tx_smoothmigration_domain_model_issue')
 			) == 0) {
 			parent::add($object);
 		}
 	}
 
 	/**
-	 * @param string $inspection
+	 * Delete all by inspection
 	 *
+	 * @param string $inspection
 	 * @return int	$issueCount	count of how many entries were deleted, -1 on error
 	 */
 	public function deleteAllByInspection($inspection) {

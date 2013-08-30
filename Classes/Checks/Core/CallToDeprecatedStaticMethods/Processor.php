@@ -30,7 +30,7 @@
  *
  * @author Peter Beernink
  */
-class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor implements Tx_Smoothmigration_Domain_Interface_CheckProcessor {
+class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor extends Tx_Smoothmigration_Checks_AbstractCheckProcessor {
 
 	/**
 	 * @var Tx_Smoothmigration_Domain_Repository_DeprecationRepository
@@ -47,25 +47,9 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor imp
 		$this->deprecationRepository = $deprecationRepository;
 	}
 
-
 	/**
-	 * @var Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition
-	 */
-	protected $parentCheck;
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
-	 */
-	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
-		$this->parentCheck = $check;
-	}
-
-	/**
-	 * @var Tx_Smoothmigration_Domain_Model_Issue[]
-	 */
-	protected $issues = array();
-
-	/**
+	 * Execute the check
+	 *
 	 * @return void
 	 */
 	public function execute() {
@@ -103,19 +87,6 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor imp
 		}
 		return $report;
 	}
-	/**
-	 * @return boolean
-	 */
-	public function hasIssues() {
-		return count($this->issues) > 0;
-	}
-
-	/**
-	 * @return Tx_Smoothmigration_Domain_Model_Issue[]
-	 */
-	public function getIssues() {
-		return $this->issues;
-	}
 
 	/**
 	 * Generate a regular expression to search for all deprecated static calls
@@ -129,7 +100,6 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor imp
 		}
 		return implode('|', $regularExpression);
 	}
-
 
 }
 

@@ -30,7 +30,7 @@
  *
  * @author Peter Beernink
  */
-class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Processor implements Tx_Smoothmigration_Domain_Interface_CheckProcessor {
+class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Processor extends Tx_Smoothmigration_Checks_AbstractCheckProcessor {
 
 	/**
 	 * Array of all deprecated static methods
@@ -43,23 +43,6 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Processor implements Tx_Smo
 		'tx_damcatedit_db',
 		'tx_damcatedit_cm'
 	);
-
-	/**
-	 * @var Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Definition
-	 */
-	protected $parentCheck;
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
-	 */
-	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
-		$this->parentCheck = $check;
-	}
-
-	/**
-	 * @var Tx_Smoothmigration_Domain_Model_Issue[]
-	 */
-	protected $issues = array();
 
 	/**
 	 * @return void
@@ -76,32 +59,22 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Processor implements Tx_Smo
 	}
 
 	/**
-	 * @return boolean
-	 */
-	public function hasIssues() {
-		return count($this->issues) > 0;
-	}
-
-	/**
-	 * @return Tx_Smoothmigration_Domain_Model_Issue[]
-	 */
-	public function getIssues() {
-		return $this->issues;
-	}
-
-	/**
 	 * Generate a regular expression to search for all deprecated static calls
+	 *
+	 * @return string
 	 */
 	protected function generateRegularExpression() {
 		$regularExpression = array();
 		foreach ($this->damClasses as $damClass) {
-			$regularExpression[] = '(' . $damClass . '\:\:\w+)';							// satic call
-			$regularExpression[] = '(makeInstance\((\"|\')' . $damClass . '(\"|\')\))';		// makeInstance call
-			$regularExpression[] = '(new\s+' . $damClass . '\s*\;)';						// new-call
+				// static call
+			$regularExpression[] = '(' . $damClass . '\:\:\w+)';
+				// makeInstance call
+			$regularExpression[] = '(makeInstance\((\"|\')' . $damClass . '(\"|\')\))';
+				// new-call
+			$regularExpression[] = '(new\s+' . $damClass . '\s*\;)';
 		}
 		return implode('|', $regularExpression);
 	}
-
 
 }
 
