@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Steffen Ritter, rs websystems (steffen.ritter@typo3.org)
+ *  (c) 2013 Peter Beernink, Drecomm (p.beernink@drecomm.nl)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,24 +26,24 @@
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Checks_Core_Xclasses_Definition
+ * Class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Definition
  *
- * @author Steffen Ritter
+ * @author Peter Beernink
  */
-class Tx_Smoothmigration_Checks_Core_Xclasses_Definition extends Tx_Smoothmigration_Checks_AbstractCheckDefinition {
+class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Definition extends Tx_Smoothmigration_Checks_AbstractCheckDefinition {
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
 	 */
 	public function getProcessor() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_Xclasses_Processor', $this);
+		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Processor', $this);
 	}
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
 	 */
 	public function getResultAnalyzer() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer', $this);
+		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Dam_CallToDamClasses_ResultAnalyzer', $this);
 	}
 
 	/**
@@ -53,7 +53,7 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Definition extends Tx_Smoothmigrat
 	 * @return string
 	 */
 	public function getIdentifier() {
-		return 'typo3-core-code-xclasses';
+		return 'typo3-dam-code-callToDamClasses';
 	}
 
 	/**
@@ -64,15 +64,6 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Definition extends Tx_Smoothmigrat
 	 */
 	public function getType() {
 		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
-	}
-
-	/**
-	 * Return the maximal TYPO3 Version the checks needs to be executed on.
-	 *
-	 * @return string
-	 */
-	public function getMaximalTypo3Version() {
-		return '4.7.999';
 	}
 
 }

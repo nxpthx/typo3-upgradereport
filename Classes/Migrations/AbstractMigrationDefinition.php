@@ -73,6 +73,105 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationDefinition impleme
 		return $this->getLanguageLabelForMigration('description');
 	}
 
+	/**
+	 * Returns the Type of the Migration
+	 * One of the Constants Defined in that interface
+	 *
+	 * @return int
+	 */
+	public function getType() {
+		return Tx_Smoothmigration_Domain_Interface_MigrationDescription::TYPE_PHP_CODE;
+	}
+
+	/**
+	 * Return the minimum TYPO3 Version the migrations needs to be executed on.
+	 *
+	 * @return string
+	 */
+	public function getMinimalTypo3Version() {
+		return '';
+	}
+
+	/**
+	 * Return the maximal TYPO3 Version the migrations needs to be executed on.
+	 *
+	 * @return string
+	 */
+	public function getMaximalTypo3Version() {
+		return '';
+	}
+
+	/**
+	 * Return the minimum PHP Version the migrations needs to be executed on.
+	 *
+	 * @return string
+	 */
+	public function getMinimalPhpVersion() {
+		return '';
+	}
+
+	/**
+	 * Return the maximal PHP Version the migrations needs to be executed on.
+	 *
+	 * @return string
+	 */
+	public function getMaximalPhpVersion() {
+		return '';
+	}
+
+	/**
+	 * Returns an array of php-modules, which need to be available
+	 * to activate this migration;
+	 *
+	 * Empty array is returned if no special modules are needed
+	 *
+	 * @return string[]
+	 */
+	public function getRequiredAvailablePhpModules() {
+		return array();
+	}
+
+	/**
+	 * Returns an array of php-modules, which need to be absent
+	 * to activate this migration
+	 *
+	 * Empty array is returned if there are no missing php-modules
+	 *
+	 * @return string[]
+	 */
+	public function getRequiredAbsentPhpModules() {
+		return array();
+	}
+
+	/**
+	 * Returns an array of Extensions which are required by this migration.
+	 *
+	 * The array may either contain the extension-key as array key while a
+	 * a version-range (x.x.x-y.y.y)is provided as value or only the extension-key
+	 * as value which then will just migration for presence of the given extension.
+	 *
+	 * @return array
+	 */
+	public function getRequiredExtensions() {
+		return array();
+	}
+
+	/**
+	 * Returns an array of Extensions which make this migration either obsolete,
+	 * or this migration is incompatible to.
+	 *
+	 * @return array
+	 */
+	public function getConflictingExtensions() {
+		return array();
+	}
+
+	/**
+	 * Get language label for migration
+	 *
+	 * @param $field
+	 * @return mixed
+	 */
 	protected function getLanguageLabelForMigration($field) {
 		$classParts = explode('_', __CLASS__);
 		$extensionName = strtolower($classParts[1]);

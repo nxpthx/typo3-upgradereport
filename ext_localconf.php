@@ -9,6 +9,7 @@ $checkArray = array(
 	'Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition',
 	'Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition',
 	'Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_Definition',
+	'Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Definition',
 	'Tx_Smoothmigration_Checks_Core_Mysql_Definition',
 );
 Tx_Smoothmigration_Service_Check_Registry::getInstance()->registerChecks($checkArray);

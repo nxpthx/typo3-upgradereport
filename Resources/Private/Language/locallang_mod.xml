@@ -2,16 +2,16 @@
 <T3locallang>
 	<meta type="array">
 		<type>module</type>
-		<description>Language labels for module &quot;Upgrade Report&quot; - header, description</description>
+		<description>Language labels for module &quot;Smooth Migration&quot; - header, description</description>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="mlang_tabs_tab">Upgrade-Report</label>
-			<label index="mlang_labels_tabdescr">This module analyses your current setup, extensions and configuration in regard to features, functions and configuration which have been removed or changed since the release of TYPO3 4.5 LTS.</label>
-			<label index="mlang_labels_tablabel">Generates a report for Upgrading to TYPO3 6.2 LTS</label>
+			<label index="mlang_tabs_tab">Smooth Migration</label>
+			<label index="mlang_labels_tabdescr">This module analyses your current setup, extensions and configuration in regard to features, functions and configuration which have been removed or changed since the release of TYPO3 4.5 LTS. It can automatically repair some of the problems it finds.</label>
+			<label index="mlang_labels_tablabel">Generates a report for Upgrading to TYPO3 6.2 LTS. Can auto-repair some problems.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="mlang_tabs_tab">Upgrade-Report</label>
+			<label index="mlang_tabs_tab">Smooth Migration</label>
 			<label index="mlang_labels_tabdescr">Das Modul analysiert Ihre aktuelle Installation, deren Extensions und Konfiguration in Bezug auf Funktionalität, Methoden/Funktionen und Konfigurationsoptionen die seit dem Release von TYPO3 4.5 LTS entfernt oder verändert wurden.</label>
 			<label index="mlang_labels_tablabel">Erstellt einen Report für ein Upgrade nach TYPO3 6.2 LTS</label>
 		</languageKey>

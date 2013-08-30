@@ -61,6 +61,7 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor imple
 	 * Inject the object manager
 	 *
 	 * @param Tx_Extbase_Object_Manager $objectManager
+	 * @return void
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_Manager $objectManager) {
 		$this->objectManager = $objectManager;
@@ -79,6 +80,8 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor imple
 	}
 
 	/**
+	 * Execute migration
+	 *
 	 * @return string
 	 */
 	public function execute() {
@@ -95,6 +98,8 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor imple
 	}
 
 	/**
+	 * Any issues?
+	 *
 	 * @return boolean
 	 */
 	public function hasIssues() {
@@ -105,6 +110,8 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor imple
 	}
 
 	/**
+	 * See if there are any issues
+	 *
 	 * @return array
 	 */
 	public function getIssues() {
@@ -114,6 +121,12 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor imple
 		return $this->issues;
 	}
 
+	/**
+	 * Handle issue
+	 *
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
+	 * @return string
+	 */
 	protected function handleIssue(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		if (is_string($issue->getLocationInfo())) {
 			$locationInfo = unserialize($issue->getLocationInfo());

@@ -1,4 +1,4 @@
-# TYPO3 Upgrade Report Extension
+# TYPO3 Smooth Migration Extension
 
 > We know about the huge 4.5 LTS user-base. Let those be able to migrate to the new modern code-base as easy as possible.
 
@@ -7,7 +7,7 @@ For further information see **[TYPO3 CMS 6.2 LTS Kickoff](http://typo3.org/news/
 
 ## Extension Usage
 
-Just install the extension into a TYPO3 4.5 LTS instance from TER. If cloning from github, make sure your extension folder is named "upgradereport".
+Just install the extension into a TYPO3 4.5 LTS instance from TER. If cloning from github, make sure your extension folder is named "smoothmigration".
 Afterwards go to the new module shipped and run the tests. We plan on having a more versatile Interface allowing to export the results.
 
 ## Extension Development

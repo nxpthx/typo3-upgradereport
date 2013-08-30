@@ -40,14 +40,96 @@ abstract class Tx_Smoothmigration_Checks_AbstractCheckDefinition implements Tx_S
 
 	/**
 	 * Constructor
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		$this->objectManagager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
 	}
 
-		/**
+
+	/**
+	 * Return the minimum TYPO3 Version the checks needs to be executed on.
+	 *
+	 * @return string
+	 */
+	public function getMinimalTypo3Version() {
+		return '';
+	}
+
+	/**
+	 * Return the maximal TYPO3 Version the checks needs to be executed on.
+	 *
+	 * @return string
+	 */
+	public function getMaximalTypo3Version() {
+		return '';
+	}
+
+	/**
+	 * Return the minimum PHP Version the checks needs to be executed on.
+	 *
+	 * @return string
+	 */
+	public function getMinimalPhpVersion() {
+		return '';
+	}
+
+	/**
+	 * Return the maximal PHP Version the checks needs to be executed on.
+	 *
+	 * @return string
+	 */
+	public function getMaximalPhpVersion() {
+		return '';
+	}
+
+	/**
+	 * Returns an array of php-modules, which need to be available
+	 * to activate this check;
+	 *
+	 * Empty array is returned if no special modules are needed
+	 *
+	 * @return string[]
+	 */
+	public function getRequiredAvailablePhpModules() {
+		return array();
+	}
+
+	/**
+	 * Returns an array of php-modules, which need to be absent
+	 * to activate this check
+	 *
+	 * Empty array is returned if there are no missing php-modules
+	 *
+	 * @return string[]
+	 */
+	public function getRequiredAbsentPhpModules() {
+		return array();
+	}
+
+	/**
+	 * Returns an array of Extensions which are required by this check.
+	 *
+	 * The array may either contain the extension-key as array key while a
+	 * a version-range (x.x.x-y.y.y)is provided as value or only the extension-key
+	 * as value which then will just check for presence of the given extension.
+	 *
+	 * @return array
+	 */
+	public function getRequiredExtensions() {
+		return array();
+	}
+
+	/**
+	 * Returns an array of Extensions which make this check either obsolete,
+	 * or this check is incompatible to.
+	 *
+	 * @return array
+	 */
+	public function getConflictingExtensions() {
+		return array();
+	}
+
+	/**
 	 * Returns the name of the check
 	 *
 	 * @return string
