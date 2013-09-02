@@ -57,7 +57,7 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 		$query = $this->createQuery();
 		return $query->matching(
 			$query->logicalAnd(
-				$query->equals('inspection', $GLOBALS['TYPO3_DB']->fullQuoteStr($inspection, 'tx_smoothmigration_domain_model_issue')),
+				$query->equals('inspection', $inspection),
 				$query->logicalNot(
 					$query->equals('migrationStatus', Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS)
 				)
