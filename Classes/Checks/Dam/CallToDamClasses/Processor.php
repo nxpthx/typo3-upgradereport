@@ -51,7 +51,8 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Processor extends Tx_Smooth
 		/** @var Tx_Smoothmigration_Service_FileLocatorService $fileLocatorService */
 		$fileLocatorService = t3lib_div::makeInstance('Tx_Smoothmigration_Service_FileLocatorService');
 		$locations = $fileLocatorService->searchInExtensions('.*\.(php|inc)$',
-			$this->generateRegularExpression()
+			$this->generateRegularExpression(),
+			array('dam')
 		);
 		foreach ($locations as $location) {
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);

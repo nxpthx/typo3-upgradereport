@@ -50,17 +50,19 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 	/**
 	 * @param string $fileNamePattern
 	 * @param string $searchPattern
+	 * @param array $excludedExtensions
 	 *
 	 * @return Tx_Smoothmigration_Domain_Interface_IssueLocation[]
 	 */
-	public function searchInExtensions($fileNamePattern, $searchPattern) {
+	public function searchInExtensions($fileNamePattern, $searchPattern, $excludedExtensions = array()) {
 		$locations = array();
+		array_push($excludedExtensions, 'smoothmigration');
 
 		$extensionKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
 		array_pop($extensionKeys);
 		foreach ($extensionKeys as $extensionKey) {
 			if ($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'] == 'S' ||
-				$extensionKey == 'smoothmigration') {
+				in_array($extensionKey, $excludedExtensions)) {
 				continue;
 			}
 			$locations = array_merge($this->searchInExtension($extensionKey, $fileNamePattern, $searchPattern), $locations);
