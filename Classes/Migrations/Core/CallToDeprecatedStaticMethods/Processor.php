@@ -90,9 +90,17 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 		}
 
 		if ($additionalInformation['isReplaceable']) {
+			$concatenator = '::';
+			if ($additionalInformation['replacementClass'] == '$GLOBALS[\'TYPO3_DB\']') {
+				$concatenator = '->';
+			}
+				// Some replacements are plain PHP functions
+			if ($additionalInformation['replacementClass'] == '') {
+				$concatenator = '';
+			}
 			$output = $locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . PHP_EOL .
 			'Replacing [' . trim($locationInfo->getMatchedString()) . '] =>' .
-			' [' . $additionalInformation['replacementClass'] . '::' . $additionalInformation['replacementMethod'] . '(]' . PHP_EOL;
+			' [' . $additionalInformation['replacementClass'] . $concatenator . $additionalInformation['replacementMethod'] . '(]' . PHP_EOL;
 
 			if ($issue->getMigrationStatus() != 0) {
 				return $output . 'already migrated' . PHP_EOL;
@@ -107,7 +115,8 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 				return $output . 'Error, file not writable' . PHP_EOL;
 			}
 			$fileObject = new SplFileObject($locationInfo->getFilePath());
-			$replacement = $additionalInformation['replacementClass'] . '::' . $additionalInformation['replacementMethod'] . '(';
+
+			$replacement = $additionalInformation['replacementClass'] . $concatenator . $additionalInformation['replacementMethod'] . '(';
 			foreach ($fileObject as $lineNumber => $lineContent) {
 				if ($lineNumber + 1 != $locationInfo->getLineNumber()) {
 					$newFileContent .= $lineContent;

@@ -50,6 +50,7 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 	/**
 	 * Find all pending issues grouped by inspection
 	 *
+	 * @param string $inspection
 	 * @return array
 	 */
 	public function findPendingByInspection($inspection) {
