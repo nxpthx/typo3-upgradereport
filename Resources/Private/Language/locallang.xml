@@ -25,7 +25,7 @@
 			<label index="check.typo3-dam-code-callToDamClasses.shortDescription">DAM will be gone in 6.x so you can't use it's Classes anymore.</label>
 			<label index="check.typo3-dam-code-callToDamClasses.description">Since DAM won't work in 6.x anymore, you should remove all calls to DAM-Methods and Instances of DAM-Classes and change them to use FAL/Media.</label>
 			<label index="migration.typo3-core-code-requireOnceInExtensions.title">Try and replace all reported require/include calls</label>
-			<label index="migration.typo3-core-code-callToDeprecatedStaticMethods.title">Replace deprecated static methods</label>
+			<label index="migration.typo3-core-code-callToDeprecatedStaticMethods.title">Replace deprecated methods method calls with new ones</label>
 			<label index="migration.typo3-core-code-callToDeprecatedStaticMethods.shortDescription">Replace deprecated methods method calls with new ones.</label>
 			<label index="migrationsstatus">Migration status:</label>
 			<label index="migrationsstatus.0">Not processed yet</label>

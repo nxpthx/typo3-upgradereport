@@ -27,38 +27,52 @@
 
 require_once(PATH_t3lib . 'class.t3lib_cli.php');
 
+	// I can haz color?
+if (DIRECTORY_SEPARATOR !== '\\') {
+	define('USE_COLOR', function_exists('posix_isatty') && posix_isatty(STDOUT));
+} else {
+	define('USE_COLOR', getenv('ANSICON') !== FALSE);
+}
+
+	// Get terminal width
+if (@exec('tput cols')) {
+	define('TERMINAL_WIDTH', exec('tput cols'));
+} else {
+	define('TERMINAL_WIDTH', 79);
+}
+
+
 /**
  * Class tx_smoothmigration_cli
  */
 class tx_smoothmigration_cli extends t3lib_cli {
 
 	/**
+	 * The issue repostitory
+	 *
 	 * @var Tx_Smoothmigration_Domain_Repository_IssueRepository
 	 */
 	protected $issueRepository;
 
 	/**
 	 * Constructor
-	 *
-	 * @return	void
 	 */
-	public function tx_smoothmigration_cli() {
-		// Running parent class constructor
+	public function __construct() {
+			// Running parent class constructor
 		parent::t3lib_cli();
 
 		$this->issueRepository = t3lib_div::makeInstance('Tx_Smoothmigration_Domain_Repository_IssueRepository');
 
-		// Adding options to help archive:
+			// Adding options to help archive:
 		$this->cli_options = array();
-		$this->cli_options[] = array('report ', 'Detailed Report including extension, codeline and check');
-		$this->cli_options[] = array('overview ', 'Just an overall overview');
-		$this->cli_options[] = array('migrate ', 'Try to migrate your code');
-		$this->cli_options[] = array('help ', 'Display this message');
+		$this->cli_options[] = array('report', 'Detailed Report including extension, codeline and check');
+		$this->cli_options[] = array('executeAllChecks', 'Execute all checks and show a short summary');
+		$this->cli_options[] = array('migrate', 'Try to migrate your code');
+		$this->cli_options[] = array('help', 'Display this message');
 
-		// Setting help texts:
+			// Setting help texts:
 		$this->cli_help['name'] = 'CLI Smoothmigration Agent';
-		$this->cli_help['synopsis'] = 'cli_dispatch.phpsh smoothmigration {task}' . "\n";
-
+		$this->cli_help['synopsis'] = 'cli_dispatch.phpsh smoothmigration {task}';
 		$this->cli_help['description'] = 'Executes the report of the smoothmigration extension on CLI Basis';
 		$this->cli_help['examples'] = './typo3/cli_dispatch.phpsh smoothmigration report';
 		$this->cli_help['author'] = 'Ingo Schmitt <is@marketing-factory.de>';
@@ -73,17 +87,17 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	public function cli_main($argv) {
 		$task = ((string)$this->cli_args['_DEFAULT'][1]) ?: '';
 
-		// Analysis type:
+			// Analysis type:
 		switch ($task) {
-			case 'overview':
-				$this->cli_echo($this->overview());
+			case 'executeAllChecks':
+				$this->executeAllChecks();
 				break;
 			case 'report':
-				$this->cli_echo($this->report());
+				$this->report();
 				break;
 			case 'migrate':
 				$migrationTask = ((string)$this->cli_args['_DEFAULT'][2]) ?: '';
-				$this->cli_echo($this->migrate($migrationTask));
+				$this->migrate($migrationTask);
 				break;
 			default:
 				$this->cli_validateArgs();
@@ -95,10 +109,9 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	/**
 	 * Renders a Report of Extensions as ASCII
 	 *
-	 * @return string
+	 * @return void
 	 */
 	private function report() {
-		$report = '';
 		$registry = Tx_Smoothmigration_Service_Check_Registry::getInstance();
 		$issuesWithInspections = $this->issueRepository->findAllGroupedByExtensionAndInspection();
 		foreach ($issuesWithInspections as $extensionKey => $inspections) {
@@ -107,29 +120,24 @@ class tx_smoothmigration_cli extends t3lib_cli {
 				/** @var Tx_Smoothmigration_Domain_Model_Issue $singleIssue */
 				foreach ($issues as $singleIssue) {
 					if ($count == 0) {
-						// Render Extension Key
-						$report .= '----------------------------------------------------------------' . "\n";
-						$report .= '+ Extension : ' . sprintf('%-49s', $singleIssue->getExtension()) . "+\n";
-						$report .= '----------------------------------------------------------------' . "\n";
-
+							// Render Extension Key
+						$this->headerMessage('Extension : ' . $singleIssue->getExtension(), 'info');
 					}
 					$check = $registry->getActiveCheckByIdentifier($singleIssue->getInspection());
-					$report .= $check->getResultAnalyzer()->getSolution($singleIssue) . "\n";
+					$this->message($check->getResultAnalyzer()->getSolution($singleIssue));
 					$count ++;
 				}
 			}
-			$report .= 'Total : ' . $count . ' issues in ' . $extensionKey;
-			$report .= "\n";
-			$report .= "\n";
+			$this->successMessage('Total: ' . $count . ' issues in ' . $extensionKey . LF);
 		}
-		return $report;
 	}
 
 	/**
-	 * @return string	Report of Issues
+	 * Execute all checks
+	 *
+	 * @return void
 	 */
-	private function overview() {
-		$report = '';
+	private function executeAllChecks() {
 		$issues = 0;
 		$registry = Tx_Smoothmigration_Service_Check_Registry::getInstance();
 		$checks = $registry->getActiveChecks();
@@ -140,13 +148,17 @@ class tx_smoothmigration_cli extends t3lib_cli {
 				$this->issueRepository->add($issue);
 			}
 			$issues = $issues + count($processor->getIssues());
-			$report .= 'Check:' . $singleCheck->getTitle() . ' has ' . count($processor->getIssues()) . ' issues ';
-			$report .= "\n";
+			$this->infoMessage('Check: ' . $singleCheck->getTitle() . ' has ' . count($processor->getIssues()) . ' issues ');
 		}
-		$report .= "\n" . 'Total Issues : ' . $issues . "\n";
-		return $report;
+		$this->infoMessage(LF . 'Total Issues : ' . $issues);
 	}
 
+	/**
+	 * Migrate
+	 *
+	 * @param $migrationTaskKey
+	 * @return void
+	 */
 	private function migrate($migrationTaskKey) {
 		$migrationTask = NULL;
 		$registry = Tx_Smoothmigration_Service_Migration_Registry::getInstance();
@@ -155,16 +167,21 @@ class tx_smoothmigration_cli extends t3lib_cli {
 			$migrationTask = $registry->getActiveMigrationByCliKey($migrationTaskKey);
 		}
 		if ($migrationTask === NULL) {
-			$output = 'Please choose a migration to execute.' . LF . LF . 'Possible options are:' .  LF. LF;
-			$output .= $this->getMigrations();
-			return $output;
+			$this->message('Please choose a migration to execute.' . LF . LF . 'Possible options are:' .  LF);
+			$this->message($this->getMigrations());
+			return;
 		}
 
 		$processor = $migrationTask->getProcessor();
-		$processor ->setCliDispatcher($this);
-		$processor ->execute();
+		$processor->setCliDispatcher($this);
+		$processor->execute();
 	}
 
+	/**
+	 * Get available migrations
+	 *
+	 * @return string
+	 */
 	private function getMigrations() {
 		$output = '';
 		$registry = Tx_Smoothmigration_Service_Migration_Registry::getInstance();
@@ -180,6 +197,124 @@ class tx_smoothmigration_cli extends t3lib_cli {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Normal message
+	 *
+	 * @param $message
+	 * @return void
+	 */
+	public function message($message = NULL) {
+		$this->cli_echo($message . LF);
+	}
+
+	/**
+	 * Informational message
+	 *
+	 * @param string $message
+	 * @param boolean $showIcon
+	 * @return void
+	 */
+	public function infoMessage($message = NULL, $showIcon = FALSE) {
+		$icon = '';
+		if ($showIcon) {
+			$icon = '★ ';
+		}
+		if (USE_COLOR) {
+			$this->cli_echo("\033[0;36m" . $icon . $message . "\033[0m" . LF);
+		} else {
+			$this->cli_echo($icon . $message . LF);
+		}
+	}
+
+	/**
+	 * Error message
+	 *
+	 * @param string $message
+	 * @param boolean $showIcon
+	 * @return void
+	 */
+	public function errorMessage($message = NULL, $showIcon = FALSE) {
+		$icon = '';
+		if ($showIcon) {
+			$icon = '✖ ';
+		}
+		if (USE_COLOR) {
+			$this->cli_echo("\033[31m" . $icon . $message . "\033[0m" . LF);
+		} else {
+			$this->cli_echo($icon . $message . LF);
+		}
+	}
+
+	/**
+	 * Warning message
+	 *
+	 * @param string $message
+	 * @param boolean $showIcon
+	 * @return void
+	 */
+	public function warningMessage($message = NULL, $showIcon = FALSE) {
+		$icon = '';
+		if ($showIcon) {
+			$icon = '! ';
+		}
+		if (USE_COLOR) {
+			$this->cli_echo("\033[1;33m" . $icon . $message . "\033[0m" . LF);
+		} else {
+			$this->cli_echo($icon . $message . LF);
+		}
+	}
+
+	/**
+	 * Success message
+	 *
+	 * @param string $message
+	 * @param boolean $showIcon
+	 * @return void
+	 */
+	public function successMessage($message = NULL, $showIcon = FALSE) {
+		$icon = '';
+		if ($showIcon) {
+			$icon = '✔ ';
+		}
+		if (USE_COLOR) {
+			$this->cli_echo("\033[0;32m" . $icon . $message . "\033[0m" . LF);
+		} else {
+			$this->cli_echo($icon . $message . LF);
+		}
+	}
+
+	/**
+	 * Show a header message
+	 *
+	 * @param $message
+	 * @param string $style
+	 * @return void
+	 */
+	public function headerMessage($message, $style = '') {
+			// Crop the message
+		$message = substr($message, 0, TERMINAL_WIDTH - 3);
+		$message =
+			str_pad('', TERMINAL_WIDTH, '-') . LF .
+			'+ ' . str_pad($message, TERMINAL_WIDTH - 3) . '+' . LF .
+			str_pad('', TERMINAL_WIDTH, '-');
+		switch ($style) {
+			case 'error':
+				$this->errorMessage($message);
+				break;
+			case 'info':
+				$this->infoMessage($message);
+				break;
+			case 'success':
+				$this->successMessage($message);
+				break;
+			case 'warning':
+				$this->warningMessage($message);
+				break;
+			default:
+				$this->message($message);
+		}
 	}
 
 }

@@ -69,7 +69,7 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_ResultAnalyzer impl
 	 * @return string
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Remove the ' . $issue->getLocation()->getMatchedString() . ' statement at ' . $issue->getLocation()->getFilePath() . ' in line ' . $issue->getLocation()->getLineNumber();
+		return 'Remove the ' . trim($issue->getLocation()->getMatchedString()) . ' statement in ' . $issue->getLocation()->getFilePath() . ' at line ' . $issue->getLocation()->getLineNumber();
 	}
 
 	/**
@@ -81,7 +81,5 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_ResultAnalyzer impl
 		return '';
 	}
 
-
 }
-
 ?>

@@ -48,10 +48,15 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 	 * @return void
 	 */
 	public function execute() {
+		$this->cliDispatcher->headerMessage($this->parentMigration->getTitle(), 'info');
 		$this->issues = $this->getIssues();
-		foreach ($this->issues as $issue) {
-			$this->cliDispatcher->cli_echo($this->handleIssue($issue) . LF);
-			$this->issueRepository->update($issue);
+		if (count($this->issues)) {
+			foreach ($this->issues as $issue) {
+				$this->handleIssue($issue);
+				$this->issueRepository->update($issue);
+			}
+		} else {
+			$this->cliDispatcher->successMessage('No issues found', TRUE);
 		}
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
@@ -74,7 +79,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 	 * Handle issue
 	 *
 	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
-	 * @return string
+	 * @return void
 	 */
 	protected function handleIssue(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		if (is_string($issue->getLocationInfo())) {
@@ -98,21 +103,24 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 			if ($additionalInformation['replacementClass'] == '') {
 				$concatenator = '';
 			}
-			$output = $locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . PHP_EOL .
+			$this->cliDispatcher->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
 			'Replacing [' . trim($locationInfo->getMatchedString()) . '] =>' .
-			' [' . $additionalInformation['replacementClass'] . $concatenator . $additionalInformation['replacementMethod'] . '(]' . PHP_EOL;
+			' [' . $additionalInformation['replacementClass'] . $concatenator . $additionalInformation['replacementMethod'] . '(]');
 
 			if ($issue->getMigrationStatus() != 0) {
-				return $output . 'already migrated' . PHP_EOL;
+				$this->cliDispatcher->successMessage('already migrated', TRUE);
+				return;
 			}
 			$newFileContent = '';
 			if (!file_exists($locationInfo->getFilePath())) {
 				$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_FOUND);
-				return $output . 'Error, file not found' . PHP_EOL;
+				$this->cliDispatcher->errorMessage('Error, file not found', TRUE);
+				return;
 			}
 			if (!is_writable($locationInfo->getFilePath())) {
 				$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_WRITABLE);
-				return $output . 'Error, file not writable' . PHP_EOL;
+				$this->cliDispatcher->errorMessage('Error, file not writable', TRUE);
+				return;
 			}
 			$fileObject = new SplFileObject($locationInfo->getFilePath());
 
@@ -124,24 +132,26 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 					$newLineContent = str_replace($locationInfo->getMatchedString(), $replacement, $lineContent);
 					if ($newLineContent == $lineContent) {
 						$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
-						return $output . 'Error, file not changed' . PHP_EOL;
+						$this->cliDispatcher->errorMessage('Error, file not changed', TRUE);
+						return;
 					}
 					$newFileContent .= $newLineContent;
 				}
 			}
 			file_put_contents($locationInfo->getFilePath(), $newFileContent);
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-			$output .= 'Succes' . PHP_EOL;
+			$this->cliDispatcher->successMessage('Succes' . LF, TRUE);
 		} else {
-			$output = $locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . PHP_EOL .
-				'Method [' . trim($locationInfo->getMatchedString()) . '] is not easily replaceable.' . PHP_EOL .
-				$additionalInformation['deprecationMessage'] . PHP_EOL .
-				$additionalInformation['replacementMessage'] . PHP_EOL;
-			$additionalInformation['replacementMessage'];
+			$this->cliDispatcher->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
+			'Method [' . trim($locationInfo->getMatchedString()) . '] is not easily replaceable.' . LF .
+			$additionalInformation['deprecationMessage']);
+			if ($additionalInformation['replacementMessage']) {
+				$this->cliDispatcher->message($additionalInformation['replacementMessage']);
+			}
+			$this->cliDispatcher->warningMessage('Manual intervention needed', TRUE);
+			$this->cliDispatcher->message();
 		}
-		return $output;
 	}
-
 }
 
 ?>
