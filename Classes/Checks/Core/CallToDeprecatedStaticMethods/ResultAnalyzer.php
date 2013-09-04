@@ -30,29 +30,7 @@
  *
  * @author Peter Beernink
  */
-class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyzer implements Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer {
-
-	/**
-	 * @var Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition
-	 */
-	protected $parentCheck;
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
-	 */
-	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
-		$this->parentCheck = $check;
-	}
-
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
-	 *
-	 * @return string
-	 */
-	public function getSeverity(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 0;
-	}
+class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyzer extends Tx_Smoothmigration_Checks_AbstractCheckResultAnalyzer {
 
 	/**
 	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
@@ -69,19 +47,8 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyze
 	 * @return string
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Replace the static method ' . substr($issue->getLocation()->getMatchedString(), 0, -1) .' in ' . $issue->getLocation()->getFilePath() . ' on line ' . $issue->getLocation()->getLineNumber();
+		return 'Replace the static method ' . substr($issue->getLocation()->getMatchedString(), 0, -1) . ' in ' . $issue->getLocation()->getFilePath() . ' on line ' . $issue->getLocation()->getLineNumber();
 	}
-
-	/**
-	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
-	 *
-	 * @return string
-	 */
-	public function getRawTextForCopyPaste(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return '';
-	}
-
-
 }
 
 ?>
