@@ -262,7 +262,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 			$icon = '! ';
 		}
 		if (USE_COLOR) {
-			$this->cli_echo("\033[1;33m" . $icon . $message . "\033[0m" . LF);
+			$this->cli_echo("\033[0;33m" . $icon . $message . "\033[0m" . LF);
 		} else {
 			$this->cli_echo($icon . $message . LF);
 		}
