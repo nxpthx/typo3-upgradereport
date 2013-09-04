@@ -12,6 +12,7 @@ $checkArray = array(
 	'Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition',
 	'Tx_Smoothmigration_Checks_Core_Xclasses_Definition',
 	'Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Definition',
+	'Tx_Smoothmigration_Checks_Database_Utf8_Definition',
 );
 Tx_Smoothmigration_Service_Check_Registry::getInstance()->registerChecks($checkArray);
 

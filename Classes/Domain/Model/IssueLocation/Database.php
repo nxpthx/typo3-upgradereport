@@ -35,6 +35,11 @@ class Tx_Smoothmigration_Domain_Model_IssueLocation_Database extends Tx_Smoothmi
 	/**
 	 * @var string
 	 */
+	protected $database;
+
+	/**
+	 * @var string
+	 */
 	protected $table;
 
 	/**
@@ -53,26 +58,37 @@ class Tx_Smoothmigration_Domain_Model_IssueLocation_Database extends Tx_Smoothmi
 	 * @return string
 	 */
 	public function createIssueIdentifier() {
-		return $this->table . ':' . $this->record . ':' . $this->field;
+		return $this->database . ':' . $this->table . ':' . $this->record . ':' . $this->field;
 	}
 
 	/**
+	 * @param string $database
 	 * @param string $table
 	 * @param integer $recordUid
 	 * @param string $field
 	 */
-	public function __construct($table, $recordUid, $field) {
+	public function __construct($database, $table = NULL, $recordUid = NULL, $field = NULL) {
+		$this->database = $database;
 		$this->table = $table;
 		$this->record = $recordUid;
 		$this->field = $field;
 	}
 
 	/**
+	 *
+	 * @return string|NULL
+	 */
+	public function getExtension() {
+		return 'Database: ' . $this->getDatabase();
+	}
+
+	/**
 	 * @param string $field
-	 * @return void
+	 * @return $this to allow for chaining
 	 */
 	public function setField($field) {
 		$this->field = $field;
+		return $this;
 	}
 
 	/**
@@ -84,10 +100,11 @@ class Tx_Smoothmigration_Domain_Model_IssueLocation_Database extends Tx_Smoothmi
 
 	/**
 	 * @param int $record
-	 * @return void
+	 * @return $this to allow for chaining
 	 */
 	public function setRecord($record) {
 		$this->record = $record;
+		return $this;
 	}
 
 	/**
@@ -99,10 +116,11 @@ class Tx_Smoothmigration_Domain_Model_IssueLocation_Database extends Tx_Smoothmi
 
 	/**
 	 * @param string $table
-	 * @return void
+	 * @return $this to allow for chaining
 	 */
 	public function setTable($table) {
 		$this->table = $table;
+		return $this;
 	}
 
 	/**
@@ -112,7 +130,21 @@ class Tx_Smoothmigration_Domain_Model_IssueLocation_Database extends Tx_Smoothmi
 		return $this->table;
 	}
 
+	/**
+	 * @param string $database
+	 * @return $this to allow for chaining
+	 */
+	public function setDatabase($database) {
+		$this->database = $database;
+		return $this;
+	}
 
+	/**
+	 * @return string
+	 */
+	public function getDatabase() {
+		return $this->database;
+	}
 
 }
 

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Steffen Ritter, rs websystems (steffen.ritter@typo3.org)
+ *  (c) 2013 Michiel Roos <michiel@maxserv.nl>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -13,37 +13,34 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Checks_Core_Xclasses_Definition
+ * Class Tx_Smoothmigration_Checks_Database_Utf8_Definition
  *
- * @author Steffen Ritter
+ * @author Michiel Roos
  */
-class Tx_Smoothmigration_Checks_Core_Xclasses_Definition extends Tx_Smoothmigration_Checks_AbstractCheckDefinition {
+class Tx_Smoothmigration_Checks_Database_Utf8_Definition extends Tx_Smoothmigration_Checks_AbstractCheckDefinition {
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
 	 */
 	public function getProcessor() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_Xclasses_Processor', $this);
+		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Database_Utf8_Processor', $this);
 	}
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
 	 */
 	public function getResultAnalyzer() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer', $this);
+		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Database_Utf8_ResultAnalyzer', $this);
 	}
 
 	/**
@@ -53,7 +50,7 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Definition extends Tx_Smoothmigrat
 	 * @return string
 	 */
 	public function getIdentifier() {
-		return 'typo3-core-code-xclasses';
+		return 'typo3-database-database-utf8';
 	}
 
 	/**
@@ -63,7 +60,7 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Definition extends Tx_Smoothmigrat
 	 * @return int
 	 */
 	public function getType() {
-		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
+		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_DATABASE;
 	}
 
 }

@@ -38,6 +38,8 @@ class Tx_Smoothmigration_Domain_Model_IssueLocation_Configuration implements Tx_
 	const TYPE_TYPOSCRIPT = 4;
 	const TYPE_PAGETS = 8;
 	const TYPE_EXTENSIONCONFIGURATION = 16;
+	const TYPE_DATABASE = 32;
+	const TYPE_DATABASESERVER = 46;
 
 	/**
 	 * @var integer

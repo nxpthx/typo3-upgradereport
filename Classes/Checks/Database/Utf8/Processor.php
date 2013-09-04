@@ -37,14 +37,14 @@ class Tx_Smoothmigration_Checks_Database_Utf8_Processor extends Tx_Smoothmigrati
 		$characterSets = $this->getMySqlCharacterSets();
 		$preferredSettings = array(
 			'character_set_connection' => 'utf8',
-			'character_set_database' => 'latin1',
+			'character_set_database' => 'utf8',
 			'character_set_server' => 'utf8'
 		);
 
 		foreach ($characterSets as $key => $characterSet) {
 			if (array_key_exists($key, $preferredSettings)) {
 				if ($characterSet !== $preferredSettings[$key]) {
-					$physicalLocation = new Tx_Smoothmigration_Domain_Model_IssueLocation_Database(TYPO3_db);
+					$physicalLocation = new Tx_Smoothmigration_Domain_Model_IssueLocation_Database(TYPO3_db_username . '@' . TYPO3_db_host . '/' . TYPO3_db);
 					$details = new Tx_Smoothmigration_Domain_Model_IssueLocation_Configuration(
 						Tx_Smoothmigration_Domain_Model_IssueLocation_Configuration::TYPE_DATABASESERVER,
 						TYPO3_db_username . '@' . TYPO3_db_host . '/' . TYPO3_db . ': ' . $key,
@@ -53,7 +53,11 @@ class Tx_Smoothmigration_Checks_Database_Utf8_Processor extends Tx_Smoothmigrati
 					);
 
 					$issue = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $details);
-					//$issue->setAdditionalInformation();
+					$issue->setAdditionalInformation(array(
+						'setting' => $key,
+						'preferredValue' => $preferredSettings[$key],
+						'actualValue' => $characterSet
+					));
 					$this->issues[] = $issue;
 				}
 			}
