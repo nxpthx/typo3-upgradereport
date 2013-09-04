@@ -300,9 +300,9 @@ class tx_smoothmigration_cli extends t3lib_cli {
 		if (UNICODE) {
 			$linePaddingLength = mb_strlen('─') * (TERMINAL_WIDTH - 2);
 			$message =
-				'╭' . str_pad('', $linePaddingLength, '─') . '╮' . LF .
+				'┌' . str_pad('', $linePaddingLength, '─') . '┐' . LF .
 				'│ ' . str_pad($message, TERMINAL_WIDTH - 3) . '│' . LF .
-				'╰' . str_pad('', $linePaddingLength, '─') . '╯';
+				'└' . str_pad('', $linePaddingLength, '─') . '┘';
 		} else {
 			$message =
 				str_pad('', TERMINAL_WIDTH, '-') . LF .
