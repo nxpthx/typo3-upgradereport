@@ -27,11 +27,13 @@
 
 require_once(PATH_t3lib . 'class.t3lib_cli.php');
 
-	// I can haz color?
+	// I can haz color / use unicode?
 if (DIRECTORY_SEPARATOR !== '\\') {
 	define('USE_COLOR', function_exists('posix_isatty') && posix_isatty(STDOUT));
+	define('UNICODE', TRUE);
 } else {
 	define('USE_COLOR', getenv('ANSICON') !== FALSE);
+	define('UNICODE', FALSE);
 }
 
 	// Get terminal width
@@ -218,7 +220,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 */
 	public function infoMessage($message = NULL, $showIcon = FALSE) {
 		$icon = '';
-		if ($showIcon) {
+		if ($showIcon && UNICODE) {
 			$icon = '★ ';
 		}
 		if (USE_COLOR) {
@@ -237,7 +239,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 */
 	public function errorMessage($message = NULL, $showIcon = FALSE) {
 		$icon = '';
-		if ($showIcon) {
+		if ($showIcon && UNICODE) {
 			$icon = '✖ ';
 		}
 		if (USE_COLOR) {
@@ -275,7 +277,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 */
 	public function successMessage($message = NULL, $showIcon = FALSE) {
 		$icon = '';
-		if ($showIcon) {
+		if ($showIcon && UNICODE) {
 			$icon = '✔ ';
 		}
 		if (USE_COLOR) {
@@ -295,10 +297,18 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	public function headerMessage($message, $style = '') {
 			// Crop the message
 		$message = substr($message, 0, TERMINAL_WIDTH - 3);
-		$message =
-			str_pad('', TERMINAL_WIDTH, '-') . LF .
-			'+ ' . str_pad($message, TERMINAL_WIDTH - 3) . '+' . LF .
-			str_pad('', TERMINAL_WIDTH, '-');
+		if (UNICODE) {
+			$linePaddingLength = mb_strlen('─') * (TERMINAL_WIDTH - 2);
+			$message =
+				'╭' . str_pad('', $linePaddingLength, '─') . '╮' . LF .
+				'│ ' . str_pad($message, TERMINAL_WIDTH - 3) . '│' . LF .
+				'╰' . str_pad('', $linePaddingLength, '─') . '╯';
+		} else {
+			$message =
+				str_pad('', TERMINAL_WIDTH, '-') . LF .
+				'+ ' . str_pad($message, TERMINAL_WIDTH - 3) . '+' . LF .
+				str_pad('', TERMINAL_WIDTH, '-');
+		}
 		switch ($style) {
 			case 'error':
 				$this->errorMessage($message);
