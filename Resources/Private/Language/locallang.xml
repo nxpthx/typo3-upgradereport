@@ -6,6 +6,9 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="docheader.report.index">Checks</label>
+			<label index="docheader.report.reportOverview">Report Overview</label>
+			<label index="docheader.report.show">Report</label>
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.title">Deprecated static methods</label>
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.shortDescription">Calling deprecated methods will give an error as they have been removed.</label>
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.description">From the 4.5 release multiple methods have been deprecated. Changing them to their respective new methods would solve the issue.</label>
