@@ -49,9 +49,42 @@ class Tx_Smoothmigration_Checks_Database_Utf8_ResultAnalyzer extends Tx_Smoothmi
 		} else {
 			$extraInformation = $issue->getAdditionalInformation();
 		}
-		return 'Replace database server setting \'' . $extraInformation['setting'] .
-		'\' from \'' . $extraInformation['actualValue'] .
-			'\' to \'' . $extraInformation['preferredValue'] . '\'.';
+		switch ($extraInformation['type']) {
+			case 'configuration':
+				$result = $this->ll(
+					'result.typo3-database-database-utf8.databaseServerSetting',
+					array(
+						$extraInformation['setting'],
+						$extraInformation['actualValue'],
+						$extraInformation['preferredValue']
+					)
+				);
+				break;
+			case 'tableCollation':
+				$result = $this->ll(
+					'result.typo3-database-database-utf8.databaseTableCollation',
+					array(
+						$extraInformation['tableName'],
+						$extraInformation['tableCollation'],
+						'utf8_general_ci'
+					)
+				);
+				break;
+			case 'columnCollation':
+				$result = $this->ll(
+					'result.typo3-database-database-utf8.databaseColumnCollation',
+					array(
+						$extraInformation['tableName'],
+						$extraInformation['columnName'],
+						$extraInformation['characterSetName'],
+						$extraInformation['collationName']
+					)
+				);
+				break;
+			default:
+				$result = '';
+		}
+		return $result;
 	}
 }
 

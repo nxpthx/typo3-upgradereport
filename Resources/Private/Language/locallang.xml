@@ -29,7 +29,10 @@
 			<label index="check.typo3-dam-code-callToDamClasses.description">Since DAM won't work in 6.x anymore, you should remove all calls to DAM-Methods and Instances of DAM-Classes and change them to use FAL/Media.</label>
 			<label index="check.typo3-database-database-utf8.title">UTF-8 readiness check</label>
 			<label index="check.typo3-database-database-utf8.shortDescription">Check if your database and tables are UTF-8.</label>
-			<label index="check.typo3-database-database-utf8.description">UTF-8 ensures your database will be able to store multiple languages without any data conversions being done while storing ore retrieving the values.</label>
+			<label index="check.typo3-database-database-utf8.description">UTF-8 ensures your database will be able to store multiple languages without any data conversions being done while storing or retrieving the values.</label>
+			<label index="result.typo3-database-database-utf8.databaseServerSetting">Replace database server setting '%s' from '%s' to '%s'.</label>
+			<label index="result.typo3-database-database-utf8.databaseTableCollation">Replace table collation on table '%s' from '%s' to '%s'.</label>
+			<label index="result.typo3-database-database-utf8.databaseColumnCollation">Replace column collation on table '%s', column '%s' from characterset '%s' and collation '%s' to 'utf8' and 'utf_general_ci'.</label>
 			<label index="migration.typo3-core-code-requireOnceInExtensions.title">Try and replace all reported require/include calls</label>
 			<label index="migration.typo3-core-code-callToDeprecatedStaticMethods.title">Replace deprecated methods method calls with new ones</label>
 			<label index="migration.typo3-core-code-callToDeprecatedStaticMethods.shortDescription">Replace deprecated methods method calls with new ones.</label>

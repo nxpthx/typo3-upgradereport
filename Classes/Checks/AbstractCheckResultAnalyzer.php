@@ -35,10 +35,39 @@ class Tx_Smoothmigration_Checks_AbstractCheckResultAnalyzer implements Tx_Smooth
 	protected $parentCheck;
 
 	/**
+	 * @var Tx_Extbase_Utility_Localization
+	 */
+	protected $translator;
+
+	/**
 	 * @param Tx_Smoothmigration_Domain_Interface_Check $check
 	 */
 	public function __construct(Tx_Smoothmigration_Domain_Interface_Check $check) {
 		$this->parentCheck = $check;
+		$translator = t3lib_div::makeInstance('Tx_Extbase_Utility_Localization');
+		$this->injectTranslator($translator);
+	}
+
+	/**
+	 * Injects the Localization Utility
+	 *
+	 * @param Tx_Extbase_Utility_Localization $translator
+	 *        An instance of the Localization Utility
+	 * @return void
+	 */
+	public function injectTranslator(Tx_Extbase_Utility_Localization $translator) {
+		$this->translator = $translator;
+	}
+
+	/**
+	 * Shortcut function for fetching language labels
+	 *
+	 * @param $key
+	 * @param $arguments
+	 * @return string
+	 */
+	public function ll($key, $arguments) {
+		return $this->translator->translate($key, 'smoothmigration', $arguments);
 	}
 
 	/**
