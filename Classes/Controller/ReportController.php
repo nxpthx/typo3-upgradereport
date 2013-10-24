@@ -35,11 +35,16 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 	 */
 	protected $issueRepository;
 
+	/**
+	 * @param Tx_Smoothmigration_Domain_Repository_IssueRepository $issueRepository
+	 */
 	public function injectIssueRepository(Tx_Smoothmigration_Domain_Repository_IssueRepository $issueRepository) {
 		$this->issueRepository = $issueRepository;
 	}
 
 	/**
+	 * Index action, displays the available checks
+	 *
 	 * @return void
 	 */
 	public function indexAction() {
@@ -50,15 +55,24 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 	}
 
 	/**
+	 * Overview of repot actions
 	 *
+	 * @return void
 	 */
 	public function reportOverviewAction() {
 		$this->view->assign('issueCount', $this->issueRepository->findAll()->count());
 	}
 
+	/**
+	 * Show action, Shows the report
+	 * FIXME: Maybe rename this action to showHtmlReport or something more descriptive
+	 *
+	 * @return void
+	 */
 	public function showAction() {
 		$this->view->assign('groupedIssues', $this->issueRepository->findAllGroupedByExtensionAndInspection());
 	}
+
 	/**
 	 * Initializes the controller before invoking an action method.
 	 *
@@ -73,8 +87,7 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 
 		$this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/GridFilters.css');
 
-		$jsFiles = array(
-		);
+		$jsFiles = array();
 
 		foreach ($jsFiles as $jsFile) {
 			$this->pageRenderer->addJsFile($resourcePath . $jsFile);
