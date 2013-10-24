@@ -56,16 +56,6 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition ex
 		return 'typo3-core-code-callToDeprecatedStaticMethods';
 	}
 
-	/**
-	 * Returns the Type of the Check
-	 * One of the Constants Defined in that interface
-	 *
-	 * @return int
-	 */
-	public function getType() {
-		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
-	}
-
 }
 
 ?>

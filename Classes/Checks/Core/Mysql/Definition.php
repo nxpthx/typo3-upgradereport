@@ -56,16 +56,6 @@ class Tx_Smoothmigration_Checks_Core_Mysql_Definition extends Tx_Smoothmigration
 		return 'typo3-core-code-mysql';
 	}
 
-	/**
-	 * Returns the Type of the Check
-	 * One of the Constants Defined in that interface
-	 *
-	 * @return int
-	 */
-	public function getType() {
-		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
-	}
-
 }
 
 ?>

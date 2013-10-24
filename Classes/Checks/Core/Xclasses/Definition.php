@@ -57,16 +57,6 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Definition extends Tx_Smoothmigrat
 	}
 
 	/**
-	 * Returns the Type of the Check
-	 * One of the Constants Defined in that interface
-	 *
-	 * @return int
-	 */
-	public function getType() {
-		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
-	}
-
-	/**
 	 * Return the maximal TYPO3 Version the checks needs to be executed on.
 	 *
 	 * @return string

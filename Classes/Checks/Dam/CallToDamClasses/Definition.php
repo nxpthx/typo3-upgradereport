@@ -56,16 +56,6 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Definition extends Tx_Smoot
 		return 'typo3-dam-code-callToDamClasses';
 	}
 
-	/**
-	 * Returns the Type of the Check
-	 * One of the Constants Defined in that interface
-	 *
-	 * @return int
-	 */
-	public function getType() {
-		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
-	}
-
 }
 
 ?>

@@ -139,6 +139,16 @@ abstract class Tx_Smoothmigration_Checks_AbstractCheckDefinition implements Tx_S
 	}
 
 	/**
+	 * Returns the Type of the Check
+	 * One of the Constants Defined in that interface
+	 *
+	 * @return int
+	 */
+	public function getType() {
+		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
+	}
+
+	/**
 	 * Returns a string which describes the check in one sentence.
 	 *
 	 * @return string

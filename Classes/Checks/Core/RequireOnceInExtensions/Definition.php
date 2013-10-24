@@ -56,16 +56,6 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition extends 
 		return 'typo3-core-code-requireOnceInExtensions';
 	}
 
-	/**
-	 * Returns the Type of the Check
-	 * One of the Constants Defined in that interface
-	 *
-	 * @return int
-	 */
-	public function getType() {
-		return Tx_Smoothmigration_Domain_Interface_CheckDescription::TYPE_PHP_CODE;
-	}
-
 }
 
 ?>
