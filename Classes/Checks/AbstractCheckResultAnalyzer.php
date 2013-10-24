@@ -66,7 +66,7 @@ class Tx_Smoothmigration_Checks_AbstractCheckResultAnalyzer implements Tx_Smooth
 	 * @param $arguments
 	 * @return string
 	 */
-	public function ll($key, $arguments) {
+	public function ll($key, $arguments = NULL) {
 		return $this->translator->translate($key, 'smoothmigration', $arguments);
 	}
 

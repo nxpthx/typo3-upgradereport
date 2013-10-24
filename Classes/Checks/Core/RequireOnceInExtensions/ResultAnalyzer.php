@@ -38,7 +38,7 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_ResultAnalyzer exte
 	 * @return string
 	 */
 	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Jo ne: noch keine Beschreibung';
+		return $this->ll('result.typo3-core-code-requireOnceInExtensions.explanation');
 	}
 
 	/**
@@ -47,7 +47,14 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_ResultAnalyzer exte
 	 * @return string
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Remove the ' . trim($issue->getLocation()->getMatchedString()) . ' statement in ' . $issue->getLocation()->getFilePath() . ' at line ' . $issue->getLocation()->getLineNumber();
+		return $this->ll(
+			'result.typo3-core-code-requireOnceInExtensions.solution',
+			array(
+				$issue->getLocation()->getMatchedString(),
+				$issue->getLocation()->getFilePath(),
+				$issue->getLocation()->getLineNumber()
+			)
+		);
 	}
 
 }

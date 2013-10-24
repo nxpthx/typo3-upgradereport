@@ -38,7 +38,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyze
 	 * @return string
 	 */
 	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Call to deprecated static method';
+		return $this->ll('result.typo3-core-code-callToDeprecatedStaticMethods.explanation');
 	}
 
 	/**
@@ -47,7 +47,14 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyze
 	 * @return string
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Replace the static method ' . substr($issue->getLocation()->getMatchedString(), 0, -1) . ' in ' . $issue->getLocation()->getFilePath() . ' on line ' . $issue->getLocation()->getLineNumber();
+		return $this->ll(
+			'result.typo3-core-code-callToDeprecatedStaticMethods.solution',
+			array(
+				substr($issue->getLocation()->getMatchedString(), 0, -1),
+				$issue->getLocation()->getFilePath(),
+				$issue->getLocation()->getLineNumber()
+			)
+		);
 	}
 }
 

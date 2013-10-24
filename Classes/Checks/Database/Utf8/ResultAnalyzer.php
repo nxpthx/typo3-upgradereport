@@ -35,7 +35,7 @@ class Tx_Smoothmigration_Checks_Database_Utf8_ResultAnalyzer extends Tx_Smoothmi
 	 * @return string
 	 */
 	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Incorrect database setting';
+		return $this->ll('result.typo3-database-database-utf8.explanation');
 	}
 
 	/**

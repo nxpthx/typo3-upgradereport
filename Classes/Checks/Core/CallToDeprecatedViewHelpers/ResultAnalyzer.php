@@ -38,7 +38,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_ResultAnalyzer 
 	 * @return string
 	 */
 	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Call to deprecated viewhelper';
+		return $this->ll('result.typo3-core-code-callToDeprecatedViewHelpers.explanation');
 	}
 
 	/**
@@ -47,7 +47,14 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_ResultAnalyzer 
 	 * @return string
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Replace the viewhelper ' . substr($issue->getLocation()->getMatchedString(), 1) .' in ' . $issue->getLocation()->getFilePath() . ' on line ' . $issue->getLocation()->getLineNumber();
+		return $this->ll(
+			'result.typo3-core-code-callToDeprecatedViewHelpers.solution',
+			array (
+				substr($issue->getLocation()->getMatchedString(), 1),
+				$issue->getLocation()->getFilePath(),
+				$issue->getLocation()->getLineNumber()
+			)
+		);
 	}
 
 }

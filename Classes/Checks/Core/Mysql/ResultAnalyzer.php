@@ -38,7 +38,7 @@ class Tx_Smoothmigration_Checks_Core_Mysql_ResultAnalyzer extends Tx_Smoothmigra
 	 * @return string
 	 */
 	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Direct call to mysql_ functions';
+		return $this->ll('result.typo3-core-code-mysql.explanation');
 	}
 
 	/**
@@ -47,7 +47,14 @@ class Tx_Smoothmigration_Checks_Core_Mysql_ResultAnalyzer extends Tx_Smoothmigra
 	 * @return string
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Replace the call to ' . trim(substr($issue->getLocation()->getMatchedString(), 0, -1)) .' in ' . $issue->getLocation()->getFilePath() . ' on line ' . $issue->getLocation()->getLineNumber();
+		return $this->ll(
+			'result.typo3-core-code-mysql.solution',
+			array(
+				trim(substr($issue->getLocation()->getMatchedString(), 0, -1)),
+				$issue->getLocation()->getFilePath(),
+				$issue->getLocation()->getLineNumber()
+			)
+		);
 	}
 
 }

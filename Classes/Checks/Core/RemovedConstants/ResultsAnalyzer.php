@@ -35,7 +35,7 @@ class Tx_Smoothmigration_Checks_Core_RemovedConstants_ResultAnalyzer extends Tx_
 	 * @return string
 	 */
 	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Call to removed constant: PATH_t3lib';
+		return $this->ll('result.typo3-core-code-removedConstants.explanation');
 	}
 
 	/**
@@ -44,9 +44,14 @@ class Tx_Smoothmigration_Checks_Core_RemovedConstants_ResultAnalyzer extends Tx_
 	 * @return string
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Remove constant usage: ' . $issue->getLocation()->getMatchedString() .
-			' in ' . $issue->getLocation()->getFilePath() .
-			' on line ' . $issue->getLocation()->getLineNumber();
+		return $this->ll(
+			'result.typo3-core-code-mysql.solution',
+			array(
+				$issue->getLocation()->getMatchedString(),
+				$issue->getLocation()->getFilePath(),
+				$issue->getLocation()->getLineNumber()
+			)
+		);
 	}
 
 }

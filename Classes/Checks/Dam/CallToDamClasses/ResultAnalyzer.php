@@ -38,7 +38,7 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_ResultAnalyzer extends Tx_S
 	 * @return string
 	 */
 	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Usage of DAM-Classes';
+		return $this->ll('result.typo3-dam-code-callToDamClasses.explanation');
 	}
 
 	/**
@@ -47,7 +47,14 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_ResultAnalyzer extends Tx_S
 	 * @return string
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return 'Replace the Usage of DAM with FAL-Functionalities: ' . substr($issue->getLocation()->getMatchedString(), 0, -1) .' in ' . $issue->getLocation()->getFilePath() . ' on line ' . $issue->getLocation()->getLineNumber();
+		return $this->ll(
+			'result.typo3-core-code-mysql.solution',
+			array(
+				substr($issue->getLocation()->getMatchedString(), 0, -1),
+				$issue->getLocation()->getFilePath(),
+				$issue->getLocation()->getLineNumber()
+			)
+		);
 	}
 
 }
