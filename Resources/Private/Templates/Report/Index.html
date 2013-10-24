@@ -13,11 +13,15 @@
 				<div class="message-body">
 					<p>{check.shortDescription}</p>
 					<p>
-						<a href="#" class="t3-smoothmigration-runCheck">RUN</a>
-						<a href="#" class="t3-smoothmigration-clearIssues">CLEAR ISSUES</a>
+						<a href="#" class="t3-smoothmigration-runCheck">Run</a>
+						<a href="#" class="t3-smoothmigration-clearIssues">Clear Issues</a>
 					</p>
 				</div>
-				<div class="feedback"></div>
+				<div class="feedback">
+					<div class="clearing"><span class="spinner"><!-- --></span><strong class="spinner"> Clearing...</strong></div>
+					<div class="running"><span class="spinner"><!-- --></span><strong class="spinner"> Running...</strong></div>
+					<div class="report"><!-- --></div>
+				</div>
 			</li>
 		</f:for>
 	</ul>

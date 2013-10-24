@@ -1,6 +1,10 @@
 
+li > div.header-container > h4 {
+	margin-top: 0;
+	padding-top: 0;
+}
 
-li > div.header-container >  h4 {
-	margin-top:0px;
-	padding-top:0px;
+.feedback .clearing,
+.feedback .running {
+	display: none;
 }
