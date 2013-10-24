@@ -6,9 +6,6 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="docheader.report.index">Checks</label>
-			<label index="docheader.report.reportOverview">Report Overview</label>
-			<label index="docheader.report.show">Report</label>
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.title">Deprecated static methods</label>
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.shortDescription">Calling deprecated methods will give an error as they have been removed.</label>
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.description">From the 4.5 release multiple methods have been deprecated. Changing them to their respective new methods would solve the issue.</label>
@@ -46,6 +43,21 @@
 			<label index="migrationsstatus.3">Error, file not writable</label>
 			<label index="migrationsstatus.4">Error, file not changed</label>
 			<label index="migrationsstatus.noMigrationAvailable">No migration available, manual action required.</label>
+			<label index="docheader.report.index">Checks</label>
+			<label index="docheader.report.reportOverview">Report Overview</label>
+			<label index="docheader.report.show">Report</label>
+			<label index='check.clearing'>Clearing...</label>
+			<label index='check.clearIssues'>Clear issues</label>
+			<label index='check.runCheck'>Run check</label>
+			<label index='check.running'>Running...</label>
+			<label index='check.testRun'>Test run</label>
+			<label index='check.cleared'>Cleared</label>
+			<label index='check.found'>Found</label>
+			<label index='check.issues'>issues</label>
+			<label index='report.availableChecks'>Available Checks</label>
+			<label index='report.clearAllIssues'>Clear all issues</label>
+			<label index='report.showReport'>Show report</label>
+			<label index='report.runAllChecks'>Run all checks</label>
 		</languageKey>
 	</data>
 </T3locallang>

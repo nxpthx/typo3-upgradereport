@@ -1,7 +1,9 @@
 (function($) {
     'use strict';
     function runTest (testIdentifier) {
-        var $listElement = $('li[data-checkid=' + testIdentifier + ']');
+        var $element = $('[data-checkid=' + testIdentifier + ']');
+        $element.find('.feedback .clearing').hide();
+        $element.find('.feedback .running').show();
         $.ajax({
             type: 'POST',
             url: 'mod.php?M=tools_SmoothmigrationSmoothmigration',
@@ -14,23 +16,25 @@
                 }
             }
         }).done(function(result) {
-            $listElement.find('.feedback .running').hide();
-            $listElement.find('.feedback .report').html('<p>Test Run ' + result.result + '.</p>');
+            $element.find('.feedback .running').hide();
+            $element.find('.feedback .report').html('<p>' + TYPO3.lang['check.testRun'] + ' ' + result.result + '.</p>');
             if (result.result === 'OK') {
-                $listElement.find('.feedback .report').html('<p>Found ' + result.issueCount + ' issues.</p>');
+                $element.find('.feedback .report').append('<p>' + TYPO3.lang['check.found'] + ' ' + result.issueCount + ' ' + TYPO3.lang['check.issues'] + '.</p>');
                 if (result.issueCount > 0) {
-                    $listElement.setMessageState('warning');
+                    $element.setMessageState('warning');
                 } else {
-                    $listElement.setMessageState('ok');
+                    $element.setMessageState('ok');
                 }
             } else {
-                $listElement.setMessageState('error');
+                $element.setMessageState('error');
             }
         });
     }
 
     function clearTestResults (testIdentifier) {
-        var $listElement = $('li[data-checkid=' + testIdentifier + ']');
+        var $element = $('[data-checkid=' + testIdentifier + ']');
+        $element.find('.feedback .running').hide();
+        $element.find('.feedback .clearing').show();
         $.ajax({
             type: 'POST',
             url: 'mod.php?M=tools_SmoothmigrationSmoothmigration',
@@ -43,13 +47,13 @@
                 }
             }
         }).done(function(result) {
-            $listElement.find('.feedback .clearing').hide();
-            $listElement.find('.feedback .report').html('<p>Test Run ' + result.result + '.</p>');
+            $element.find('.feedback .clearing').hide();
+            $element.find('.feedback .report').html('<p>' + TYPO3.lang['check.testRun'] + ' ' + result.result + '.</p>');
             if (result.result === 'OK') {
-                $listElement.find('.feedback .report').html('<p>Cleared ' + result.issueCount + ' issues.</p>');
-                $listElement.setMessageState('ok');
+                $element.find('.feedback .report').append('<p>' + TYPO3.lang['check.cleared'] + ' ' + result.issueCount + ' ' + TYPO3.lang['check.issues'] + '.</p>');
+                $element.setMessageState('ok');
             } else {
-                $listElement.setMessageState('error');
+                $element.setMessageState('error');
             }
         });
     }
@@ -57,53 +61,36 @@
     $.extend($.fn, {
         clearIssues: function() {
             this.bind('click.clearIssues', function() {
-                $(this).parents('li').find('.feedback .running').hide();
-                $(this).parents('li').find('.feedback .clearing').show();
                 clearTestResults($(this).parents('li').attr('data-checkid'));
             });
             return this;
         },
-
         clearAllIssues: function() {
             this.bind('click.clearAllIssues', function() {
                 $('li[data-checkid]').each(function(index, element) {
-                    $(element).find('.feedback .running').hide();
-                    $(element).find('.feedback .clearing').show();
                     clearTestResults($(element).attr('data-checkid'));
                 });
             });
             return this;
         },
-
         runCheck: function() {
             this.bind('click.runCheck', function() {
-                $(this).parents('li').find('.feedback .clearing').hide();
-                $(this).parents('li').find('.feedback .running').show();
                 runTest($(this).parents('li').attr('data-checkid'));
             });
             return this;
         },
-
         runAllChecks: function() {
             this.bind('click.runAllChecks', function() {
                 $('li[data-checkid]').each(function(index, element) {
-                    $(element).find('.feedback .clearing').hide();
-                    $(element).find('.feedback .running').show();
                     runTest($(element).attr('data-checkid'));
                 });
             });
             return this;
         },
-
         setMessageState: function(state) {
-            this
-                .removeClass('message-error')
-                .removeClass('message-notice')
-                .removeClass('message-ok')
-                .removeClass('message-warning')
+            this.removeClass('message-error message-notice message-ok message-warning')
                 .addClass('message-' + state);
-    }
-
+        }
     });
 })(jQuery);
 

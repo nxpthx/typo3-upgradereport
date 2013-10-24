@@ -8,3 +8,7 @@ li > div.header-container > h4 {
 .feedback .running {
 	display: none;
 }
+
+.toolbar {
+	text-align: right;
+}
