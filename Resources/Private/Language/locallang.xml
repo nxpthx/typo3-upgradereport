@@ -34,8 +34,10 @@
 			<label index="check.typo3-core-code-xclasses.title">Check for xClasses</label>
 			<label index="check.typo3-core-code-xclasses.shortDescription">The way of registering xClasses has been changed. Check if xClassing is used.</label>
 			<label index="check.typo3-core-code-xclasses.description">When changing you might also need to change the location/name of the hook or add the file to the ext_autoload.php.</label>
-			<label index="result.typo3-core-code-xclasses.explanation">require_once // include_once usage</label>
-			<label index="result.typo3-core-code-xclasses.solution">Remove the %s statement in %s on line %s.</label>
+			<label index="result.typo3-core-code-xclasses.explanation">The Class "%s" is registered as replacement for "%s" via xClass-Mechanism. The new class won't be executed after upgrading to 6.2 as the method of registering xclasses has changed in TYPO3 CMS 6.0. Please check if the xclass-code is still needed in after upgrading to TYPO3 6.2 LTS and in that case register it the new way.</label>
+			<label index="result.typo3-core-code-xclasses.solution">Remove the XCLASS Code at %s. Add the following code there:
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['%s'] = array('className' => '%s');</label>
+			<label index="result.typo3-core-code-xclasses.raw">$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['%s'] = array('className' => '%s');</label>
 			<label index="check.typo3-dam-code-callToDamClasses.title">Dam Classes</label>
 			<label index="check.typo3-dam-code-callToDamClasses.shortDescription">DAM will be gone in 6.x so you can't use it's Classes anymore.</label>
 			<label index="check.typo3-dam-code-callToDamClasses.description">Since DAM won't work in 6.x anymore, you should remove all calls to DAM-Methods and Instances of DAM-Classes and change them to use FAL/Media.</label>

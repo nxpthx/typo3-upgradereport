@@ -39,13 +39,13 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer extends Tx_Smoothmi
 	 */
 	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		$information = $issue->getAdditionalInformation();
-
-		$data = array(
-			'EXTENSION' => $issue->getLocation()->getExtension() ?: 'Core',
+		return $this->ll(
+			'result.typo3-core-code-xclasses.explanation',
+			array(
+				$information['IMPLEMENTATION_CLASS'],
+				$information['ORIGINAL_CLASS']
+			)
 		);
-		$data = array_merge($data, $information);
-		return str_replace(array_keys($data), array_values($data), 'The Class "IMPLEMENTATION_CLASS" is registered as replacement for "ORIGINAL_CLASS" via xClass-Mechanism. The new class won\'t be executed after upgrading to 6.2 as the method of registering xclasses has changed in TYPO3 CMS 6.0. Please check if the xclass-code is still needed in after upgrading to TYPO3 6.2 LTS and in that case register it the new way.');
-
 	}
 
 	/**
@@ -70,8 +70,17 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer extends Tx_Smoothmi
 				}
 			}
 		}
-		return 'Remove the XCLASS Code at ' . $issue->getLocation()->getPhysicalLocation()->getFilePath() . ($issue->getLocation()->getPhysicalLocation()->getLineNumber() > -1 ? ' line ' . $issue->getLocation()->getPhysicalLocation()->getLineNumber() : '') . ". Add the following code there:\n" .
-			'$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'Objects\'][\'' . $originalClass . '\'] = array(\'className\' => \'' . $newClass . '\');';
+		return $this->ll(
+			'result.typo3-core-code-xclasses.solution',
+			array(
+				$issue->getLocation()->getPhysicalLocation()->getFilePath() .
+				($issue->getLocation()->getPhysicalLocation()->getLineNumber() > -1 ?
+					' line ' . $issue->getLocation()->getPhysicalLocation()->getLineNumber() :
+					''),
+				$originalClass,
+				$newClass
+			)
+		);
 	}
 
 	/**
@@ -84,10 +93,14 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer extends Tx_Smoothmi
 
 		$originalClass = $information['ORIGINAL_CLASS'];
 		$newClass = $information['IMPLEMENTATION_CLASS'];
-		return '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'Objects\'][\'' . $originalClass . '\'] = array(\'className\' => \'' . $newClass . '\');';
-
+		return $this->ll(
+			'result.typo3-core-code-xclasses.raw',
+			array(
+				$originalClass,
+				$newClass
+			)
+		);
 	}
-
 
 }
 
