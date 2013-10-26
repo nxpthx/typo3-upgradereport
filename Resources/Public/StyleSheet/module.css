@@ -12,3 +12,25 @@ li > div.header-container > h4 {
 .toolbar {
 	text-align: right;
 }
+
+/* Screen Only */
+@media screen {
+	.noprint {
+		display: block !important;
+	}
+
+	.noshow {
+		display: none !important;
+	}
+}
+
+/* Print Only */
+@media print {
+	.noprint {
+		display: none !important;
+	}
+
+	.noshow {
+		display: block !important;
+	}
+}

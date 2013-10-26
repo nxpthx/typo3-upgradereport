@@ -70,6 +70,7 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 	 * @return void
 	 */
 	public function showAction() {
+		$this->view->assign('issueCount', $this->issueRepository->findAll()->count());
 		$this->view->assign('groupedIssues', $this->issueRepository->findAllGroupedByExtensionAndInspection());
 	}
 

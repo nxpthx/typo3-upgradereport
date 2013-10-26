@@ -6,6 +6,7 @@
 
 <f:section name="main">
 	<h1 id="top">Smooth Migration Report</h1>
+	<p>There are currently {issueCount} issues which need to be tackled on upgrade.</p>
 	<h2>Table of contents</h2>
 	<ul>
 	<f:for each="{groupedIssues}" as="tests" key="extension" iteration="iterator">
@@ -47,6 +48,6 @@
 			</ul>
 			</this:inspection>
 		</f:for>
-		<a href="#top">to top</a>
+		<a class="noprint" href="#top">to top</a>
 	</f:for>
 </f:section>
