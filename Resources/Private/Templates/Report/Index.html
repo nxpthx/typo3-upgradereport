@@ -26,7 +26,13 @@
 					<div class="running"><span class="spinner"><!-- --></span><strong class="spinner"> <f:translate key="check.running" /></strong></div>
 					<div class="report">
 						<p class="status"></p>
-						<p class="result"></p>
+						<p class="result">
+							<f:for each="{issuesByCheck}" as="issues" key="identifier">
+								<f:if condition="{0: check.identifier} == {0: identifier}">
+									<f:translate key="check.checkResultMessage" arguments="{0: '{issues -> f:count()}'}" />
+								</f:if>
+							</f:for>
+						</p>
 					</div>
 				</div>
 			</li>

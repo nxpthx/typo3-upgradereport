@@ -55,7 +55,7 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 	}
 
 	/**
-	 * Overview of repot actions
+	 * Overview of report actions
 	 *
 	 * @return void
 	 */
