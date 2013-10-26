@@ -66,10 +66,10 @@
 			<label index='check.clearIssues'>Clear issues</label>
 			<label index='check.runCheck'>Run check</label>
 			<label index='check.running'>Running...</label>
-			<label index='check.testRun'>Test run</label>
+			<label index='check.testRun'>Test run %s</label>
 			<label index='check.cleared'>Cleared</label>
-			<label index='check.found'>Found</label>
-			<label index='check.issues'>issues</label>
+			<label index='check.checkResultMessage'>Found %s issues</label>
+			<label index='check.clearResultMessage'>Cleared %s issues</label>
 			<label index='report.availableChecks'>Available Checks</label>
 			<label index='report.clearAllIssues'>Clear all issues</label>
 			<label index='report.showReport'>Show report</label>
