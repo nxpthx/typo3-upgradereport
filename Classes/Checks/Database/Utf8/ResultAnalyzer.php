@@ -45,18 +45,29 @@ class Tx_Smoothmigration_Checks_Database_Utf8_ResultAnalyzer extends Tx_Smoothmi
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		if (is_string($issue->getAdditionalInformation())) {
-			$extraInformation = unserialize($issue->getAdditionalInformation());
+			$additionalInformation = unserialize($issue->getAdditionalInformation());
 		} else {
-			$extraInformation = $issue->getAdditionalInformation();
+			$additionalInformation = $issue->getAdditionalInformation();
 		}
-		switch ($extraInformation['type']) {
+		switch ($additionalInformation['type']) {
 			case 'configuration':
 				$result = $this->ll(
 					'result.typo3-database-database-utf8.databaseServerSetting',
 					array(
-						$extraInformation['setting'],
-						$extraInformation['actualValue'],
-						$extraInformation['preferredValue']
+						$additionalInformation['setting'],
+						$additionalInformation['actualValue'],
+						$additionalInformation['preferredValue']
+					)
+				);
+				break;
+			case 'databaseCollation':
+				$result = $this->ll(
+					'result.typo3-database-database-utf8.databaseCollation',
+					array(
+						$additionalInformation['characterSet'],
+						$additionalInformation['defaultCollation'],
+						'utf8',
+						'utf8_general_ci'
 					)
 				);
 				break;
@@ -64,8 +75,8 @@ class Tx_Smoothmigration_Checks_Database_Utf8_ResultAnalyzer extends Tx_Smoothmi
 				$result = $this->ll(
 					'result.typo3-database-database-utf8.databaseTableCollation',
 					array(
-						$extraInformation['tableName'],
-						$extraInformation['tableCollation'],
+						$additionalInformation['tableName'],
+						$additionalInformation['tableCollation'],
 						'utf8_general_ci'
 					)
 				);
@@ -74,10 +85,10 @@ class Tx_Smoothmigration_Checks_Database_Utf8_ResultAnalyzer extends Tx_Smoothmi
 				$result = $this->ll(
 					'result.typo3-database-database-utf8.databaseColumnCollation',
 					array(
-						$extraInformation['tableName'],
-						$extraInformation['columnName'],
-						$extraInformation['characterSetName'],
-						$extraInformation['collationName']
+						$additionalInformation['tableName'],
+						$additionalInformation['columnName'],
+						$additionalInformation['characterSetName'],
+						$additionalInformation['collationName']
 					)
 				);
 				break;

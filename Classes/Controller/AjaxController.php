@@ -46,7 +46,7 @@ class Tx_Smoothmigration_Controller_AjaxController extends Tx_Extbase_MVC_Contro
 	 */
 	protected function initializeAction() {
 		parent::initializeAction();
-	//	$this->response->setHeader('Content-type', 'application/json');
+		$this->response->setHeader('Content-type', 'application/json; charset=utf-8');
 	}
 
 	/**

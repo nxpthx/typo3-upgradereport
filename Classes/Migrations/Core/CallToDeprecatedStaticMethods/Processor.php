@@ -27,7 +27,7 @@
  *
  * @author Michiel Roos
  */
-class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor extends Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implements Tx_Smoothmigration_Domain_Interface_MigrationProcessor {
+class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor extends Tx_Smoothmigration_Migrations_AbstractMigrationProcessor {
 
 	/**
 	 * @var Tx_Smoothmigration_Domain_Repository_DeprecationRepository
@@ -148,7 +148,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 			if ($additionalInformation['replacementMessage']) {
 				$this->cliDispatcher->message($additionalInformation['replacementMessage']);
 			}
-			$this->cliDispatcher->warningMessage('Manual intervention needed', TRUE);
+			$this->cliDispatcher->warningMessage($this->ll('migration.manualInterventionNeeded'), TRUE);
 			$this->cliDispatcher->message();
 		}
 	}

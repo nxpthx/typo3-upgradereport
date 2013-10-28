@@ -64,6 +64,33 @@ class Tx_Smoothmigration_Checks_Database_Utf8_Processor extends Tx_Smoothmigrati
 			}
 		}
 
+		$dbCharsetCollation = $this->getDatabaseCharsetAndCollation();
+		$allowedCollations = array(
+			'utf8_general_ci',
+			'utf8_unicode_ci',
+			'utf8_general_cs',
+			'utf8_unicode_cs',
+			'utf8_bin'
+		);
+		$physicalLocation = new Tx_Smoothmigration_Domain_Model_IssueLocation_Database(TYPO3_db_username . '@' . TYPO3_db_host . '/' . TYPO3_db);
+		if ($dbCharsetCollation['characterSet'] !== 'utf8' OR
+				!in_array($dbCharsetCollation['defaultCollation'], $allowedCollations)) {
+			$key = 'databaseCharacterset';
+			$details = new Tx_Smoothmigration_Domain_Model_IssueLocation_Configuration(
+				Tx_Smoothmigration_Domain_Model_IssueLocation_Configuration::TYPE_DATABASE,
+				TYPO3_db_username . '@' . TYPO3_db_host . '/' . TYPO3_db . ': ' . $key,
+				$key,
+				$physicalLocation
+			);
+			$issue = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $details);
+			$issue->setAdditionalInformation(array(
+				'type' => 'databaseCollation',
+				'characterSet' => $dbCharsetCollation['characterSet'],
+				'defaultCollation' => $dbCharsetCollation['defaultCollation']
+			));
+			$this->issues[] = $issue;
+		}
+
 		$tableCollations = $this->getTableCollations();
 		foreach ($tableCollations as $collationInfo) {
 			$key = $collationInfo['table_name'] . '#' . $collationInfo['collation_name'];
@@ -122,6 +149,33 @@ class Tx_Smoothmigration_Checks_Database_Utf8_Processor extends Tx_Smoothmigrati
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return $characterSets;
+	}
+
+	/**
+	 * Get the database charset and collation
+	 *
+	 * The charset should be utf8
+	 *
+	 * For default collation:
+	 * utf8_general_ci is reccomended
+	 * utf8_unicode_ci is also ok
+	 * utf8_bin is also ok
+	 * The cs versions (Case sensitive compare) are also ok
+	 *
+	 * @return array $row
+	 */
+	protected function getDatabaseCharsetAndCollation() {
+		$res = $GLOBALS['TYPO3_DB']->sql_query('
+			SELECT
+				DEFAULT_CHARACTER_SET_NAME as characterSet,
+				DEFAULT_COLLATION_NAME as defaultCollation
+			FROM
+				information_schema.SCHEMATA
+			WHERE
+				SCHEMA_NAME = "' . TYPO3_db . '"');
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return $row;
 	}
 
 	/**

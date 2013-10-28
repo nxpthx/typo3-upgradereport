@@ -53,6 +53,11 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	protected $issues;
 
 	/**
+	 * @var Tx_Extbase_Utility_Localization
+	 */
+	protected $translator;
+
+	/**
 	 * Inject the issue repository
 	 *
 	 * @param Tx_Smoothmigration_Domain_Repository_IssueRepository $issueRepository
@@ -70,6 +75,17 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	 */
 	public function injectObjectManager(Tx_Extbase_Object_Manager $objectManager) {
 		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * Injects the Localization Utility
+	 *
+	 * @param Tx_Extbase_Utility_Localization $translator
+	 *        An instance of the Localization Utility
+	 * @return void
+	 */
+	public function injectTranslator(Tx_Extbase_Utility_Localization $translator) {
+		$this->translator = $translator;
 	}
 
 	/**
@@ -118,6 +134,17 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 			$this->issues = $this->issueRepository->findByInspection($this->parentMigration->getIdentifier())->toArray();
 		}
 		return $this->issues;
+	}
+
+	/**
+	 * Shortcut function for fetching language labels
+	 *
+	 * @param $key
+	 * @param $arguments
+	 * @return string
+	 */
+	public function ll($key, $arguments = NULL) {
+		return $this->translator->translate($key, 'smoothmigration', $arguments);
 	}
 }
 
