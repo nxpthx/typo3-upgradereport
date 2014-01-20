@@ -46,6 +46,16 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	protected $cliDispatcher;
 
 	/**
+	 * @var boolean
+	 */
+	protected $experimental;
+
+	/**
+	 * @var boolean
+	 */
+	protected $encounteredExperimentalIssues = FALSE;
+
+	/**
 	 * The issues found
 	 *
 	 * @var array
@@ -96,6 +106,16 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	 */
 	public function setCliDispatcher(tx_smoothmigration_cli $cliDispatcher) {
 		$this->cliDispatcher = $cliDispatcher;
+	}
+
+	/**
+	 * When set, try to process experimental migrations as well if any
+	 *
+	 * @param boolean $experimental
+	 * @return void
+	 */
+	public function setExperimental($experimental) {
+		$this->experimental = $experimental;
 	}
 
 	/**

@@ -90,6 +90,16 @@ class Tx_Smoothmigration_Domain_Model_Deprecation extends Tx_Extbase_DomainObjec
 	protected $replacementMethod;
 
 	/**
+	 * @var string
+	 */
+	protected $regexSearch;
+
+	/**
+	 * @var string
+	 */
+	protected $regexReplace;
+
+	/**
 	 * @var integer
 	 */
 	protected $noBrainer;
@@ -181,6 +191,20 @@ class Tx_Smoothmigration_Domain_Model_Deprecation extends Tx_Extbase_DomainObjec
 	 */
 	public function getReplacementMethod() {
 		return $this->replacementMethod;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRegexSearch() {
+		return $this->regexSearch;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRegexReplace() {
+		return $this->regexReplace;
 	}
 
 	/**

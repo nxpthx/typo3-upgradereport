@@ -82,6 +82,8 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor ext
 			$report['replacementMethod'] = $deprecation->getReplacementMethod();
 			$report['replacementMessage'] = $deprecation->getReplacementMessage();
 			$report['deprecationMessage'] = $deprecation->getMessage();
+			$report['regexSearch'] = $deprecation->getRegexSearch();
+			$report['regexReplace'] = $deprecation->getRegexReplace();
 		} else {
 			$report['isReplaceable'] = FALSE;
 		}
