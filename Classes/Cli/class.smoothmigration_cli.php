@@ -99,7 +99,8 @@ class tx_smoothmigration_cli extends t3lib_cli {
 				break;
 			case 'migrate':
 				$migrationTask = ((string)$this->cli_args['_DEFAULT'][2]) ?: '';
-				$this->migrate($migrationTask);
+				$experimental = in_array((string)$this->cli_args['--experimental'][0],  array('y', 'yes', 'true', '1'));
+				$this->migrate($migrationTask, $experimental);
 				break;
 			default:
 				$this->cli_validateArgs();
@@ -158,10 +159,11 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	/**
 	 * Migrate
 	 *
-	 * @param $migrationTaskKey
+	 * @param string $migrationTaskKey
+	 * @param boolean $experimental When TRUE, try to process experimental migrations as well
 	 * @return void
 	 */
-	private function migrate($migrationTaskKey) {
+	private function migrate($migrationTaskKey, $experimental) {
 		$migrationTask = NULL;
 		$registry = Tx_Smoothmigration_Service_Migration_Registry::getInstance();
 
@@ -174,8 +176,10 @@ class tx_smoothmigration_cli extends t3lib_cli {
 			return;
 		}
 
+		/** @var Tx_Smoothmigration_Migrations_AbstractMigrationProcessor $processor */
 		$processor = $migrationTask->getProcessor();
 		$processor->setCliDispatcher($this);
+		$processor->setExperimental($experimental);
 		$processor->execute();
 	}
 

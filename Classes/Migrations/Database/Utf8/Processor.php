@@ -118,7 +118,7 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 					return;
 				}
 
-				$query = 'ALTER DATABASE `' . TYPO3_db . '` CHARACTER SET utf8 COLLATE ' . $collation . ';';
+				$query = 'ALTER DATABASE CHARACTER SET utf8 COLLATE ' . $collation . ';';
 				$this->cliDispatcher->message($this->ll(
 					'migration.executingQuery',
 					array (

@@ -105,6 +105,22 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 				'max' => '256',
 			),
 		),
+		'regex_search' => array(
+			'label' => 'regex_search',
+			'config' => Array(
+				'type' => 'input',
+				'size' => '40',
+				'max' => '256',
+			),
+		),
+		'regex_replace' => array(
+			'label' => 'regex_replace',
+			'config' => Array(
+				'type' => 'input',
+				'size' => '40',
+				'max' => '256',
+			),
+		),
 		'no_brainer' => array(
 			'label' => 'no_brainer',
 			'config' => Array(

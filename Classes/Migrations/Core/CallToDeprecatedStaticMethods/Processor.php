@@ -94,53 +94,22 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 			$additionalInformation = $issue->getAdditionalInformation();
 		}
 
-		if ($additionalInformation['isReplaceable']) {
-			$concatenator = '::';
-			if ($additionalInformation['replacementClass'] == '$GLOBALS[\'TYPO3_DB\']') {
-				$concatenator = '->';
+		if ($additionalInformation['isReplaceable'] == 1) {
+			// No brainer, can be replaced all the time
+			$this->performReplacement($issue, $locationInfo, $additionalInformation);
+		} elseif ($additionalInformation['isReplaceable'] == 2) {
+			// Not a no brainer, but might be replaced
+			if ($this->experimental) {
+				$this->performReplacement($issue, $locationInfo, $additionalInformation);
+			} elseif (!$this->encounteredExperimentalIssues) {
+				$this->cliDispatcher->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
+					'Method [' . trim($locationInfo->getMatchedString()) . '] is not easily replaceable.' . LF .
+					$additionalInformation['deprecationMessage']
+				);
+				$this->cliDispatcher->warningMessage('But you can try fixing. Run again with parameter --experimental=yes');
+				$this->cliDispatcher->warningMessage($this->ll('migration.manualInterventionNeeded'), TRUE);
+				$this->encounteredExperimentalIssues = TRUE;
 			}
-				// Some replacements are plain PHP functions
-			if ($additionalInformation['replacementClass'] == '') {
-				$concatenator = '';
-			}
-			$this->cliDispatcher->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
-			'Replacing [' . trim($locationInfo->getMatchedString()) . '] =>' .
-			' [' . $additionalInformation['replacementClass'] . $concatenator . $additionalInformation['replacementMethod'] . '(]');
-
-			if ($issue->getMigrationStatus() != 0) {
-				$this->cliDispatcher->successMessage('already migrated', TRUE);
-				return;
-			}
-			$newFileContent = '';
-			if (!file_exists($locationInfo->getFilePath())) {
-				$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_FOUND);
-				$this->cliDispatcher->errorMessage('Error, file not found', TRUE);
-				return;
-			}
-			if (!is_writable($locationInfo->getFilePath())) {
-				$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_WRITABLE);
-				$this->cliDispatcher->errorMessage('Error, file not writable', TRUE);
-				return;
-			}
-			$fileObject = new SplFileObject($locationInfo->getFilePath());
-
-			$replacement = $additionalInformation['replacementClass'] . $concatenator . $additionalInformation['replacementMethod'] . '(';
-			foreach ($fileObject as $lineNumber => $lineContent) {
-				if ($lineNumber + 1 != $locationInfo->getLineNumber()) {
-					$newFileContent .= $lineContent;
-				} else {
-					$newLineContent = str_replace($locationInfo->getMatchedString(), $replacement, $lineContent);
-					if ($newLineContent == $lineContent) {
-						$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
-						$this->cliDispatcher->errorMessage('Error, file not changed', TRUE);
-						return;
-					}
-					$newFileContent .= $newLineContent;
-				}
-			}
-			file_put_contents($locationInfo->getFilePath(), $newFileContent);
-			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-			$this->cliDispatcher->successMessage('Succes' . LF, TRUE);
 		} else {
 			$this->cliDispatcher->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
 			'Method [' . trim($locationInfo->getMatchedString()) . '] is not easily replaceable.' . LF .
@@ -152,6 +121,88 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 			$this->cliDispatcher->message();
 		}
 	}
-}
 
-?>
+	/**
+	 *
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
+	 * @param object $locationInfo
+	 * @param array $additionalInformation
+	 * @return type
+	 */
+	protected function performReplacement(Tx_Smoothmigration_Domain_Model_Issue $issue, $locationInfo, $additionalInformation) {
+		$concatenator = '::';
+		if ($additionalInformation['replacementClass'] == '$GLOBALS[\'TYPO3_DB\']') {
+			$concatenator = '->';
+		}
+			// Some replacements are plain PHP functions
+		if ($additionalInformation['replacementClass'] == '') {
+			$concatenator = '';
+		}
+		$this->cliDispatcher->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
+		'Replacing [' . trim($locationInfo->getMatchedString()) . '] =>' .
+		' [' . $additionalInformation['replacementClass'] . $concatenator . $additionalInformation['replacementMethod'] . '(]');
+
+		if ($issue->getMigrationStatus() != 0) {
+			$this->cliDispatcher->successMessage('already migrated', TRUE);
+			return;
+		}
+
+		if (!file_exists($locationInfo->getFilePath())) {
+			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_FOUND);
+			$this->cliDispatcher->errorMessage('Error, file not found', TRUE);
+			return;
+		}
+		if (!is_writable($locationInfo->getFilePath())) {
+			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_WRITABLE);
+			$this->cliDispatcher->errorMessage('Error, file not writable', TRUE);
+			return;
+		}
+		$fileObject = new SplFileObject($locationInfo->getFilePath());
+		$isRegexReplace = !empty($additionalInformation['regexSearch'])
+			&& !empty($additionalInformation['regexReplace']);
+		if ($isRegexReplace) {
+			// When we have a semi-colon, we should assume its a new line
+			$linesToReplace = count(explode(';', $additionalInformation['regexSearch']));
+		} else {
+			$linesToReplace = 1;
+		}
+
+		$contentBefore = '';
+		$contentToProcess = '';
+		$contentAfter = '';
+
+		foreach ($fileObject as $lineNumber => $lineContent) {
+			if ($lineNumber + 1 < $locationInfo->getLineNumber()) {
+				$contentBefore .= $lineContent;
+			} elseif ($lineNumber + 1 < $locationInfo->getLineNumber() + $linesToReplace) {
+				$contentToProcess .= $lineContent;
+			} else {
+				$contentAfter .= $lineContent;
+			}
+		}
+
+		if ($isRegexReplace) {
+			$newContent = preg_replace(
+				$additionalInformation['regexSearch'],
+				$additionalInformation['regexReplace'],
+				$contentToProcess
+			);
+		} else {
+			$replacement = $additionalInformation['replacementClass'] .
+				$concatenator .
+				$additionalInformation['replacementMethod'] . '(';
+			$newContent = str_replace($locationInfo->getMatchedString(), $replacement, $contentToProcess);
+		}
+
+		if ($newContent == $contentToProcess) {
+			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
+			$this->cliDispatcher->errorMessage('Error, file not changed', TRUE);
+			return;
+		}
+
+		file_put_contents($locationInfo->getFilePath(), $contentBefore . $newContent . $contentAfter);
+		$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
+		$this->cliDispatcher->successMessage('Succes' . LF, TRUE);
+	}
+
+}

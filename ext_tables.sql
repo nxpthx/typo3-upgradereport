@@ -33,6 +33,8 @@ CREATE TABLE tx_smoothmigration_domain_model_deprecation (
 	replacement_class varchar(255) DEFAULT '',
 	replacement_interface varchar(255) DEFAULT '',
 	replacement_method varchar(255) DEFAULT '',
+	regex_search varchar(255) DEFAULT '',
+	regex_replace varchar(255) DEFAULT '',
 	no_brainer int(1) unsigned DEFAULT '0' NOT NULL,
 	replacement_message mediumtext,
 	PRIMARY KEY (uid)
