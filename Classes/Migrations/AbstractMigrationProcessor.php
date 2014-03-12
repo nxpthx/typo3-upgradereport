@@ -130,8 +130,6 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 		$this->parentMigration = $migration;
 	}
 
-	abstract public function execute();
-
 	/**
 	 * Any issues?
 	 *
