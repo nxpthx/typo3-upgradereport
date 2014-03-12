@@ -1,7 +1,7 @@
 <?php
 
 $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
-	'crtl' => $TCA['tx_smoothmigration_domain_model_deprecation']['crtl'],
+	'ctrl' => $TCA['tx_smoothmigration_domain_model_deprecation']['ctrl'],
 	'interface' => array(
 		'showRecordFieldList' => 'file, class, interface, method, message, is_static, visibility, deprecated_since_version, removed_in_version, replacement_class, replacement_interface, replacement_method, no_brainer, replacement_message',
 	),
