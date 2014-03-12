@@ -3,7 +3,9 @@
 #
 DROP TABLE IF EXISTS tx_smoothmigration_domain_model_deprecation;
 CREATE TABLE tx_smoothmigration_domain_model_deprecation (
-	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+	uid int(11) unsigned NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+
 	file mediumtext ,
 	class varchar(255) DEFAULT '',
 	interface varchar(255) DEFAULT '',
@@ -20,8 +22,10 @@ CREATE TABLE tx_smoothmigration_domain_model_deprecation (
 	regex_replace varchar(255) DEFAULT '',
 	no_brainer int(1) unsigned DEFAULT '0' NOT NULL,
 	replacement_message mediumtext,
-	PRIMARY KEY (uid)
+	PRIMARY KEY (uid),
+	KEY parent (pid)
 );
+
 
 -- TODO: new dump with new table structure
 
