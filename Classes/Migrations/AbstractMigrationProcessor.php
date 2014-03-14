@@ -164,6 +164,16 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	public function ll($key, $arguments = NULL) {
 		return $this->translator->translate($key, 'smoothmigration', $arguments);
 	}
+
+
+    public function executeIssue(Tx_Smoothmigration_Domain_Model_Issue $issue) {
+
+        $this->handleIssue($issue);
+        if ($this->cliDispatcher) {
+            $this->cliDispatcher->message();
+        }
+        $this->issueRepository->update($issue);
+    }
 }
 
 ?>
