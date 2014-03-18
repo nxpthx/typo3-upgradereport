@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Michiel Roos <michiel@maxserv.nl>
+ *  (c) 2013 Peter Beernink <p.beernink@drecomm.nl>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,21 +23,17 @@
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition
+ * Class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtension_Definition
  *
- * @author Michiel Roos
+ * @author Peter Beernink
  */
- 
-//@include_once t3lib_div::extMgm('smoothmigration') . 'Classes/Migrations/AbstractMigrationProcessor.php';
-//@include_once t3lib_div::extMgm('smoothmigration') . 'Classes/Migrations/AbstractMigrationProcessor.php';
- 
-class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition extends Tx_Smoothmigration_Migrations_AbstractMigrationDefinition {
+class Tx_Smoothmigration_Migrations_Core_Xclasses_Definition extends Tx_Smoothmigration_Migrations_AbstractMigrationDefinition {
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_MigrationProcessor
 	 */
 	public function getProcessor() {
-		return $this->objectManagager->get('Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor', $this);
+		return $this->objectManagager->get('Tx_Smoothmigration_Migrations_Core_Xclasses_Processor', $this);
 	}
 
 	/**
@@ -53,7 +49,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definitio
 	 * @return string
 	 */
 	public function getIdentifier() {
-		return 'typo3-core-code-callToDeprecatedStaticMethods';
+		return 'typo3-core-code-xclasses';
 	}
 
 	/**
@@ -62,7 +58,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definitio
 	 * @return string
 	 */
 	public function getCliKey() {
-		return 'replaceDeprecatedStaticMethods';
+		return 'xclasses';
 	}
 
 }

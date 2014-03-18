@@ -42,7 +42,7 @@ if (@exec('tput cols')) {
 } else {
 	define('TERMINAL_WIDTH', 79);
 }
-
+ini_set('display_errors', '1');
 
 /**
  * Class tx_smoothmigration_cli
@@ -176,8 +176,11 @@ class tx_smoothmigration_cli extends t3lib_cli {
 			return;
 		}
 
+		
+		//die(get_class($migrationTask));
 		/** @var Tx_Smoothmigration_Migrations_AbstractMigrationProcessor $processor */
 		$processor = $migrationTask->getProcessor();
+		
 		$processor->setCliDispatcher($this);
 		$processor->setExperimental($experimental);
 		$processor->execute();

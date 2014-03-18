@@ -69,13 +69,45 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Processor extends Tx_Smoothmigrati
 			$implementationClass,
 			$physicalLocation
 		);
+		
+		if(file_exists(PATH_site . 'typo3conf/' . $targetClass)) {
+			$originalFilePath = PATH_site . 'typo3conf/' . $targetClass;
+		} elseif(file_exists(PATH_site . 'typo3/sys' . $targetClass)) {
+			$originalFilePath = PATH_site . 'typo3/sys' . $targetClass;
+		} else {
+			$originalFilePath = PATH_site . $targetClass;
+		}
+		
+		$originalClass = $this->getFirstClassInFile($originalFilePath);
+		
+		$xClass = $this->getFirstClassInFile($implementationClass);
 
 		$issue = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $details);
 		$issue->setAdditionalInformation(array(
-			'ORIGINAL_CLASS' => $targetClass,
-			'IMPLEMENTATION_CLASS' => $implementationClass
+			'ORIGINAL_CLASS_FILENAME' => $targetClass,
+			'IMPLEMENTATION_CLASS_FILENAME' => $implementationClass,
+			'ORIGINAL_CLASS' => $originalClass,
+			'IMPLEMENTATION_CLASS' => $xClass
 		));
 		return $issue;
+	}
+	
+	protected function getFirstClassInFile($physicalLocation) {
+		return $this->getClassInCode(file_get_contents($physicalLocation));
+	}
+	
+	protected function getClassInCode($sourceCode) {
+		
+		$tokens = token_get_all($sourceCode);
+		$count = count($tokens);
+		for ($i = 2; $i < $count; $i++) {
+			if (   $tokens[$i - 2][0] == T_CLASS
+				&& $tokens[$i - 1][0] == T_WHITESPACE
+				&& $tokens[$i][0] == T_STRING) {
+				
+				return $tokens[$i][1];
+			}
+		}
 	}
 }
 
