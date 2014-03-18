@@ -6,6 +6,12 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+            <label index="check.typo3-core-code-callToDeprecatedClasses.title">Deprecated classes</label>
+            <label index="check.typo3-core-code-callToDeprecatedClasses.shortDescription">Calling deprecated classes will give an error in TYPO3 v7.0 as they have been removed from ClassAliasMap.</label>
+            <label index="check.typo3-core-code-callToDeprecatedClasses.description">From the 4.5 release multiple classes (like t3lib, tslib, Tx_Extbase_,Tx_Fluid_) have been deprecated. Changing them to their respective new namespace Classname would solve the issue.</label>
+            <label index="result.typo3-core-code-callToDeprecatedClasses.explanation">Call to deprecated classes</label>
+            <label index="result.typo3-core-code-callToDeprecatedClasses.solution">Replace the class %s in %s on line %s.</label>
+
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.title">Deprecated static methods</label>
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.shortDescription">Calling deprecated methods will give an error as they have been removed.</label>
 			<label index="check.typo3-core-code-callToDeprecatedStaticMethods.description">From the 4.5 release multiple methods have been deprecated. Changing them to their respective new methods would solve the issue.</label>
