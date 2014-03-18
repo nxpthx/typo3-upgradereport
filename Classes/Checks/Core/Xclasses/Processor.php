@@ -92,10 +92,20 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Processor extends Tx_Smoothmigrati
 		return $issue;
 	}
 	
+	/**
+	 * @param string $physicalLocation
+	 * 
+	 * @return string	the first class name in the given file
+	 */
 	protected function getFirstClassInFile($physicalLocation) {
 		return $this->getClassInCode(file_get_contents($physicalLocation));
 	}
 	
+	/**
+	 * @param string $sourceCode
+	 *
+	 * @return string the first class name in the given source code
+	 */
 	protected function getClassInCode($sourceCode) {
 		
 		$tokens = token_get_all($sourceCode);

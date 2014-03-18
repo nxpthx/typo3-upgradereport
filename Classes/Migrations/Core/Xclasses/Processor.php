@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Peter Beernink <p.beernink@drecomm.nl>
+ *  (c) 2014 Tizian Schmidlin <st@cabag.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,7 +25,7 @@
 /**
  * Class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor
  *
- * @author Peter Beernink
+ * @author Tizian Schmidlin
  */
 class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor extends Tx_Smoothmigration_Migrations_AbstractMigrationProcessor {
 
