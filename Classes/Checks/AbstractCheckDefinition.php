@@ -34,7 +34,7 @@ abstract class Tx_Smoothmigration_Checks_AbstractCheckDefinition implements Tx_S
 
 	/**
 	 *
-	 * @var Tx_Extbase_Object_Manager
+	 * @var Tx_Extbase_Object_ObjectManager
 	 */
 	protected $objectManagager;
 
@@ -42,7 +42,7 @@ abstract class Tx_Smoothmigration_Checks_AbstractCheckDefinition implements Tx_S
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->objectManagager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
+		$this->objectManagager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 	}
 
 
