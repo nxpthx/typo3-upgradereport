@@ -36,7 +36,7 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 
 	/**
 	 *
-	 * @var Tx_Extbase_Object_Manager
+	 * @var Tx_Extbase_Object_ObjectManager
 	 */
 	protected $objectManager;
 
@@ -83,7 +83,8 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	 * @param Tx_Extbase_Object_Manager $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_Manager $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
+		//TODO: fix it for TYPO3 4.5
 		$this->objectManager = $objectManager;
 	}
 

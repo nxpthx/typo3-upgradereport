@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_t3lib . 'class.t3lib_cli.php');
 
 	// I can haz color / use unicode?
 if (DIRECTORY_SEPARATOR !== '\\') {
@@ -61,7 +60,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 */
 	public function __construct() {
 			// Running parent class constructor
-		parent::t3lib_cli();
+		#parent::__construct();
 
 		$this->issueRepository = t3lib_div::makeInstance('Tx_Smoothmigration_Domain_Repository_IssueRepository');
 
