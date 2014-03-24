@@ -1,0 +1,8 @@
+module.tx_smoothmigration {
+	persistence {
+		storagePid = 0
+	}
+	
+	settings {
+	}
+}
