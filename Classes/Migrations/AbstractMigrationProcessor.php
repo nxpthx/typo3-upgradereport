@@ -130,7 +130,11 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 		$this->parentMigration = $migration;
 	}
 
-	abstract public function execute();
+	/**
+	 * BUG
+	 * This causes a fatal error with PHP 5.3 since the method is already defined in the interface and not further specified here.
+	 */
+	//abstract public function execute();
 
 	/**
 	 * Any issues?
