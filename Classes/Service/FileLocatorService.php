@@ -58,15 +58,17 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 		$locations = array();
 		array_push($excludedExtensions, 'smoothmigration');
 
-		$extensionKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
-		array_pop($extensionKeys);
-		foreach ($extensionKeys as $extensionKey) {
-			if ($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'] == 'S' ||
-				in_array($extensionKey, $excludedExtensions)) {
-				continue;
+		$extBasePath = PATH_typo3conf . 'ext';
+		foreach (new \DirectoryIterator($extBasePath) as $parentFileInfo) {
+			$parentFilename = $parentFileInfo->getFilename();
+			if ($parentFilename !== '.' && $parentFilename !== '..' && $parentFileInfo->isDir() && !in_array($parentFilename, $excludedExtensions)) {
+				$extensionKeys[] = $parentFilename;
 			}
+		}
+		
+		
+		foreach ($extensionKeys as $extensionKey) {
 			$locations = array_merge($this->searchInExtension($extensionKey, $fileNamePattern, $searchPattern), $locations);
-
 		}
 		return $locations;
 	}
@@ -80,7 +82,7 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 	 *
 	 */
 	public function searchInExtension($extensionKey, $fileNamePattern, $searchPattern) {
-		$pathToExtensionFolder = t3lib_extMgm::extPath($extensionKey);
+		$pathToExtensionFolder = PATH_typo3conf . 'ext/'.$extensionKey;
 		$extensionIterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($pathToExtensionFolder));
 		$regularExpressionIterator = new RegexIterator($extensionIterator, '/' . trim($fileNamePattern, '/') . '/');
 
