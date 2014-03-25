@@ -10,11 +10,11 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedClasses_Processor extends T
 {
 
     protected $deprecatedClassnameRegex = array(
-        '(Tx_)(.*)(_Domain_Repository_|_Domain_Model_|_Controller_)(\w+)',
-        'Tx_Extbase_(\w+)',
-        'Tx_Fluid_(\w+)',
-        't3lib_(\w+)',
-        'tslib_(\w+)'
+        '\s(Tx_)(.*)(_Domain_Repository_|_Domain_Model_|_Controller_)(\w+)',
+        '\sTx_Extbase_(\w+)',
+        '\sTx_Fluid_(\w+)',
+        '\st3lib_(\w+)',
+        '\stslib_(\w+)'
     );
 
     /**
@@ -24,6 +24,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedClasses_Processor extends T
     {
         /** @var Tx_Smoothmigration_Service_FileLocatorService $fileLocatorService */
         $fileLocatorService = t3lib_div::makeInstance('Tx_Smoothmigration_Service_FileLocatorService');
+        $fileLocatorService->setCaseSensitive(FALSE);
         $locations = $fileLocatorService->searchInExtensions('.*\.(php)$',
             $this->generateRegularExpression()
         );

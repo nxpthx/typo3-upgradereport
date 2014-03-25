@@ -29,6 +29,7 @@
  */
 class Tx_Smoothmigration_Service_FileLocatorService {
 
+    protected $caseSensitive = TRUE;
 
 	/**
 	 * @param string $searchPattern
@@ -40,7 +41,7 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 		$positions = array();
 		foreach (new SplFileObject($haystackFilePath) as $lineNumber => $lineContent) {
 			$matches = array();
-			if (preg_match('/' . trim($searchPattern, '/') . '/i', $lineContent, $matches)) {
+			if (preg_match('/' . trim($searchPattern, '/') . '/' . ($this->caseSensitive ? 'i' : ''), $lineContent, $matches)) {
 				$positions[] =  array('line' => $lineNumber + 1, 'match' => $matches[0]);
 			}
 		}
@@ -94,6 +95,22 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 		}
 		return $positions;
 	}
+
+    /**
+     * @param boolean $caseSensitive
+     */
+    public function setCaseSensitive($caseSensitive)
+    {
+        $this->caseSensitive = $caseSensitive;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCaseSensitive()
+    {
+        return $this->caseSensitive;
+    }
 
 }
 
