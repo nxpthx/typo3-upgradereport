@@ -102,7 +102,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 			if ($this->experimental) {
 				$this->performReplacement($issue, $locationInfo, $additionalInformation);
 			} elseif (!$this->encounteredExperimentalIssues) {
-				$this->migrationMessageManager->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
+				$this->migrationMessageManager->message(PATH_site . '/' . $locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
 					'Method [' . trim($locationInfo->getMatchedString()) . '] is not easily replaceable.' . LF .
 					$additionalInformation['deprecationMessage']
 				);
@@ -111,7 +111,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 				$this->encounteredExperimentalIssues = TRUE;
 			}
 		} else {
-			$this->migrationMessageManager->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
+			$this->migrationMessageManager->message(PATH_site . '/' . $locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
 			'Method [' . trim($locationInfo->getMatchedString()) . '] is not easily replaceable.' . LF .
 			$additionalInformation['deprecationMessage']);
 			if ($additionalInformation['replacementMessage']) {
@@ -138,7 +138,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 		if ($additionalInformation['replacementClass'] == '') {
 			$concatenator = '';
 		}
-		$this->migrationMessageManager->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
+		$this->migrationMessageManager->message(PATH_site . '/' . $locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
 		'Replacing [' . trim($locationInfo->getMatchedString()) . '] =>' .
 		' [' . $additionalInformation['replacementClass'] . $concatenator . $additionalInformation['replacementMethod'] . '(]');
 
@@ -147,17 +147,17 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 			return;
 		}
 
-		if (!file_exists($locationInfo->getFilePath())) {
+		if (!file_exists(PATH_site . '/' . $locationInfo->getFilePath())) {
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_FOUND);
 			$this->migrationMessageManager->errorMessage('Error, file not found', TRUE);
 			return;
 		}
-		if (!is_writable($locationInfo->getFilePath())) {
+		if (!is_writable(PATH_site . '/' . $locationInfo->getFilePath())) {
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_WRITABLE);
 			$this->migrationMessageManager->errorMessage('Error, file not writable', TRUE);
 			return;
 		}
-		$fileObject = new SplFileObject($locationInfo->getFilePath());
+		$fileObject = new SplFileObject(PATH_site . '/' . $locationInfo->getFilePath());
 		$isRegexReplace = !empty($additionalInformation['regexSearch'])
 			&& !empty($additionalInformation['regexReplace']);
 		if ($isRegexReplace) {
@@ -200,7 +200,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 			return;
 		}
 
-		file_put_contents($locationInfo->getFilePath(), $contentBefore . $newContent . $contentAfter);
+		file_put_contents(PATH_site . '/' . $locationInfo->getFilePath(), $contentBefore . $newContent . $contentAfter);
 		$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
 		$this->migrationMessageManager->successMessage('Succes' . LF, TRUE);
 	}
