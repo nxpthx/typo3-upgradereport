@@ -112,14 +112,13 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
             $migrationTaskKey = 'replaceDeprecatedStaticMethods';
         }
 
-
         if (!empty($migrationTaskKey)) {
             $migrationTask = $registry->getActiveMigrationByCliKey($migrationTaskKey);
         }
 
         if ($migrationTask === NULL) {
-            $this->message('Please choose a migration to execute.' . LF . LF . 'Possible options are:' .  LF);
-            $this->message($this->getMigrations());
+            echo('Please choose a migration to execute.' . LF . LF . 'Possible options are:' .  LF);
+            echo($this->getMigrations());
 
             return;
         }
@@ -128,11 +127,11 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 
         /** @var Tx_Smoothmigration_Migrations_AbstractMigrationProcessor $processor */
         $processor = $migrationTask->getProcessor();
-        #$processor->setCliDispatcher(new tx_smoothmigration_cli());
+        $processor->setMigrationMessageManager(new Tx_Smoothmigration_Migrations_MigrationMessageManager());
         $processor->setExperimental(0);
         $processor->executeIssue($issue);
 
-        $this->redirect('show');
+        $this->forward('show');
 
     }
 }

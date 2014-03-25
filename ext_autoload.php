@@ -64,6 +64,7 @@ return array(
 	'tx_smoothmigration_domain_repository_issuerepository' => $extensionClassesPath . 'Domain/Repository/IssueRepository.php',
 	'tx_smoothmigration_migrations_abstractmigrationdefinition' => $extensionClassesPath . 'Migrations/AbstractMigrationDefinition.php',
 	'tx_smoothmigration_migrations_abstractmigrationprocessor' => $extensionClassesPath . 'Migrations/AbstractMigrationProcessor.php',
+	'tx_smoothmigration_migrations_migrationmessagemanager' => $extensionClassesPath . 'Migrations/MigrationMessageManager.php',
 	'tx_smoothmigration_migrations_core_calltodeprecatedstaticmethods_definition' => $extensionClassesPath . 'Migrations/Core/CallToDeprecatedStaticMethods/Definition.php',
 	'tx_smoothmigration_migrations_core_calltodeprecatedstaticmethods_processor' => $extensionClassesPath . 'Migrations/Core/CallToDeprecatedStaticMethods/Processor.php',
 	'tx_smoothmigration_migrations_core_requireonceinextensions_definition' => $extensionClassesPath . 'Migrations/Core/RequireOnceInExtensions/Definition.php',

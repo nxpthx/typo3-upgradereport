@@ -33,7 +33,7 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 	 * @return void
 	 */
 	public function execute() {
-		$this->cliDispatcher->headerMessage($this->parentMigration->getTitle(), 'info');
+		$this->migrationMessageManager->headerMessage($this->parentMigration->getTitle(), 'info');
 		$this->issues = $this->getIssues();
 		if (count($this->issues)) {
 			foreach ($this->issues as $issue) {
@@ -41,7 +41,7 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				$this->issueRepository->update($issue);
 			}
 		} else {
-			$this->cliDispatcher->successMessage('No issues found', TRUE);
+			$this->migrationMessageManager->successMessage('No issues found', TRUE);
 		}
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
@@ -89,7 +89,7 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 
 		switch ($additionalInformation['type']) {
 			case 'configuration':
-				$this->cliDispatcher->message($this->ll(
+				$this->migrationMessageManager->message($this->ll(
 					'result.typo3-database-database-utf8.databaseServerSetting',
 					array(
 						$additionalInformation['setting'],
@@ -97,11 +97,11 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 						$additionalInformation['preferredValue']
 					)
 				));
-				$this->cliDispatcher->warningMessage($this->ll('migration.manualInterventionNeeded'), TRUE);
-				$this->cliDispatcher->message();
+				$this->migrationMessageManager->warningMessage($this->ll('migration.manualInterventionNeeded'), TRUE);
+				$this->migrationMessageManager->message();
 				break;
 			case 'databaseCollation':
-				$this->cliDispatcher->message($this->ll(
+				$this->migrationMessageManager->message($this->ll(
 					'result.typo3-database-database-utf8.databaseCollation',
 					array(
 						$additionalInformation['characterSet'],
@@ -114,12 +114,12 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				}
 
 				if ($issue->getMigrationStatus() != 0) {
-					$this->cliDispatcher->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
+					$this->migrationMessageManager->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
 					return;
 				}
 
 				$query = 'ALTER DATABASE CHARACTER SET utf8 COLLATE ' . $collation . ';';
-				$this->cliDispatcher->message($this->ll(
+				$this->migrationMessageManager->message($this->ll(
 					'migration.executingQuery',
 					array (
 						$query
@@ -127,13 +127,13 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				));
 				$GLOBALS['TYPO3_DB']->sql_query($query);
 				if ($sqlError = $GLOBALS['TYPO3_DB']->sql_error()) {
-					$this->cliDispatcher->errorMessage($sqlError . LF, TRUE);
+					$this->migrationMessageManager->errorMessage($sqlError . LF, TRUE);
 				}
 				$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-				$this->cliDispatcher->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
+				$this->migrationMessageManager->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
 				break;
 			case 'tableCollation':
-				$this->cliDispatcher->message($this->ll(
+				$this->migrationMessageManager->message($this->ll(
 					'result.typo3-database-database-utf8.databaseTableCollation',
 					array(
 						$additionalInformation['tableName'],
@@ -143,12 +143,12 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				));
 
 				if ($issue->getMigrationStatus() != 0) {
-					$this->cliDispatcher->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
+					$this->migrationMessageManager->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
 					return;
 				}
 
 				$query = 'ALTER TABLE `' . $additionalInformation['tableName'] . '` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;';
-				$this->cliDispatcher->message($this->ll(
+				$this->migrationMessageManager->message($this->ll(
 					'migration.executingQuery',
 					array (
 						$query
@@ -156,14 +156,14 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				));
 				$GLOBALS['TYPO3_DB']->sql_query($query);
 				if ($sqlError = $GLOBALS['TYPO3_DB']->sql_error()) {
-					$this->cliDispatcher->errorMessage($sqlError . LF, TRUE);
+					$this->migrationMessageManager->errorMessage($sqlError . LF, TRUE);
 				} else {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-					$this->cliDispatcher->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
+					$this->migrationMessageManager->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
 				}
 				break;
 			case 'columnCollation':
-				$this->cliDispatcher->message($this->ll(
+				$this->migrationMessageManager->message($this->ll(
 					'result.typo3-database-database-utf8.databaseColumnCollation',
 					array(
 						$additionalInformation['tableName'],
@@ -174,12 +174,12 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				));
 
 				if ($issue->getMigrationStatus() != 0) {
-					$this->cliDispatcher->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
+					$this->migrationMessageManager->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
 					return;
 				}
 
 				$query = 'ALTER TABLE `' . $additionalInformation['tableName'] . '` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;';
-				$this->cliDispatcher->message($this->ll(
+				$this->migrationMessageManager->message($this->ll(
 					'migration.executingQuery',
 					array (
 						$query
@@ -187,10 +187,10 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				));
 				$GLOBALS['TYPO3_DB']->sql_query($query);
 				if ($sqlError = $GLOBALS['TYPO3_DB']->sql_error()) {
-					$this->cliDispatcher->errorMessage($sqlError . LF, TRUE);
+					$this->migrationMessageManager->errorMessage($sqlError . LF, TRUE);
 				} else {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-					$this->cliDispatcher->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
+					$this->migrationMessageManager->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
 				}
 				break;
 			default:

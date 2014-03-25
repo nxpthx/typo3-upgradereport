@@ -35,22 +35,18 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 	 * @return void
 	 */
 	public function execute() {
-        if ($this->cliDispatcher) {
-            $this->cliDispatcher->headerMessage($this->parentMigration->getTitle(), 'info');
-        }
+        $this->migrationMessageManager->headerMessage($this->parentMigration->getTitle(), 'info');
+
 		$this->getIssues();
 		if (count($this->issues)) {
 			foreach ($this->issues as $issue) {
 				$this->handleIssue($issue);
-                if ($this->cliDispatcher) {
-				    $this->cliDispatcher->message();
-                }
+				$this->migrationMessageManager->message();
+
 				$this->issueRepository->update($issue);
 			}
 		} else {
-            if ($this->cliDispatcher) {
-			    $this->cliDispatcher->successMessage('No issues found', TRUE);
-            }
+			$this->migrationMessageManager->successMessage('No issues found', TRUE);
 		}
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
@@ -71,26 +67,22 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 			$locationInfo = $issue->getLocationInfo();
 		}
 
-        if ($this->cliDispatcher) {
-		    $this->cliDispatcher->message(PATH_site . '/' . $locationInfo->getFilePath() . ':' . $locationInfo->getLineNumber() . ' [' . trim($locationInfo->getMatchedString()) . '] => ');
-        }
+        $this->migrationMessageManager->message(PATH_site . '/' . $locationInfo->getFilePath() . ':' . $locationInfo->getLineNumber() . ' [' . trim($locationInfo->getMatchedString()) . '] => ');
 
 		if ($issue->getMigrationStatus() != 0) {
-            if ($this->cliDispatcher) {
-                $this->cliDispatcher->successMessage('already migrated', TRUE);
-            }
+            $this->migrationMessageManager->successMessage('already migrated', TRUE);
 			return;
 		}
 		$newFileContent = '';
 
 		if (!file_exists(PATH_site . '/' . $locationInfo->getFilePath())) {
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_FOUND);
-			$this->cliDispatcher->errorMessage('Error, file not found', TRUE);
+            $this->migrationMessageManager->errorMessage('Error, file not found', TRUE);
 			return;
 		}
 		if (!is_writable(PATH_site . '/' . $locationInfo->getFilePath())) {
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_WRITABLE);
-			$this->cliDispatcher->errorMessage('Error, file not writable', TRUE);
+            $this->migrationMessageManager->errorMessage('Error, file not writable', TRUE);
 			return;
 		}
 		$fileObject = new SplFileObject(PATH_site . '/' . $locationInfo->getFilePath());
@@ -101,18 +93,16 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 				$newLineContent = str_replace($locationInfo->getMatchedString(), '', $lineContent);
 				if ($newLineContent == $lineContent) {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
-					$this->cliDispatcher->errorMessage('Error, file not changed', TRUE);
+                    $this->migrationMessageManager->errorMessage('Error, file not changed', TRUE);
 					return;
 				}
 				$newFileContent .= $newLineContent;
 			}
 		}
-        debug($newFileContent);
+
 		file_put_contents(PATH_site . '/' . $locationInfo->getFilePath(), $newFileContent);
 		$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-        if ($this->cliDispatcher) {
-            $this->cliDispatcher->successMessage('Succes', TRUE);
-        }
+        $this->migrationMessageManager->successMessage('Succes', TRUE);
 	}
 
 }
