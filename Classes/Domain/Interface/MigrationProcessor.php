@@ -34,13 +34,13 @@ interface Tx_Smoothmigration_Domain_Interface_MigrationProcessor extends Tx_Smoo
 	 */
 	public function __construct(Tx_Smoothmigration_Domain_Interface_Migration $migration);
 
-	/**
-	 * Set the CLI dispatcher
-	 *
-	 * @param tx_smoothmigration_cli $cliDispatcher
-	 * @return void
-	 */
-	public function setCliDispatcher(tx_smoothmigration_cli $cliDispatcher);
+    /**
+     * Set the MigrationMessageManager
+     *
+     * @param Tx_Smoothmigration_Migrations_MigrationMessageManager $manager
+     * @return void
+     */
+    public function setMigrationMessageManager(Tx_Smoothmigration_Migrations_MigrationMessageManager $manager);
 }
 
 ?>
