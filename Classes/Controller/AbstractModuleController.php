@@ -52,8 +52,12 @@ class Tx_Smoothmigration_Controller_AbstractModuleController extends Tx_Extbase_
 		$this->pageRenderer->addInlineLanguageLabelFile('EXT:smoothmigration/Resources/Private/Language/locallang.xml');
 		$this->pageRenderer->addJsLibrary('jquery', t3lib_extMgm::extRelPath('smoothmigration') . 'Resources/Public/JavaScript/jquery-1.10.1.min.js');
 		$this->pageRenderer->addJsLibrary('sprintf', t3lib_extMgm::extRelPath('smoothmigration') . 'Resources/Public/JavaScript/sprintf.min.js');
-		//TODO: fix it for TYPO 4.5 
-		$this->pageRenderer->addJsInlineCode('moduleScript', 'modphpUrl="' . TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tools_SmoothmigrationSmoothmigration').'"');
+		if (class_exists('\TYPO3\CMS\Backend\Utility\BackendUtility')) {
+            $this->pageRenderer->addJsInlineCode('moduleScript', 'modphpUrl="' . TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tools_SmoothmigrationSmoothmigration').'"');
+        } else {
+            $this->pageRenderer->addJsInlineCode('moduleScript', 'modphpUrl="mod.php?M=tools_SmoothmigrationSmoothmigration"');
+        }
+
 		$this->pageRenderer->addJsFile(t3lib_extMgm::extRelPath('smoothmigration') . 'Resources/Public/JavaScript/General.js');
 	}
 

@@ -60,7 +60,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 */
 	public function __construct() {
 			// Running parent class constructor
-		#parent::__construct();
+		parent::__construct();
 
 		$this->issueRepository = t3lib_div::makeInstance('Tx_Smoothmigration_Domain_Repository_IssueRepository');
 

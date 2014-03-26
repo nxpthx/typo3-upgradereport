@@ -42,7 +42,6 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationDefinition impleme
 	 * Constructor
 	 */
 	public function __construct() {
-		//TODO: fix it for TYPO3 4.5
 		$this->objectManagager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 	}
 
