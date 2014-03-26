@@ -14,40 +14,45 @@
 	</f:for>
 	</ul>
 	<f:for each="{groupedIssues}" as="tests" key="extension" iteration="iterator">
-		<h2 id="h2-{iterator.cycle}">{extension}</h2>
-		<f:for each="{tests}" as="issues" key="testName">
-			<this:inspection inspectionIdentifier="{testName}">
-			<h3>{inspection.title}</h3>
-			<p>{inspection.shortDescription}</p>
-			<p>{inspection.description}</p>
-			<ul>
-				<f:for each="{issues}" as="issue"><this:resultAnalyzer issue="{issue}">
-					<this:ifMigrationAvailable inspectionIdentifier="{testName}">
-						<f:then>
-							<f:if condition="{issue.migrationStatus} == 0">
-								<li class="typo3-message message-warning">
-							</f:if>
-							<f:if condition="{issue.migrationStatus} == 1">
-								<li class="typo3-message message-ok">
-							</f:if>
-							<f:if condition="{issue.migrationStatus} > 1">
-								<li class="typo3-message message-error">
-							</f:if>
-								{solution}<br />
-								<f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.{issue.migrationStatus}" />
-							</li>
-						</f:then>
-						<f:else>
-							<li class="typo3-message message-notice">
-								{solution}<br />
-								<f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.noMigrationAvailable" />
-							</li>
-						</f:else>
-					</this:ifMigrationAvailable>
-				</this:resultAnalyzer></f:for>
-			</ul>
-			</this:inspection>
-		</f:for>
-		<a class="noprint" href="#top">to top</a>
+        <div class="typo3-message">
+		    <h2 id="h2-{iterator.cycle}">{extension}</h2>
+            <f:for each="{tests}" as="issues" key="testName">
+                <this:inspection inspectionIdentifier="{testName}">
+                <h3>{inspection.title}</h3>
+                <p>{inspection.shortDescription}</p>
+                <p>{inspection.description}</p>
+                <ul>
+                    <f:for each="{issues}" as="issue"><this:resultAnalyzer issue="{issue}">
+                        <f:if condition="{issue.migrationStatus} != 1">
+                            <div class="migrate"><f:link.action action="migration" arguments="{issue: issue}">Run migration</f:link.action></div>
+                        </f:if>
+                        <this:ifMigrationAvailable inspectionIdentifier="{testName}">
+                            <f:then>
+                                <f:if condition="{issue.migrationStatus} == 0">
+                                    <li class="typo3-message message-warning">
+                                </f:if>
+                                <f:if condition="{issue.migrationStatus} == 1">
+                                    <li class="typo3-message message-ok">
+                                </f:if>
+                                <f:if condition="{issue.migrationStatus} > 1">
+                                    <li class="typo3-message message-error">
+                                </f:if>
+                                    {solution}<br />
+                                    <f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.{issue.migrationStatus}" />
+                                </li>
+                            </f:then>
+                            <f:else>
+                                <li class="typo3-message message-notice">
+                                    {solution}<br />
+                                    <f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.noMigrationAvailable" />
+                                </li>
+                            </f:else>
+                        </this:ifMigrationAvailable>
+                    </this:resultAnalyzer></f:for>
+                </ul>
+                </this:inspection>
+            </f:for>
+            <a class="noprint" href="#top">to top</a>
+        </div>
 	</f:for>
 </f:section>

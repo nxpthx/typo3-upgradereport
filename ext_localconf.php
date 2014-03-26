@@ -5,6 +5,7 @@ if (!defined ('TYPO3_MODE')) {
 }
 
 $checkArray = array(
+	'Tx_Smoothmigration_Checks_Core_CallToDeprecatedClasses_Definition',
 	'Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition',
 	'Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_Definition',
 	'Tx_Smoothmigration_Checks_Core_Mysql_Definition',

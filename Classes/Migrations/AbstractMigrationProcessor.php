@@ -40,10 +40,10 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	 */
 	protected $objectManager;
 
-	/**
-	 * @var tx_smoothmigration_cli
-	 */
-	protected $cliDispatcher;
+    /**
+     * @var Tx_Smoothmigration_Migrations_MigrationMessageManager
+     */
+    protected $migrationMessageManager;
 
 	/**
 	 * @var boolean
@@ -99,14 +99,14 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	}
 
 	/**
-	 * Set the CLI dispatcher
+	 * Set the MigrationMessageManager
 	 *
-	 * @param tx_smoothmigration_cli $cliDispatcher
+	 * @param Tx_Smoothmigration_Migrations_MigrationMessageManager $manager
 	 * @return void
 	 */
-	public function setCliDispatcher(tx_smoothmigration_cli $cliDispatcher) {
-		$this->cliDispatcher = $cliDispatcher;
-	}
+    public function setMigrationMessageManager(Tx_Smoothmigration_Migrations_MigrationMessageManager $manager) {
+        $this->migrationMessageManager = $manager;
+    }
 
 	/**
 	 * When set, try to process experimental migrations as well if any
@@ -129,12 +129,6 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	public function __construct(Tx_Smoothmigration_Domain_Interface_Migration $migration) {
 		$this->parentMigration = $migration;
 	}
-
-	/**
-	 * BUG
-	 * This causes a fatal error with PHP 5.3 since the method is already defined in the interface and not further specified here.
-	 */
-	//abstract public function execute();
 
 	/**
 	 * Any issues?
@@ -170,6 +164,19 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	public function ll($key, $arguments = NULL) {
 		return $this->translator->translate($key, 'smoothmigration', $arguments);
 	}
+
+    /**
+     * Handle a single issue and update it
+     *
+     * @param Tx_Smoothmigration_Domain_Model_Issue $issue
+     */
+    public function executeIssue(Tx_Smoothmigration_Domain_Model_Issue $issue) {
+
+        $this->handleIssue($issue);
+        $this->migrationMessageManager->message();
+
+        $this->issueRepository->update($issue);
+    }
 }
 
 ?>

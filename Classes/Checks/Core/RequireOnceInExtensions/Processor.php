@@ -39,7 +39,7 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Processor extends T
 		/** @var Tx_Smoothmigration_Service_FileLocatorService $fileLocatorService */
 		$fileLocatorService = t3lib_div::makeInstance('Tx_Smoothmigration_Service_FileLocatorService');
 		$locations = $fileLocatorService->searchInExtensions('.*\.(php|inc)$',
-			'^\s*(require|require_once|include|include_once)(\s*\(\s*|\s+)(\$BACK_PATH|PATH_t3lib|PATH_tslib|PATH_typo3|PATH_site\s*\.\s*TYPO3_mainDir)\s?\.\s?(?![\'"]init\.php[\'"]).*\)'
+			'^\s*(require|require_once|include|include_once)(\s*\(\s*|\s+)(\$BACK_PATH|PATH_t3lib|PATH_tslib|PATH_typo3|PATH_site\s*\.\s*TYPO3_mainDir)\s?\.\s?(?![\'"]init\.php[\'"]).*\)(;)'
 		);
 		foreach ($locations as $location) {
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);

@@ -179,7 +179,9 @@ class tx_smoothmigration_cli extends t3lib_cli {
 		
 		/** @var Tx_Smoothmigration_Migrations_AbstractMigrationProcessor $processor */
 		$processor = $migrationTask->getProcessor();
-		$processor->setCliDispatcher($this);
+        $message = new Tx_Smoothmigration_Migrations_MigrationMessageManager();
+        $message->setCliDispatcher($this);
+        $processor->setMigrationMessageManager($message);
 		$processor->setExperimental($experimental);
 		$processor->execute();
 	}

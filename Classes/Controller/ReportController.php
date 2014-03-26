@@ -94,6 +94,46 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 			$this->pageRenderer->addJsFile($resourcePath . $jsFile);
 		}
 	}
+
+    /**
+     * Migrate an single issue
+     *
+     * @param $issue int
+     */
+    protected function migrationAction($issue) {
+        /* @var $issue Tx_Smoothmigration_Domain_Model_Issue */
+        $issue = $this->issueRepository->findByUid($issue);
+
+        $registry = Tx_Smoothmigration_Service_Migration_Registry::getInstance();
+
+        if ($issue->getInspection() == 'typo3-core-code-requireOnceInExtensions') {
+            $migrationTaskKey = 'requireOnce';
+        } else {
+            $migrationTaskKey = 'replaceDeprecatedStaticMethods';
+        }
+
+        if (!empty($migrationTaskKey)) {
+            $migrationTask = $registry->getActiveMigrationByCliKey($migrationTaskKey);
+        }
+
+        if ($migrationTask === NULL) {
+            echo('Please choose a migration to execute.' . LF . LF . 'Possible options are:' .  LF);
+            echo($this->getMigrations());
+
+            return;
+        }
+
+
+
+        /** @var Tx_Smoothmigration_Migrations_AbstractMigrationProcessor $processor */
+        $processor = $migrationTask->getProcessor();
+        $processor->setMigrationMessageManager(new Tx_Smoothmigration_Migrations_MigrationMessageManager());
+        $processor->setExperimental(0);
+        $processor->executeIssue($issue);
+
+        $this->forward('show');
+
+    }
 }
 
 
