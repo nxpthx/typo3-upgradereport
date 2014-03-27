@@ -28,9 +28,6 @@
  * @author Michiel Roos
  */
  
-@include_once t3lib_div::extMgm('smoothmigration') . 'Classes/Migrations/AbstractMigrationProcessor.php';
-@include_once t3lib_div::extMgm('smoothmigration') . 'Classes/Migrations/AbstractMigrationProcessor.php';
- 
 class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition extends Tx_Smoothmigration_Migrations_AbstractMigrationDefinition {
 
 	/**
