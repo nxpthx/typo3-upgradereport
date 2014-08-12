@@ -3,7 +3,7 @@
 #
 DROP TABLE IF EXISTS tx_smoothmigration_domain_model_deprecation;
 CREATE TABLE tx_smoothmigration_domain_model_deprecation (
-	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+	uid int(11) unsigned NOT NULL auto_increment,
 	file mediumtext ,
 	class varchar(255) DEFAULT '',
 	interface varchar(255) DEFAULT '',
