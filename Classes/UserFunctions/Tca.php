@@ -46,7 +46,7 @@ class Tx_smoothmigration_UserFunctions_Tca {
 	public function deprecationTitle(&$parameters, $parentObject) {
 		$titleLength = $GLOBALS['BE_USER']->uc['titleLen'] ? $GLOBALS['BE_USER']->uc['titleLen'] : 30;
 		$record = t3lib_BEfunc::getRecord($parameters['table'], $parameters['row']['uid']);
-		$newTitle = $record['file'] . ': ' . $record['class'];
+		$newTitle = $record['interface'] ?: $record['class'] . ': ' . $record['method'];
 		$parameters['title'] = htmlspecialchars(t3lib_div::fixed_lgd_cs($newTitle, $titleLength));
 	}
 
