@@ -7,8 +7,27 @@ For further information see **[TYPO3 CMS 6.2 LTS Kickoff](http://typo3.org/news/
 
 ## Extension Usage
 
-Just install the extension into a TYPO3 4.5 LTS instance from TER. If cloning from github, make sure your extension folder is named "smoothmigration".
-Afterwards go to the new module shipped and run the tests. We plan on having a more versatile Interface allowing to export the results.
+### Installation
+
+Just install the extension into a TYPO3 4.5 LTS instance from TER.
+
+If cloning from github, make sure your extension folder is named "smoothmigration":
+    cd typo3conf/ext/
+    git clone https://github.com/nxpthx/typo3-upgradereport.git smoothmigration
+
+### Running migrations
+
+Go to the new backend module 'ADMIN TOOLS -> Smooth Migration' and run the tests. We plan on having a more versatile Interface allowing to export the results.
+
+### Running migrations
+
+Migrations can be run using the command line interface. Migrations can only be run for checks that have already been executed.
+
+1. Create a cli user: _cli_smoothmigration
+2. Choose a migration:
+        typo3/cli_dispatch.phpsh smoothmigration migrate
+3. Execute a migration:
+        typo3/cli_dispatch.phpsh smoothmigration migrate requireOnce
 
 ## Extension Development
 
