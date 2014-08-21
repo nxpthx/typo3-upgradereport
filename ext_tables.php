@@ -29,6 +29,7 @@ $TCA['tx_smoothmigration_domain_model_issue'] = array(
 	'ctrl' => array(
 		'title' => 'Recognized upgrade issues',
 		'label' => 'title',
+		'default_sortby' => 'ORDER BY extension, inspection',
 		'label_userFunc' => t3lib_extMgm::extPath($_EXTKEY) . 'Classes/UserFunctions/Tca.php:Tx_smoothmigration_UserFunctions_Tca->issueTitle',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_smoothmigration_domain_model_issue.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif'
@@ -42,6 +43,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 	'ctrl' => array(
 		'title' => 'Deprecated methods',
 		'label' => 'title',
+		'default_sortby' => 'ORDER BY class, interface, method',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_smoothmigration_domain_model_deprecation.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif'
 	)
