@@ -71,6 +71,7 @@ return array(
 	'tx_smoothmigration_service_filelocatorservice' => $extensionClassesPath . 'Service/FileLocatorService.php',
 	'tx_smoothmigration_service_migration_registry' => $extensionClassesPath . 'Service/Migration/Registry.php',
 	'tx_smoothmigration_service_requirementsanalyzer' => $extensionClassesPath . 'Service/RequirementsAnalyzer.php',
+	'tx_smoothmigration_userfunctions_tca' => $extensionClassesPath . 'UserFunctions/Tca.php',
 	'tx_smoothmigration_viewhelpers_ifmigrationavailableviewhelper' => $extensionClassesPath . 'ViewHelpers/IfMigrationAvailableViewHelper.php',
 	'tx_smoothmigration_viewhelpers_inspectionviewhelper' => $extensionClassesPath . 'ViewHelpers/InspectionViewHelper.php',
 	'tx_smoothmigration_viewhelpers_resultanalyzerviewhelper' => $extensionClassesPath . 'ViewHelpers/ResultAnalyzerViewHelper.php',

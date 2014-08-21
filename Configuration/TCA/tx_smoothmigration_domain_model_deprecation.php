@@ -1,17 +1,17 @@
 <?php
 
 $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
-	'crtl' => $TCA['tx_smoothmigration_domain_model_deprecation']['crtl'],
+	'ctrl' => $TCA['tx_smoothmigration_domain_model_deprecation']['ctrl'],
 	'interface' => array(
 		'showRecordFieldList' => 'file, class, interface, method, message, is_static, visibility, deprecated_since_version, removed_in_version, replacement_class, replacement_interface, replacement_method, no_brainer, replacement_message',
 	),
-	'types' => Array(
-		'0' => Array('showitem' => 'file, class, interface, method, message, is_static, visibility, deprecated_since_version, removed_in_version, replacement_class, replacement_interface, replacement_method, no_brainer, replacement_message')
+	'types' => array(
+		1 => array('showitem' => 'file, class, interface, method, message, is_static, visibility, deprecated_since_version, removed_in_version, replacement_class, replacement_interface, replacement_method, no_brainer, replacement_message')
 	),
 	'columns' => array(
 		'file' => array(
 			'label' => 'file',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -19,7 +19,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'class' => array(
 			'label' => 'class',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -27,7 +27,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'interface' => array(
 			'label' => 'interface',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -35,7 +35,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'method' => array(
 			'label' => 'method',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -43,7 +43,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'message' => array(
 			'label' => 'message',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -51,7 +51,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'is_static' => array(
 			'label' => 'is_static',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -59,7 +59,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'visibility' => array(
 			'label' => 'visibility',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -67,7 +67,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'deprecated_since_version' => array(
 			'label' => 'deprecated_since_version',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -75,7 +75,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'removed_in_version' => array(
 			'label' => 'removed_in_version',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -83,7 +83,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'replacement_class' => array(
 			'label' => 'replacement_class',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -91,7 +91,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'replacement_interface' => array(
 			'label' => 'replacement_interface',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -99,7 +99,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'replacement_method' => array(
 			'label' => 'replacement_method',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -107,7 +107,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'regex_search' => array(
 			'label' => 'regex_search',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -115,7 +115,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'regex_replace' => array(
 			'label' => 'regex_replace',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -123,7 +123,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'no_brainer' => array(
 			'label' => 'no_brainer',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -131,7 +131,7 @@ $TCA['tx_smoothmigration_domain_model_deprecation'] = array(
 		),
 		'replacement_message' => array(
 			'label' => 'replacement_message',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',

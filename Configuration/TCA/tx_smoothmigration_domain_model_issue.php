@@ -1,17 +1,17 @@
 <?php
 
 $TCA['tx_smoothmigration_domain_model_issue'] = array(
-	'crtl' => $TCA['tx_smoothmigration_domain_model_issue']['crtl'],
+	'ctrl' => $TCA['tx_smoothmigration_domain_model_issue']['ctrl'],
 	'interface' => array(
 		'showRecordFieldList' => 'inspection, issuer, extension, location_info, additional_infon',
 	),
-	'types' => Array(
-		'0' => Array('showitem' => 'inspection, issue, extension, location_info, additional_info')
+	'types' => array(
+		1 => array('showitem' => 'inspection, issue, extension, location_info, additional_info')
 	),
 	'columns' => array(
 		'inspection' => array(
 			'label' => 'inspection',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -19,7 +19,7 @@ $TCA['tx_smoothmigration_domain_model_issue'] = array(
 		),
 		'identifier' => array(
 			'label' => 'issue_identifier',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -27,7 +27,7 @@ $TCA['tx_smoothmigration_domain_model_issue'] = array(
 		),
 		'extension' => array(
 			'label' => 'extension',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'size' => '40',
 				'max' => '256',
@@ -35,7 +35,7 @@ $TCA['tx_smoothmigration_domain_model_issue'] = array(
 		),
 		'location_info' => array(
 			'label' => 'location',
-			'config' => Array(
+			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '3'
@@ -43,7 +43,7 @@ $TCA['tx_smoothmigration_domain_model_issue'] = array(
 		),
 		'additional_info' => array(
 			'label' => ' additional information',
-			'config' => Array(
+			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '3'
@@ -51,7 +51,7 @@ $TCA['tx_smoothmigration_domain_model_issue'] = array(
 		),
 		'migration_status' => array(
 			'label' => 'Migration status',
-			'config' => Array(
+			'config' => array(
 				'type' => 'input',
 				'cols' => '40',
 				'max' => '1',
