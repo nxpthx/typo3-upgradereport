@@ -1,0 +1,2 @@
+# cat=basic/enable; type=boolean; label=Exclude compatible extensions: If set, extensions that are marked as being compatible with the latest LTS version (in ext_emconf.php) will be excluded from checks.
+excludeCompatibleExtensions = 0
