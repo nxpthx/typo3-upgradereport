@@ -30,6 +30,10 @@
  */
 class Tx_Smoothmigration_Service_FileLocatorService {
 
+	/**
+	 * Current TYPO3 LTS version
+	 */
+	const CURRENT_LTS_VERSION = '6.2.0';
 
 	/**
 	 * @param string $searchPattern
@@ -63,7 +67,13 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 		if (isset($configuration['excludeCompatibleExtensions']) &&
 			intval($configuration['excludeCompatibleExtensions']) > 0
 		) {
-			$excludedExtensions = $this->excludeCompatibleExtensions($excludedExtensions, '6.2.0');
+			if (isset($configuration['targetVersionOverride']) &&
+				trim($configuration['targetVersionOverride'])) {
+				$targetVersion = trim($configuration['targetVersionOverride']);
+			} else {
+				$targetVersion = self::CURRENT_LTS_VERSION;
+			}
+			$excludedExtensions = $this->excludeCompatibleExtensions($excludedExtensions, $targetVersion);
 		}
 		array_push($excludedExtensions, 'smoothmigration');
 
