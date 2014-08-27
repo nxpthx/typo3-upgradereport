@@ -42,9 +42,12 @@ abstract class Tx_Smoothmigration_Checks_AbstractCheckDefinition implements Tx_S
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->objectManagager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
+		if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
+			$this->objectManagager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
+		} else {
+			$this->objectManagager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
+		}
 	}
-
 
 	/**
 	 * Return the minimum TYPO3 Version the checks needs to be executed on.

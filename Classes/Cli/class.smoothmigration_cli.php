@@ -25,7 +25,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_t3lib . 'class.t3lib_cli.php');
+if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
+	require_once(PATH_t3lib . 'class.t3lib_cli.php');
+}
 
 	// I can haz color / use unicode?
 if (DIRECTORY_SEPARATOR !== '\\') {
@@ -60,8 +62,13 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 * Constructor
 	 */
 	public function __construct() {
-			// Running parent class constructor
-		parent::t3lib_cli();
+		if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
+				// Loads the cli_args array with command line arguments
+			$this->cli_args = $this->cli_getArgIndex();
+		} else {
+				// Loads the cli_args array with command line arguments
+			$this->cli_setArguments($_SERVER['argv']);
+		}
 
 		$this->issueRepository = t3lib_div::makeInstance('Tx_Smoothmigration_Domain_Repository_IssueRepository');
 
