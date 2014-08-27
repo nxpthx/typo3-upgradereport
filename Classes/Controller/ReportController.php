@@ -52,6 +52,7 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 		$checkRegistry = $this->objectManager->get('Tx_Smoothmigration_Service_Check_Registry');
 		$this->view->assign('checks', $checkRegistry->getActiveChecks());
 		$this->view->assign('issuesByCheck', $this->issueRepository->findAllGroupedByInspection());
+		$this->view->assign('moduleToken', $this->moduleToken);
 	}
 
 	/**
@@ -61,6 +62,7 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 	 */
 	public function reportOverviewAction() {
 		$this->view->assign('issueCount', $this->issueRepository->findAll()->count());
+		$this->view->assign('moduleToken', $this->moduleToken);
 	}
 
 	/**
@@ -72,6 +74,7 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 	public function showAction() {
 		$this->view->assign('issueCount', $this->issueRepository->findAll()->count());
 		$this->view->assign('groupedIssues', $this->issueRepository->findAllGroupedByExtensionAndInspection());
+		$this->view->assign('moduleToken', $this->moduleToken);
 	}
 
 	/**

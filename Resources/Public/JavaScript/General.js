@@ -5,12 +5,13 @@
 'use strict';
 (function($) {
     function runTest(testIdentifier) {
-        var $element = $('[data-checkid=' + testIdentifier + ']');
+        var $element = $('[data-checkid=' + testIdentifier + ']'),
+            moduleToken = $('.moduleToken').text();
         $element.find('.feedback .clearing, .feedback .report').hide();
         $element.find('.feedback .running').show();
         $.ajax({
             type: 'POST',
-            url: 'mod.php?M=tools_SmoothmigrationSmoothmigration',
+            url: 'mod.php?M=tools_SmoothmigrationSmoothmigration' + moduleToken,
             dataType: 'json',
             data: {
                 tx_smoothmigration_tools_smoothmigrationsmoothmigration: {
@@ -43,12 +44,13 @@
     }
 
     function clearTestResults(testIdentifier) {
-        var $element = $('[data-checkid=' + testIdentifier + ']');
+        var $element = $('[data-checkid=' + testIdentifier + ']'),
+            moduleToken = $('.moduleToken').text();
         $element.find('.feedback .running, .feedback .report').hide();
         $element.find('.feedback .clearing').show();
         $.ajax({
             type: 'POST',
-            url: 'mod.php?M=tools_SmoothmigrationSmoothmigration',
+            url: 'mod.php?M=tools_SmoothmigrationSmoothmigration' + moduleToken,
             dataType: 'json',
             data: {
                 tx_smoothmigration_tools_smoothmigrationsmoothmigration: {
