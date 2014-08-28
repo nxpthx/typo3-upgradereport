@@ -22,11 +22,11 @@
  */
 
 /**
- * Class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_ResultAnalyzer
+ * Class Tx_Smoothmigration_Checks_Extension_Obsolete_ResultAnalyzer
  *
  * @author Michiel Roos
  */
-class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_ResultAnalyzer
+class Tx_Smoothmigration_Checks_Extension_Obsolete_ResultAnalyzer
 	extends Tx_Smoothmigration_Checks_AbstractCheckResultAnalyzer {
 
 	/**
@@ -35,7 +35,7 @@ class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_ResultAnalyzer
 	 * @return string
 	 */
 	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return $this->ll('result.typo3-extension-code-incompatiblewithlts.explanation');
+		return $this->ll('result.typo3-extension-code-obsolete.explanation');
 	}
 
 	/**
@@ -45,11 +45,9 @@ class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_ResultAnalyzer
 	 */
 	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
 		return $this->ll(
-			'result.typo3-extension-code-incompatiblewithlts.solution',
+			'result.typo3-extension-code-obsolete.solution',
 			array(
-				$issue->getLocation()->getExtension(),
-				$issue->getLocation()->getMinimumVersion(),
-				$issue->getLocation()->getMaximumVersion(),
+				$issue->getLocation()->getExtension()
 			)
 		);
 	}

@@ -22,36 +22,38 @@
  */
 
 /**
- * Class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_ResultAnalyzer
+ * Class Tx_Smoothmigration_Checks_Extension_Obsolete_Definition
+ *
+ * Checks for extensions that don't claim to be compatible with the current LTS
+ * version in their ext_emconf.php files.
  *
  * @author Michiel Roos
  */
-class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_ResultAnalyzer
-	extends Tx_Smoothmigration_Checks_AbstractCheckResultAnalyzer {
+class Tx_Smoothmigration_Checks_Extension_Obsolete_Definition
+	extends Tx_Smoothmigration_Checks_AbstractCheckDefinition {
 
 	/**
-	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
-	 *
-	 * @return string
+	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
 	 */
-	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return $this->ll('result.typo3-extension-code-incompatiblewithlts.explanation');
+	public function getProcessor() {
+		return $this->objectManagager->get('Tx_Smoothmigration_Checks_Extension_Obsolete_Processor', $this);
 	}
 
 	/**
-	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
+	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
+	 */
+	public function getResultAnalyzer() {
+		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Extension_Obsolete_ResultAnalyzer', $this);
+	}
+
+	/**
+	 * Returns an CheckIdentifier
+	 * Has to be unique
 	 *
 	 * @return string
 	 */
-	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		return $this->ll(
-			'result.typo3-extension-code-incompatiblewithlts.solution',
-			array(
-				$issue->getLocation()->getExtension(),
-				$issue->getLocation()->getMinimumVersion(),
-				$issue->getLocation()->getMaximumVersion(),
-			)
-		);
+	public function getIdentifier() {
+		return 'typo3-extension-code-obsolete';
 	}
 
 }
