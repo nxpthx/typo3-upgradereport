@@ -14,6 +14,7 @@ $checkArray = array(
 	'Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Definition',
 	'Tx_Smoothmigration_Checks_Database_Utf8_Definition',
 	'Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_Definition',
+	'Tx_Smoothmigration_Checks_Extension_Obsolete_Definition',
 );
 Tx_Smoothmigration_Service_Check_Registry::getInstance()->registerChecks($checkArray);
 

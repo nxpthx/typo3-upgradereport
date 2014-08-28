@@ -26,7 +26,8 @@
  *
  * @author Michiel Roos
  */
-class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_Processor extends Tx_Smoothmigration_Checks_AbstractCheckProcessor {
+class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_Processor
+	extends Tx_Smoothmigration_Checks_AbstractCheckProcessor {
 
 	/**
 	 * Execute the check

@@ -105,4 +105,23 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		return $incompatibleExtensions;
 	}
 
+	/**
+	 * Get extensions that are marked as obsolete in their ext_emconf.php
+	 *
+	 * @return array Array of obsolete extension keys
+	 */
+	public static function getObsoleteExtensions() {
+		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List');
+		$obsoleteExtensions = array();
+		list($list,) = $extensionList->getInstalledExtensions();
+		foreach ($list as $extensionName => $extensionData) {
+			if (isset($extensionData['EM_CONF']['state'])) {
+				if (trim($extensionData['EM_CONF']['state']) === 'obsolete') {
+					array_push($obsoleteExtensions, $extensionName);
+				}
+			}
+		}
+		return $obsoleteExtensions;
+	}
+
 }
