@@ -31,11 +31,16 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 	/**
 	 * Find all grouped by inspection
 	 *
+	 * @param array $checks The checks to find inspections for
+	 *
 	 * @return array
 	 */
-	public function findAllGroupedByInspection() {
+	public function findAllGroupedByInspection($checks) {
 		$issues = $this->findAll();
 		$groups = array();
+		foreach ($checks as $check) {
+			$groups[$check->getIdentifier()] = array();
+		}
 		/** @var Tx_Smoothmigration_Domain_Model_Issue $issue */
 		foreach ($issues as $issue) {
 			if (!array_key_exists($issue->getInspection(), $groups)) {
@@ -44,7 +49,7 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 			$groups[$issue->getInspection()][] = $issue;
 		}
 
-		ksort($groups, 4);
+		ksort($groups, SORT_NATURAL);
 		return $groups;
 	}
 
@@ -85,7 +90,7 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 			$groups[$issue->getExtension()][$issue->getInspection()][] = $issue;
 		}
 
-		ksort($groups, 4);
+		ksort($groups, SORT_NATURAL);
 		return $groups;
 	}
 

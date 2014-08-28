@@ -43,15 +43,25 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 	}
 
 	/**
-	 * Index action, displays the available checks
+	 * Checks action, displays the available checks
 	 *
 	 * @return void
 	 */
-	public function indexAction() {
+	public function checksAction() {
 		/** @var Tx_Smoothmigration_Service_Check_Registry $checkRegistry */
 		$checkRegistry = $this->objectManager->get('Tx_Smoothmigration_Service_Check_Registry');
-		$this->view->assign('checks', $checkRegistry->getActiveChecks());
-		$this->view->assign('issuesByCheck', $this->issueRepository->findAllGroupedByInspection());
+		$activeChecks = $checkRegistry->getActiveChecks();
+		$this->view->assign('checks', $activeChecks);
+		$this->view->assign('issuesByCheck', $this->issueRepository->findAllGroupedByInspection($activeChecks));
+		$this->view->assign('moduleToken', $this->moduleToken);
+	}
+
+	/**
+	 * Extension action, displays extension report
+	 *
+	 * @return void
+	 */
+	public function extensionAction() {
 		$this->view->assign('moduleToken', $this->moduleToken);
 	}
 
@@ -67,7 +77,6 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 
 	/**
 	 * Show action, Shows the report
-	 * FIXME: Maybe rename this action to showHtmlReport or something more descriptive
 	 *
 	 * @return void
 	 */

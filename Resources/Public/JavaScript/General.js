@@ -1,9 +1,9 @@
 /*jshint bitwise:true, curly:true, eqeqeq:true, forin:true, globalstrict: true,
  latedef:true, noarg:true, noempty:true, nonew:true, undef:true, maxlen:256,
  strict:true, trailing:true, boss:true, browser:true, devel:true, jquery:true */
-/*global sprintf, TYPO3 */
-'use strict';
-(function($) {
+/*global document, jQuery, sprintf, TYPO3 */
+(function ($) {
+    'use strict';
     function runTest(testIdentifier) {
         var $element = $('[data-checkid=' + testIdentifier + ']'),
             moduleToken = $('.moduleToken').text();
@@ -20,7 +20,7 @@
                     checkIdentifier: testIdentifier
                 }
             }
-        }).done(function(result) {
+        }).done(function (result) {
             $element.find('.feedback .running').hide();
             $element.find('.feedback .report .status').text(sprintf(
                 TYPO3.lang['check.testRun'],
@@ -59,7 +59,7 @@
                     checkIdentifier: testIdentifier
                 }
             }
-        }).done(function(result) {
+        }).done(function (result) {
             $element.find('.feedback .clearing').hide();
             $element.find('.feedback .report .status').text(sprintf(
                 TYPO3.lang['check.testRun'],
@@ -79,42 +79,43 @@
     }
 
     $.extend($.fn, {
-        clearAllIssues: function() {
-            this.bind('click.clearAllIssues', function() {
-                $('li[data-checkid]').each(function(index, element) {
+        clearAllIssues: function () {
+            this.bind('click.clearAllIssues', function () {
+                $('div[data-checkid]').each(function (index, element) {
                     clearTestResults($(element).attr('data-checkid'));
                 });
             });
             return this;
         },
-        clearIssues: function() {
-            this.bind('click.clearIssues', function() {
-                clearTestResults($(this).parents('li').attr('data-checkid'));
+        clearIssues: function () {
+            this.bind('click.clearIssues', function () {
+                clearTestResults($(this).parents('div').parents('div').attr('data-checkid'));
             });
             return this;
         },
-        runAllChecks: function() {
-            this.bind('click.runAllChecks', function() {
-                $('li[data-checkid]').each(function(index, element) {
+        runAllChecks: function () {
+            this.bind('click.runAllChecks', function () {
+                $('div[data-checkid]').each(function (index, element) {
                     runTest($(element).attr('data-checkid'));
                 });
             });
             return this;
         },
-        runCheck: function() {
-            this.bind('click.runCheck', function() {
-                runTest($(this).parents('li').attr('data-checkid'));
+        runCheck: function () {
+            this.bind('click.runCheck', function () {
+                runTest($(this).parents('div').parents('div').attr('data-checkid'));
             });
             return this;
         },
-        setMessageState: function(state) {
+        setMessageState: function (state) {
             this.removeClass('message-error message-notice message-ok message-warning')
                 .addClass('message-' + state);
         }
     });
-})(jQuery);
+}(jQuery));
 
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
+    'use strict';
     $('.t3-smoothmigration-clearAllIssues').clearAllIssues();
     $('.t3-smoothmigration-clearIssues').clearIssues();
     $('.t3-smoothmigration-runAllChecks').runAllChecks();

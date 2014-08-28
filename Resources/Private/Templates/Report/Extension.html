@@ -1,0 +1,53 @@
+{namespace this=Tx_Smoothmigration_ViewHelpers}
+<f:layout name="module" />
+
+<f:section name="iconButtons">
+</f:section>
+
+<f:section name="main">
+	<h1 id="top">Extension Report</h1>
+	<p>There are currently {issueCount} issues which need to be tackled on upgrade.</p>
+	<h2>Table of contents</h2>
+	<ul>
+	<f:for each="{groupedIssues}" as="tests" key="extension" iteration="iterator">
+		<li><a href="#h2-{iterator.cycle}">{extension}</a></li>
+	</f:for>
+	</ul>
+	<f:for each="{groupedIssues}" as="tests" key="extension" iteration="iterator">
+		<h2 id="h2-{iterator.cycle}">{extension}</h2>
+		<f:for each="{tests}" as="issues" key="testName">
+			<this:inspection inspectionIdentifier="{testName}">
+			<h3>{inspection.title}</h3>
+			<p>{inspection.shortDescription}</p>
+			<p>{inspection.description}</p>
+			<ul>
+				<f:for each="{issues}" as="issue"><this:resultAnalyzer issue="{issue}">
+					<this:ifMigrationAvailable inspectionIdentifier="{testName}">
+						<f:then>
+							<f:if condition="{issue.migrationStatus} == 0">
+								<li class="typo3-message message-warning">
+							</f:if>
+							<f:if condition="{issue.migrationStatus} == 1">
+								<li class="typo3-message message-ok">
+							</f:if>
+							<f:if condition="{issue.migrationStatus} > 1">
+								<li class="typo3-message message-error">
+							</f:if>
+								{solution}<br />
+								<f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.{issue.migrationStatus}" />
+							</li>
+						</f:then>
+						<f:else>
+							<li class="typo3-message message-notice">
+								{solution}<br />
+								<f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.noMigrationAvailable" />
+							</li>
+						</f:else>
+					</this:ifMigrationAvailable>
+				</this:resultAnalyzer></f:for>
+			</ul>
+			</this:inspection>
+		</f:for>
+		<a class="noprint" href="#top">to top</a>
+	</f:for>
+</f:section>
