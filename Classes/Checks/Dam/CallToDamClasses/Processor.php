@@ -48,7 +48,7 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Processor extends Tx_Smooth
 	 * @return void
 	 */
 	public function execute() {
-		$locations = Tx_Smoothmigration_Service_FileLocatorService::searchInExtensions('.*\.(php|inc)$',
+		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions('.*\.(php|inc)$',
 			$this->generateRegularExpression(),
 			array(
 				'dam',

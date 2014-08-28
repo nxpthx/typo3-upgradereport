@@ -40,9 +40,7 @@ class Tx_Smoothmigration_Checks_Core_RemovedConstants_Processor extends Tx_Smoot
 	 * @return void
 	 */
 	public function execute() {
-		/** @var Tx_Smoothmigration_Service_FileLocatorService $fileLocatorService */
-		$fileLocatorService = t3lib_div::makeInstance('Tx_Smoothmigration_Service_FileLocatorService');
-		$locations = $fileLocatorService->searchInExtensions('.*\.(php|inc)$', '(PATH_t3lib)');
+		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions('.*\.(php|inc)$', '(PATH_t3lib)');
 		foreach ($locations as $location) {
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}

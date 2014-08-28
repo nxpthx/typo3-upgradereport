@@ -37,6 +37,8 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 
 	/**
 	 * @param Tx_Smoothmigration_Domain_Repository_IssueRepository $issueRepository
+	 *
+	 * @return void
 	 */
 	public function injectIssueRepository(Tx_Smoothmigration_Domain_Repository_IssueRepository $issueRepository) {
 		$this->issueRepository = $issueRepository;

@@ -53,9 +53,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor ext
 	 * @return void
 	 */
 	public function execute() {
-		/** @var Tx_Smoothmigration_Service_FileLocatorService $fileLocatorService */
-		$fileLocatorService = t3lib_div::makeInstance('Tx_Smoothmigration_Service_FileLocatorService');
-		$locations = $fileLocatorService->searchInExtensions('.*\.(php|inc)$',
+		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions('.*\.(php|inc)$',
 			$this->generateRegularExpression()
 		);
 		foreach ($locations as $location) {
