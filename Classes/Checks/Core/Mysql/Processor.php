@@ -36,9 +36,7 @@ class Tx_Smoothmigration_Checks_Core_Mysql_Processor extends Tx_Smoothmigration_
 	 * @return void
 	 */
 	public function execute() {
-		/** @var Tx_Smoothmigration_Service_FileLocatorService $fileLocatorService */
-		$fileLocatorService = t3lib_div::makeInstance('Tx_Smoothmigration_Service_FileLocatorService');
-		$locations = $fileLocatorService->searchInExtensions('.*\.(php|inc)$',
+		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions('.*\.(php|inc)$',
 			'/(mysql_[a-z_]*)\s?\(/'
 		);
 		foreach ($locations as $location) {

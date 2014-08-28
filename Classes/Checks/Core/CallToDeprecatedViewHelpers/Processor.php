@@ -50,9 +50,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_Processor exten
 	 * @return void
 	 */
 	public function execute() {
-		/** @var Tx_Smoothmigration_Service_FileLocatorService $fileLocatorService */
-		$fileLocatorService = t3lib_div::makeInstance('Tx_Smoothmigration_Service_FileLocatorService');
-		$locations = $fileLocatorService->searchInExtensions('.*\.(html)$',
+		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions('.*\.(html)$',
 			$this->generateRegularExpression()
 		);
 		foreach ($locations as $location) {

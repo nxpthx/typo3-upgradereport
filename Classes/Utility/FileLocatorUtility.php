@@ -26,9 +26,9 @@
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Service_FileLocatorService
+ * Class Tx_Smoothmigration_Utility_FileLocatorUtility
  */
-class Tx_Smoothmigration_Service_FileLocatorService {
+class Tx_Smoothmigration_Utility_FileLocatorUtility implements t3lib_Singleton {
 
 	/**
 	 * Current TYPO3 LTS version
@@ -41,7 +41,7 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 	 *
 	 * @return array
 	 */
-	public function findLineNumbersOfStringInPhpFile($searchPattern, $haystackFilePath) {
+	public static function findLineNumbersOfStringInPhpFile($searchPattern, $haystackFilePath) {
 		$positions = array();
 		foreach (new SplFileObject($haystackFilePath) as $lineNumber => $lineContent) {
 			$matches = array();
@@ -59,7 +59,7 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 	 *
 	 * @return Tx_Smoothmigration_Domain_Interface_IssueLocation[]
 	 */
-	public function searchInExtensions($fileNamePattern, $searchPattern, $excludedExtensions = array()) {
+	public static function searchInExtensions($fileNamePattern, $searchPattern, $excludedExtensions = array()) {
 		$locations = array();
 
 		// get extension configuration
@@ -67,13 +67,13 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 		if (isset($configuration['excludeCompatibleExtensions']) &&
 			intval($configuration['excludeCompatibleExtensions']) > 0
 		) {
+			$targetVersion = NULL;
 			if (isset($configuration['targetVersionOverride']) &&
 				trim($configuration['targetVersionOverride'])) {
 				$targetVersion = trim($configuration['targetVersionOverride']);
-			} else {
-				$targetVersion = self::CURRENT_LTS_VERSION;
 			}
-			$excludedExtensions = $this->excludeCompatibleExtensions($excludedExtensions, $targetVersion);
+			$compatibleExtensions = Tx_Smoothmigration_Utility_ExtensionUtility::getCompatibleExtensions($targetVersion);
+			$excludedExtensions = array_merge($excludedExtensions, array_keys($compatibleExtensions));
 		}
 		array_push($excludedExtensions, 'smoothmigration');
 
@@ -85,7 +85,7 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 			) {
 				continue;
 			}
-			$locations = array_merge($this->searchInExtension($extensionKey, $fileNamePattern, $searchPattern), $locations);
+			$locations = array_merge(self::searchInExtension($extensionKey, $fileNamePattern, $searchPattern), $locations);
 
 		}
 		return $locations;
@@ -99,14 +99,14 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 	 * @return Tx_Smoothmigration_Domain_Interface_IssueLocation[]
 	 *
 	 */
-	public function searchInExtension($extensionKey, $fileNamePattern, $searchPattern) {
+	public static function searchInExtension($extensionKey, $fileNamePattern, $searchPattern) {
 		$pathToExtensionFolder = t3lib_extMgm::extPath($extensionKey);
 		$extensionIterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($pathToExtensionFolder));
 		$regularExpressionIterator = new RegexIterator($extensionIterator, '/' . trim($fileNamePattern, '/') . '/');
 
 		$positions = array();
 		foreach ($regularExpressionIterator as $fileInfo) {
-			$locations = $this->findLineNumbersOfStringInPhpFile($searchPattern, $fileInfo->getPathname());
+			$locations = self::findLineNumbersOfStringInPhpFile($searchPattern, $fileInfo->getPathname());
 
 			foreach ($locations as $location) {
 				$positions[] = new Tx_Smoothmigration_Domain_Model_IssueLocation_File($extensionKey, str_replace(PATH_site, '', $fileInfo->getPathname()), $location['line'], $location['match']);
@@ -114,28 +114,4 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 		}
 		return $positions;
 	}
-
-	/**
-	 * Exclude extensions wich claim to be compatible in their ext_emconf.php
-	 *
-	 * @param array $excludedExtensions
-	 * @param string $version
-	 *
-	 * @return array
-	 */
-	private function excludeCompatibleExtensions($excludedExtensions, $version) {
-		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
-		list($list,) = $extensionList->getInstalledExtensions();
-		foreach ($list as $extensionName => $extensionData) {
-			if (isset($extensionData['EM_CONF']['constraints']['depends']['typo3'])) {
-				$versionRange = tx_em_Tools::splitVersionRange($extensionData['EM_CONF']['constraints']['depends']['typo3']);
-				if ($versionRange[1] !== '0.0.0' && version_compare($version, $versionRange[1], '<=')) {
-					array_push($excludedExtensions, $extensionName);
-				}
-			}
-		}
-		return $excludedExtensions;
-	}
 }
-
-?>

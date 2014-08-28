@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Michiel Roos <michiel@maxserv.nl>
+ *  (c) 2014 Michiel Roos <michiel@maxserv.nl>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,28 +23,35 @@
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Checks_Core_RemovedConstants_Definition
+ * Class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_ResultAnalyzer
  *
  * @author Michiel Roos
  */
-class Tx_Smoothmigration_Checks_Core_RemovedConstants_Processor extends Tx_Smoothmigration_Checks_AbstractCheckProcessor {
+class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_ResultAnalyzer extends Tx_Smoothmigration_Checks_AbstractCheckResultAnalyzer {
 
 	/**
-	 * @var string
-	 */
-	protected $constants = "(PATH_t3lib)";
-
-	/**
-	 * Execute the check
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function execute() {
-		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions('.*\.(php|inc)$', '(PATH_t3lib)');
-		foreach ($locations as $location) {
-			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
-		}
+	public function getExplanation(Tx_Smoothmigration_Domain_Model_Issue $issue) {
+		return $this->ll('result.typo3-extension-code-incompatiblewithlts.explanation');
 	}
-}
 
-?>
+	/**
+	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
+	 *
+	 * @return string
+	 */
+	public function getSolution(Tx_Smoothmigration_Domain_Model_Issue $issue) {
+		return $this->ll(
+			'result.typo3-extension-code-incompatiblewithlts.solution',
+			array(
+				$issue->getLocation()->getExtension(),
+				$issue->getLocation()->getMinimumVersion(),
+				$issue->getLocation()->getMaximumVersion(),
+			)
+		);
+	}
+
+}
