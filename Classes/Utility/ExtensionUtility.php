@@ -22,9 +22,9 @@
  */
 
 /**
- * Class Tx_Smoothmigration_Utillity_ExtensionUtillity
+ * Class Tx_Smoothmigration_Utility_ExtensionUtility
  */
-class Tx_Smoothmigration_Utillity_ExtensionUtillity implements t3lib_Singleton {
+class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 
 	/**
 	 * Current TYPO3 LTS version
@@ -43,7 +43,7 @@ class Tx_Smoothmigration_Utillity_ExtensionUtillity implements t3lib_Singleton {
 	 * @param string $version The version to check against
 	 * @param boolean $ignoreOpenEnd Should we ignore open ended requirements?
 	 *
-	 * @return array Array of compatible extension keys
+	 * @return array Array of compatible extension keys and their version ranges
 	 */
 	public static function getCompatibleExtensions($version = NULL, $ignoreOpenEnd = TRUE) {
 		if ($version === NULL) {
@@ -61,11 +61,48 @@ class Tx_Smoothmigration_Utillity_ExtensionUtillity implements t3lib_Singleton {
 					$upperBound = $versionRange[1] === '0.0.0' || version_compare($version, $versionRange[1], '<=');
 				}
 				if (($versionRange[0] === '0.0.0' || version_compare($version, $versionRange[0], '>')) && $upperBound) {
-					array_push($compatibleExtensions, $extensionName);
+					$compatibleExtensions[$extensionName] = $versionRange;
 				}
 			}
 		}
 		return $compatibleExtensions;
+	}
+
+	/**
+	 * Get extensions wich do not claim to be compatible in their ext_emconf.php
+	 *
+	 * Note that we are ignoring open ended comatibility here. These are the
+	 * cases where the version requirements have a 0.0.0 at the end. This is
+	 * because we assume that extension creators that care about compatibilty
+	 * will specify the maximum supported version instead of providing a 0.0.0
+	 * as upper limit.
+	 *
+	 * @param string $version The version to check against
+	 * @param boolean $ignoreOpenEnd Should we ignore open ended requirements?
+	 *
+	 * @return array Array of compatible extension keys and their version ranges
+	 */
+	public static function getIncompatibleExtensions($version = NULL, $ignoreOpenEnd = TRUE) {
+		if ($version === NULL) {
+			$version = self::CURRENT_LTS_VERSION;
+		}
+		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List');
+		$incompatibleExtensions = array();
+		list($list,) = $extensionList->getInstalledExtensions();
+		foreach ($list as $extensionName => $extensionData) {
+			if (isset($extensionData['EM_CONF']['constraints']['depends']['typo3'])) {
+				$versionRange = tx_em_Tools::splitVersionRange($extensionData['EM_CONF']['constraints']['depends']['typo3']);
+				if ((bool)$ignoreOpenEnd) {
+					$upperBound = $versionRange[1] !== '0.0.0' && version_compare($version, $versionRange[1], '>');
+				} else {
+					$upperBound = $versionRange[1] === '0.0.0' || version_compare($version, $versionRange[1], '>');
+				}
+				if (($versionRange[0] !== '0.0.0' && version_compare($version, $versionRange[0], '<=')) || $upperBound) {
+					$incompatibleExtensions[$extensionName] = $versionRange;
+				}
+			}
+		}
+		return $incompatibleExtensions;
 	}
 
 }

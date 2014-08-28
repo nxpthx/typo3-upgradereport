@@ -72,7 +72,8 @@ class Tx_Smoothmigration_Utility_FileLocatorUtility implements t3lib_Singleton {
 				trim($configuration['targetVersionOverride'])) {
 				$targetVersion = trim($configuration['targetVersionOverride']);
 			}
-			$excludedExtensions = array_merge($excludedExtensions, Tx_Smoothmigration_Utillity_ExtensionUtillity::getCompatibleExtensions($targetVersion));
+			$compatibleExtensions = Tx_Smoothmigration_Utility_ExtensionUtility::getCompatibleExtensions($targetVersion);
+			$excludedExtensions = array_merge($excludedExtensions, array_keys($compatibleExtensions));
 		}
 		array_push($excludedExtensions, 'smoothmigration');
 
