@@ -61,6 +61,7 @@ return array(
 	'tx_smoothmigration_domain_model_issue' => $extensionClassesPath . 'Domain/Model/Issue.php',
 	'tx_smoothmigration_domain_model_issuelocation_configuration' => $extensionClassesPath . 'Domain/Model/IssueLocation/Configuration.php',
 	'tx_smoothmigration_domain_model_issuelocation_database' => $extensionClassesPath . 'Domain/Model/IssueLocation/Database.php',
+	'tx_smoothmigration_domain_model_issuelocation_extension' => $extensionClassesPath . 'Domain/Model/IssueLocation/Extension.php',
 	'tx_smoothmigration_domain_model_issuelocation_file' => $extensionClassesPath . 'Domain/Model/IssueLocation/File.php',
 	'tx_smoothmigration_domain_model_issuelocation_physicallocation' => $extensionClassesPath . 'Domain/Model/IssueLocation/PhysicalLocation.php',
 	'tx_smoothmigration_domain_repository_deprecationrepository' => $extensionClassesPath . 'Domain/Repository/DeprecationRepository.php',

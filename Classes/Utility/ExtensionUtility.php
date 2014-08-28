@@ -86,9 +86,14 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		if ($version === NULL) {
 			$version = self::CURRENT_LTS_VERSION;
 		}
-		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List');
 		$incompatibleExtensions = array();
-		list($list,) = $extensionList->getInstalledExtensions();
+		if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
+			$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List');
+			list($list,) = $extensionList->getInstalledExtensions();
+		} else {
+			$list = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+			// FIXME: work with \TYPO3\CMS\Core\Package\PackageManager::getPackage() etc.
+		}
 		foreach ($list as $extensionName => $extensionData) {
 			if (isset($extensionData['EM_CONF']['constraints']['depends']['typo3'])) {
 				$versionRange = tx_em_Tools::splitVersionRange($extensionData['EM_CONF']['constraints']['depends']['typo3']);
@@ -111,9 +116,13 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 	 * @return array Array of obsolete extension keys
 	 */
 	public static function getObsoleteExtensions() {
-		$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List');
 		$obsoleteExtensions = array();
-		list($list,) = $extensionList->getInstalledExtensions();
+		if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
+			$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List');
+			list($list,) = $extensionList->getInstalledExtensions();
+		} else {
+			$list = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+		}
 		foreach ($list as $extensionName => $extensionData) {
 			if (isset($extensionData['EM_CONF']['state'])) {
 				if (trim($extensionData['EM_CONF']['state']) === 'obsolete') {
