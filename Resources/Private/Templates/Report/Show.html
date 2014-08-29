@@ -15,6 +15,7 @@
 	</ul>
 	<f:for each="{groupedIssues}" as="tests" key="extension" iteration="iterator">
 		<h2 id="h2-{iterator.cycle}">{extension}</h2>
+		<p><f:link.action action="extension" arguments="{extension: extension, site: site}">Show extension distribution</f:link.action></p>
 		<f:for each="{tests}" as="issues" key="testName">
 			<this:inspection inspectionIdentifier="{testName}">
 			<h3>{inspection.title}</h3>

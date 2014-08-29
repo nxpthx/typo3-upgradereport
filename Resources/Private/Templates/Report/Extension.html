@@ -6,48 +6,58 @@
 
 <f:section name="main">
 	<h1 id="top">Extension Report</h1>
-	<p>There are currently {issueCount} issues which need to be tackled on upgrade.</p>
-	<h2>Table of contents</h2>
-	<ul>
-	<f:for each="{groupedIssues}" as="tests" key="extension" iteration="iterator">
-		<li><a href="#h2-{iterator.cycle}">{extension}</a></li>
-	</f:for>
-	</ul>
-	<f:for each="{groupedIssues}" as="tests" key="extension" iteration="iterator">
-		<h2 id="h2-{iterator.cycle}">{extension}</h2>
-		<f:for each="{tests}" as="issues" key="testName">
-			<this:inspection inspectionIdentifier="{testName}">
-			<h3>{inspection.title}</h3>
-			<p>{inspection.shortDescription}</p>
-			<p>{inspection.description}</p>
-			<ul>
-				<f:for each="{issues}" as="issue"><this:resultAnalyzer issue="{issue}">
-					<this:ifMigrationAvailable inspectionIdentifier="{testName}">
+	<p>This report shows what extensions are installed where in the pagetree. This will help you estimate the importance of the extension in the installation. Only extensions that have their category set to 'fe' or 'plugin' are considered. This will give some false positives in the list for extensions that are frontend oriented, but don't have actual plugins (realurl etc.).</p>
+	<h2>Choose a site root and an extension</h2>
+	<f:form action="extension" controller="Report" name="extensionList">
+
+		<select class="docheader-funcmenu" id="site" name="{argumentPrefix}[site]" onchange="document.forms['extensionList'].submit();">
+			<f:if condition="{sites}">
+				<f:for each="{sites}" as="title" key="id">
+					<f:if condition="{0: id} == {0: selectedExtension}">
 						<f:then>
-							<f:if condition="{issue.migrationStatus} == 0">
-								<li class="typo3-message message-warning">
-							</f:if>
-							<f:if condition="{issue.migrationStatus} == 1">
-								<li class="typo3-message message-ok">
-							</f:if>
-							<f:if condition="{issue.migrationStatus} > 1">
-								<li class="typo3-message message-error">
-							</f:if>
-								{solution}<br />
-								<f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.{issue.migrationStatus}" />
-							</li>
+							<option value="{id}" selected="selected">{title}</option>
 						</f:then>
 						<f:else>
-							<li class="typo3-message message-notice">
-								{solution}<br />
-								<f:translate key="migrationsstatus" /> <f:translate key="migrationsstatus.noMigrationAvailable" />
-							</li>
+							<option value="{id}">{title}</option>
 						</f:else>
-					</this:ifMigrationAvailable>
-				</this:resultAnalyzer></f:for>
-			</ul>
-			</this:inspection>
+					</f:if>
+				</f:for>
+			</f:if>
+		</select>
+
+		<select class="docheader-funcmenu" id="extension" name="{argumentPrefix}[extension]" onchange="document.forms['extensionList'].submit();">
+			<option value="1" selected="selected">Please select an extension</option>
+			<f:if condition="{loadedExtensions}">
+				<f:for each="{loadedExtensions}" as="data" key="extension">
+					<f:if condition="{0: data.extkey} == {0: selectedExtension}">
+						<f:then>
+							<option value="{data.extkey}" selected="selected">{data.extkey}</option>
+						</f:then>
+						<f:else>
+							<option value="{data.extkey}">{data.extkey}</option>
+						</f:else>
+					</f:if>
+				</f:for>
+			</f:if>
+		</select>
+		<f:form.submit value="Find Plugins" />
+	</f:form>
+
+	<f:if condition="{selectedExtension}">
+		<f:for each="{loadedExtensions}" as="data" key="extension">
+			<f:if condition="{0: data.extkey} == {0: selectedExtension}">
+				<h2>{selectedExtension}: {data.EM_CONF.title}</h2>
+				<p>{data.EM_CONF.description}</p>
+			</f:if>
 		</f:for>
-		<a class="noprint" href="#top">to top</a>
-	</f:for>
+		<f:if condition="{pluginCount}">
+			<f:then>
+				<p>The extension '{selectedExtension}' has {pluginCount} plugin instances in this site.</p>
+				<f:format.html>{table}</f:format.html>
+			</f:then>
+			<f:else>
+				<p>The extension '{selectedExtension}' has no plugin instances in this site.</p>
+			</f:else>
+		</f:if>
+	</f:if>
 </f:section>

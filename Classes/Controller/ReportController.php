@@ -64,6 +64,125 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 	 * @return void
 	 */
 	public function extensionAction() {
+		$values = array();
+
+		// FIXME: It's unclear to me how to get this value programmatically
+		// There is a getArgumentPrefix method, but that only applies to widgets
+		$values['argumentPrefix'] = 'tx_smoothmigration_tools_smoothmigrationsmoothmigration';
+
+		// List of frontend extensions
+		$loadedExtensions = Tx_Smoothmigration_Utility_ExtensionUtility::getFrontendExtensions(FALSE);
+		$this->view->assign('loadedExtensions', $loadedExtensions);
+
+		$selectedExtension = '';
+		if ($this->request->hasArgument('extension')) {
+			$selectedExtension = $this->request->getArgument('extension');
+		}
+
+		// List of sites
+		$sites = Tx_Smoothmigration_Utility_DatabaseUtility::getSiteRoots();
+		$selectSites = array();
+		foreach ($sites as $siteUid => $siteData) {
+			$selectSites[$siteUid] = $siteUid . ': ' . $siteData['title'];
+		}
+		$values['sites'] = $selectSites;
+
+		$selectedSite = '';
+		if ($this->request->hasArgument('site')) {
+			$selectedSite = $this->request->getArgument('site');
+			$values['selectedSite'] = $selectedSite;
+		}
+
+		if ($selectedSite) {
+			// Get TypoScript configuration for selected site
+			if (count($sites) && $selectedSite) {
+				$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');
+				$tmpl->tt_track = 0;
+				$tmpl->init();
+				$tmpl->runThroughTemplates(t3lib_BEfunc::BEgetRootLine((int)$selectedSite, 'AND 1=1'), 0);
+				$tmpl->generateConfig();
+			}
+
+			// Fetch correct class names
+			$correctClassNames = array();
+			if ($selectedExtension) {
+				$correctClassNames[$selectedExtension] = t3lib_extMgm::getCN($selectedExtension);
+			} else {
+				foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $key => $_) {
+					$correctClassNames[$key] = t3lib_extMgm::getCN($key);
+				}
+			}
+
+			$listTypes = array();
+			$values['plugins'] = array();
+			// For all the root plugin objects in the plugin array
+			foreach ($tmpl->setup['plugin.'] as $name => $_) {
+				if (preg_match('/^[^.]+$/', $name)) {
+					// Store the matching extension key with the plugin name
+					foreach ($correctClassNames as $key => $className) {
+						if (strstr($name, $className)) {
+							$values['plugins'][$name] = $key;
+							$suffix = str_replace($className, '', $name);
+							$listTypes[] = $key . $suffix;
+						}
+					}
+				}
+			}
+			asort($values['plugins']);
+
+			$pluginNames = array_keys($values['plugins']);
+
+			// This catches Powermail which has it's own ctype which it calls powermail_pi1
+			$values['cTypes'] = array();
+			foreach ($pluginNames as $name) {
+				array_push($values['cTypes'], str_replace('tx_', '', $name));
+			}
+
+			// Fetch list types, initialize with legacy tt_news list_type: 9
+			$values['listTypes'] = array();
+			if ($selectedExtension === 'tt_news') {
+				$values['listTypes'] = array('9');
+			}
+			foreach ($tmpl->setup['tt_content.']['list.']['20.'] as $listType => $_) {
+				if (preg_match('/^[^.]+$/', $listType)) {
+					if (in_array($listType, $listTypes)) {
+						$values['listTypes'][] = $listType;
+					}
+				}
+			}
+			asort($values['listTypes']);
+
+			$values['pages'] = array();
+			if (count($values['listTypes']) || count($values['cTypes'])) {
+				$values['pages'] =
+					Tx_Smoothmigration_Utility_DatabaseUtility::getPagesWithContentElements($values['cTypes'], $values['listTypes']);
+			}
+
+			$pages = array();
+			$pluginCount = 0;
+			foreach ($values['pages'] as $page) {
+				$this->setInPageArray(
+					$pages,
+					t3lib_BEfunc::BEgetRootLine($page['pageUid'], 'AND 1=1'),
+					$page
+				);
+				$pluginCount += $page['count'];
+			}
+			$values['pluginCount'] = $pluginCount;
+
+			$lines = array();
+			$lines[] = '<tr class="t3-row-header">
+				<td nowrap>Page title</td>
+				<td nowrap>Content elements</td>
+				<td nowrap>' . $GLOBALS['LANG']->getLL('isExt') . '</td>
+				</tr>';
+			$lines = array_merge($lines, $this->renderList($pages));
+
+			$values['table'] = '<table border="0" cellpadding="0" cellspacing="1" id="ts-overview">' . implode('', $lines) . '</table>';
+		}
+
+		$this->view->assignMultiple($values);
+		$this->view->assign('selectedExtension', $selectedExtension);
 		$this->view->assign('moduleToken', $this->moduleToken);
 	}
 
@@ -83,6 +202,10 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 	 * @return void
 	 */
 	public function showAction() {
+		// Set a default site root so we can link to the extension usage report
+		$sites = Tx_Smoothmigration_Utility_DatabaseUtility::getSiteRoots();
+		$defaultSite = array_shift($sites);
+		$this->view->assign('site', $defaultSite['uid']);
 		$this->view->assign('issueCount', $this->issueRepository->findAll()->count());
 		$this->view->assign('groupedIssues', $this->issueRepository->findAllGroupedByExtensionAndInspection());
 		$this->view->assign('moduleToken', $this->moduleToken);
@@ -108,11 +231,81 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 			$this->pageRenderer->addJsFile($resourcePath . $jsFile);
 		}
 	}
+
+	/**
+	 * Populate the pages array
+	 * Ugly code taken from \SC_mod_web_ts_index
+	 *
+	 * @param $pages
+	 * @param $rootLine
+	 * @param $row
+	 *
+	 * @return void
+	 */
+	private function setInPageArray(&$pages, $rootLine, $row) {
+		ksort($rootLine);
+		reset($rootLine);
+		if (!$rootLine[0]['uid']) {
+			array_shift($rootLine);
+		}
+
+		$contentElement = current($rootLine);
+		$pages[$contentElement['uid']] = htmlspecialchars($contentElement['title']);
+		array_shift($rootLine);
+		if (count($rootLine)) {
+			if (!isset($pages[$contentElement['uid'] . '.'])) {
+				$pages[$contentElement['uid'] . '.'] = array();
+			}
+			$this->setInPageArray($pages[$contentElement['uid'] . '.'], $rootLine, $row);
+		} else {
+			$pages[$contentElement['uid'] . '_'] = $row;
+		}
+	}
+
+	/**
+	 * Render the list of pages with plugins
+	 * Ugly code taken from \SC_mod_web_ts_index
+	 *
+	 * @param $pages
+	 * @param array $lines
+	 * @param int $c
+	 *
+	 * @return array
+	 */
+	private function renderList($pages, $lines = array(), $c = 0) {
+		if (is_array($pages)) {
+			reset($pages);
+			static $i;
+			foreach ($pages as $k => $v) {
+				if (t3lib_div::testInt($k)) {
+					if (isset($pages[$k . "_"])) {
+						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+							<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . ($c * 10) . ' align="top">' .
+							'<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('id' => $k))) . '">' .
+							t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecordWSOL('pages', $k), array("title" => 'ID: ' . $k)) .
+							t3lib_div::fixed_lgd_cs($pages[$k], 30) . '</a></td>
+							<td align="center">' . $pages[$k . '_']['count'] . '</td>
+							<td align="center">' . ($pages[$k . '_']['root_min_val'] == 0 ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : "&nbsp;") .
+							'</td>
+							</tr>';
+					} else {
+						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+							<td nowrap ><img src="clear.gif" width="1" height="1" hspace=' . ($c * 10) . ' align=top>' .
+							t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecordWSOL('pages', $k)) .
+							t3lib_div::fixed_lgd_cs($pages[$k], 30) . '</td>
+							<td align="center"></td>
+							<td align="center"></td>
+							</tr>';
+					}
+					$lines = $this->renderList($pages[$k . '.'], $lines, $c + 1);
+				}
+			}
+		}
+		return $lines;
+	}
 }
 
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/smoothmigration/Classes/Controller/ReviewController.php'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/smoothmigration/Classes/Controller/ReviewController.php']);
 }
-
-?>

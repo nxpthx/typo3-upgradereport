@@ -75,6 +75,7 @@ return array(
 	'tx_smoothmigration_migrations_database_utf8_definition' => $extensionClassesPath . 'Migrations/Database/Utf8/Definition.php',
 	'tx_smoothmigration_migrations_database_utf8_processor' => $extensionClassesPath . 'Migrations/Database/Utf8/Processor.php',
 	'tx_smoothmigration_service_check_registry' => $extensionClassesPath . 'Service/Check/Registry.php',
+	'tx_smoothmigration_utility_databaseutility' => $extensionClassesPath . 'Utility/DatabaseUtility.php',
 	'tx_smoothmigration_utility_extensionutility' => $extensionClassesPath . 'Utility/ExtensionUtility.php',
 	'tx_smoothmigration_utility_filelocatorutility' => $extensionClassesPath . 'Utility/FileLocatorUtility.php',
 	'tx_smoothmigration_service_migration_registry' => $extensionClassesPath . 'Service/Migration/Registry.php',
