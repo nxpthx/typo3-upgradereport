@@ -43,7 +43,6 @@ class Tx_Smoothmigration_Utility_DatabaseUtility implements t3lib_Singleton {
 				pages.uid as pageUid,
 				pages.title,
 				tt_content.uid as contentUid,
-				COUNT(tt_content.uid) as contentCount,
 				tt_content.CType,
 				tt_content.list_type
 			FROM pages
@@ -72,7 +71,6 @@ class Tx_Smoothmigration_Utility_DatabaseUtility implements t3lib_Singleton {
 				$pages[] = array(
 					'pageUid' => intval($row['pageUid']),
 					'contentUid' => intval($row['contentUid']),
-					'count' => intval($row['contentCount']),
 					'title' => $row['title'],
 					'list_type' => $row['list_type'],
 					'CType' => $row['CType']

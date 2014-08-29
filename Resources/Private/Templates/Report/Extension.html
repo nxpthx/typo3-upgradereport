@@ -40,7 +40,6 @@
 				</f:for>
 			</f:if>
 		</select>
-		<f:form.submit value="Find Plugins" />
 	</f:form>
 
 	<f:if condition="{selectedExtension}">
@@ -50,13 +49,13 @@
 				<p>{data.EM_CONF.description}</p>
 			</f:if>
 		</f:for>
-		<f:if condition="{pluginCount}">
+		<f:if condition="{pages}">
 			<f:then>
-				<p>The extension '{selectedExtension}' has {pluginCount} plugin instances in this site.</p>
+				<p>The extension '{selectedExtension}' is present on {pages -> f:count()} pages.</p>
 				<f:format.html>{table}</f:format.html>
 			</f:then>
 			<f:else>
-				<p>The extension '{selectedExtension}' has no plugin instances in this site.</p>
+				<p>The extension '{selectedExtension}' is not present on any pages in this site.</p>
 			</f:else>
 		</f:if>
 	</f:if>

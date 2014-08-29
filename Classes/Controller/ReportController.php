@@ -93,7 +93,7 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 			$values['selectedSite'] = $selectedSite;
 		}
 
-		if ($selectedSite) {
+		if ($selectedSite && $selectedExtension != 1) {
 			// Get TypoScript configuration for selected site
 			if (count($sites) && $selectedSite) {
 				$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');
@@ -117,14 +117,13 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 			$values['plugins'] = array();
 			// For all the root plugin objects in the plugin array
 			foreach ($tmpl->setup['plugin.'] as $name => $_) {
-				if (preg_match('/^[^.]+$/', $name)) {
-					// Store the matching extension key with the plugin name
-					foreach ($correctClassNames as $key => $className) {
-						if (strstr($name, $className)) {
-							$values['plugins'][$name] = $key;
-							$suffix = str_replace($className, '', $name);
-							$listTypes[] = $key . $suffix;
-						}
+				$name = rtrim($name, '.');
+				// Store the matching extension key with the plugin name
+				foreach ($correctClassNames as $key => $className) {
+					if (strstr($name, $className)) {
+						$values['plugins'][$name] = $key;
+						$suffix = str_replace($className, '', $name);
+						$listTypes[] = $key . $suffix;
 					}
 				}
 			}
@@ -145,8 +144,10 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 			}
 			foreach ($tmpl->setup['tt_content.']['list.']['20.'] as $listType => $_) {
 				if (preg_match('/^[^.]+$/', $listType)) {
-					if (in_array($listType, $listTypes)) {
-						$values['listTypes'][] = $listType;
+					foreach ($values['plugins'] as $correctedClassName) {
+						if (preg_match('/^' . $correctedClassName .'/', $listType)) {
+							$values['listTypes'][] = $listType;
+						}
 					}
 				}
 			}
@@ -159,21 +160,17 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 			}
 
 			$pages = array();
-			$pluginCount = 0;
 			foreach ($values['pages'] as $page) {
 				$this->setInPageArray(
 					$pages,
 					t3lib_BEfunc::BEgetRootLine($page['pageUid'], 'AND 1=1'),
 					$page
 				);
-				$pluginCount += $page['count'];
 			}
-			$values['pluginCount'] = $pluginCount;
 
 			$lines = array();
 			$lines[] = '<tr class="t3-row-header">
 				<td nowrap>Page title</td>
-				<td nowrap>Content elements</td>
 				<td nowrap>' . $GLOBALS['LANG']->getLL('isExt') . '</td>
 				</tr>';
 			$lines = array_merge($lines, $this->renderList($pages));
@@ -284,7 +281,6 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 							'<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('id' => $k))) . '">' .
 							t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecordWSOL('pages', $k), array("title" => 'ID: ' . $k)) .
 							t3lib_div::fixed_lgd_cs($pages[$k], 30) . '</a></td>
-							<td align="center">' . $pages[$k . '_']['count'] . '</td>
 							<td align="center">' . ($pages[$k . '_']['root_min_val'] == 0 ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : "&nbsp;") .
 							'</td>
 							</tr>';
@@ -293,7 +289,6 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 							<td nowrap ><img src="clear.gif" width="1" height="1" hspace=' . ($c * 10) . ' align=top>' .
 							t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecordWSOL('pages', $k)) .
 							t3lib_div::fixed_lgd_cs($pages[$k], 30) . '</td>
-							<td align="center"></td>
 							<td align="center"></td>
 							</tr>';
 					}
