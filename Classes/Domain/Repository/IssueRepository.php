@@ -49,7 +49,8 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 			$groups[$issue->getInspection()][] = $issue;
 		}
 
-		ksort($groups, SORT_NATURAL);
+		// 4 -> SORT_NATURAL
+		ksort($groups, 4);
 		return $groups;
 	}
 
@@ -90,7 +91,8 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 			$groups[$issue->getExtension()][$issue->getInspection()][] = $issue;
 		}
 
-		ksort($groups, SORT_NATURAL);
+		// 4 -> SORT_NATURAL
+		ksort($groups, 4);
 		return $groups;
 	}
 
