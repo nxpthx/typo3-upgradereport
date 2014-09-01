@@ -36,7 +36,7 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 
 	/**
 	 *
-	 * @var Tx_Extbase_Object_Manager
+	 * @var Tx_Extbase_Object_ObjectManager
 	 */
 	protected $objectManager;
 
