@@ -36,7 +36,7 @@ $TCA['tx_smoothmigration_domain_model_issue'] = array(
 	)
 );
 
-// allow test results on normal pages
+// allow issues on normal pages
 t3lib_extMgm::allowTableOnStandardPages('tx_smoothmigration_domain_model_issue');
 
 $TCA['tx_smoothmigration_domain_model_deprecation'] = array(

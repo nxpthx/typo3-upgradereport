@@ -74,6 +74,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 
 			// Adding options to help archive:
 		$this->cli_options = array();
+		$this->cli_options[] = array('check', 'Check your code for needed migrations');
 		$this->cli_options[] = array('report', 'Detailed Report including extension, codeline and check');
 		$this->cli_options[] = array('executeAllChecks', 'Execute all checks and show a short summary');
 		$this->cli_options[] = array('migrate', 'Try to migrate your code');
@@ -98,6 +99,10 @@ class tx_smoothmigration_cli extends t3lib_cli {
 
 			// Analysis type:
 		switch ($task) {
+			case 'check':
+				$checkKey = ((string)$this->cli_args['_DEFAULT'][2]) ?: '';
+				$this->check($checkKey);
+				break;
 			case 'executeAllChecks':
 				$this->executeAllChecks();
 				break;
@@ -114,6 +119,37 @@ class tx_smoothmigration_cli extends t3lib_cli {
 				$this->cli_help();
 				exit;
 		}
+	}
+
+	/**
+	 * Check
+	 *
+	 * @param string $checkKey
+	 * @return void
+	 */
+	private function check($checkKey) {
+		$check = NULL;
+		/** @var Tx_Smoothmigration_Service_Check_Registry $registry */
+		$registry = Tx_Smoothmigration_Service_Check_Registry::getInstance();
+
+		if (!empty($checkKey)) {
+			$check = $registry->getActiveCheckByIdentifier($checkKey);
+		}
+		if ($check === NULL) {
+			$this->message('Please choose a check to execute.' . LF . LF . 'Possible options are:' .  LF);
+			$this->message($this->getChecks());
+			return;
+		}
+
+		/** @var Tx_Smoothmigration_Checks_AbstractCheckProcessor $processor */
+		$processor = $check->getProcessor();
+		$processor->execute();
+		foreach ($processor->getIssues() as $issue) {
+			$this->issueRepository->add($issue);
+		}
+		$persistenceManger = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
+		$persistenceManger->persistAll();
+		$this->infoMessage('Check: ' . $check->getTitle() . ' has ' . count($processor->getIssues()) . ' issues ');
 	}
 
 	/**
@@ -160,6 +196,8 @@ class tx_smoothmigration_cli extends t3lib_cli {
 			$issues = $issues + count($processor->getIssues());
 			$this->infoMessage('Check: ' . $singleCheck->getTitle() . ' has ' . count($processor->getIssues()) . ' issues ');
 		}
+		$persistenceManger = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
+		$persistenceManger->persistAll();
 		$this->infoMessage(LF . 'Total Issues : ' . $issues);
 	}
 
@@ -167,7 +205,8 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 * Migrate
 	 *
 	 * @param string $migrationTaskKey
-	 * @param boolean $experimental When TRUE, try to process experimental migrations as well
+	 * @param boolean $experimental When TRUE, try to process experimental
+	 *    migrations as well
 	 * @return void
 	 */
 	private function migrate($migrationTaskKey, $experimental) {
@@ -183,12 +222,34 @@ class tx_smoothmigration_cli extends t3lib_cli {
 			return;
 		}
 
-		
 		/** @var Tx_Smoothmigration_Migrations_AbstractMigrationProcessor $processor */
 		$processor = $migrationTask->getProcessor();
 		$processor->setCliDispatcher($this);
 		$processor->setExperimental($experimental);
 		$processor->execute();
+	}
+
+	/**
+	 * Get available checks
+	 *
+	 * @return string
+	 */
+	private function getChecks() {
+		$output = '';
+		$registry = Tx_Smoothmigration_Service_Check_Registry::getInstance();
+		$checks = $registry->getActiveChecks();
+		$maxLen = 0;
+		/** @var Tx_Smoothmigration_Checks_AbstractCheckDefinition $check */
+		foreach ($checks as $check) {
+			if (strlen($check->getIdentifier()) > $maxLen) {
+				$maxLen = strlen($check->getIdentifier());
+			}
+		}
+		foreach ($checks as $check) {
+			$output .= $check->getIdentifier() . substr($this->cli_indent(rtrim($check->getTitle()), $maxLen + 4), strlen($check->getIdentifier())) . LF;
+		}
+
+		return $output;
 	}
 
 	/**
@@ -198,9 +259,11 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 */
 	private function getMigrations() {
 		$output = '';
+		/** @var Tx_Smoothmigration_Service_Migration_Registry $registry */
 		$registry = Tx_Smoothmigration_Service_Migration_Registry::getInstance();
 		$migrations = $registry->getActiveMigrations();
 		$maxLen = 0;
+		/** @var Tx_Smoothmigration_Migrations_AbstractMigrationDefinition $migration */
 		foreach ($migrations as $migration) {
 			if (strlen($migration->getCliKey()) > $maxLen) {
 				$maxLen = strlen($migration->getCliKey());
@@ -343,5 +406,3 @@ class tx_smoothmigration_cli extends t3lib_cli {
 
 $cleanerObj = t3lib_div::makeInstance('tx_smoothmigration_cli');
 $cleanerObj->cli_main($_SERVER['argv']);
-
-?>

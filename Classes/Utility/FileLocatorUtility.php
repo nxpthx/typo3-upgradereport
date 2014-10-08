@@ -75,7 +75,17 @@ class Tx_Smoothmigration_Utility_FileLocatorUtility implements t3lib_Singleton {
 			$compatibleExtensions = Tx_Smoothmigration_Utility_ExtensionUtility::getCompatibleExtensions($targetVersion);
 			$excludedExtensions = array_merge($excludedExtensions, array_keys($compatibleExtensions));
 		}
+
+		// Ignore self
 		array_push($excludedExtensions, 'smoothmigration');
+
+		// Extensions excluded in the extension manager
+		if (isset($configuration['excludedExtensions']) &&
+			trim($configuration['excludedExtensions']) !== ''
+		) {
+			$ingoreExtensions = explode(',', str_replace(' ', '', $configuration['excludedExtensions']));
+			$excludedExtensions = array_merge($excludedExtensions, $ingoreExtensions);
+		}
 
 		$extensionKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
 		array_pop($extensionKeys);
