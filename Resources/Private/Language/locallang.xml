@@ -21,6 +21,11 @@
 			<label index="check.typo3-core-code-mysql.description">As the database API has been switched to MySQLi, the mysql_* function don't work anymore. Replace them with API calls.</label>
 			<label index='result.typo3-core-code-mysql.explanation'>Direct call to mysql_* functions</label>
 			<label index='result.typo3-core-code-mysql.solution'>Replace the call to %s in %s on line %s.</label>
+			<label index="check.typo3-core-code-namespace.title">Use of non-namespaced classnames</label>
+			<label index="check.typo3-core-code-namespace.shortDescription">Some extensions use non-namespaced core classnames.</label>
+			<label index="check.typo3-core-code-namespace.description">The new TYPO3 LTS version uses namespaced classes. Update the old core classnames to the namespaced versions</label>
+			<label index='result.typo3-core-code-namespace.explanation'>Use of non-namespaced class</label>
+			<label index='result.typo3-core-code-namespace.solution'>Replace the call to %s in %s on line %s.</label>
 			<label index="check.typo3-core-code-removedConstants.title">Removed constants</label>
 			<label index="check.typo3-core-code-removedConstants.shortDescription">Code using the removed constant PATH_t3lib will fail.</label>
 			<label index="check.typo3-core-code-removedConstants.description">The constant PATH_t3lib has been removed. The code in the old t3lib directory has been relocated. You may solve most of the issues found by this check by first running the check and migration for 'requireOnceInExtensions'.</label>

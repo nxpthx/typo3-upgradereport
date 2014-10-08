@@ -8,6 +8,7 @@ $checkArray = array(
 	'Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition',
 	'Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_Definition',
 	'Tx_Smoothmigration_Checks_Core_Mysql_Definition',
+	'Tx_Smoothmigration_Checks_Core_Namespace_Definition',
 	'Tx_Smoothmigration_Checks_Core_RemovedConstants_Definition',
 	'Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition',
 	'Tx_Smoothmigration_Checks_Core_Xclasses_Definition',
@@ -20,9 +21,10 @@ Tx_Smoothmigration_Service_Check_Registry::getInstance()->registerChecks($checkA
 
 $migrationArray = array(
 	'Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition',
+	'Tx_Smoothmigration_Migrations_Core_Namespace_Definition',
 	'Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Definition',
-	'Tx_Smoothmigration_Migrations_Database_Utf8_Definition',
 	'Tx_Smoothmigration_Migrations_Core_Xclasses_Definition',
+	'Tx_Smoothmigration_Migrations_Database_Utf8_Definition',
 );
 
 Tx_Smoothmigration_Service_Migration_Registry::getInstance()->registerMigrations($migrationArray);

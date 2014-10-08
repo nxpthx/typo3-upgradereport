@@ -80,10 +80,10 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	/**
 	 * Inject the object manager
 	 *
-	 * @param Tx_Extbase_Object_Manager $objectManager
+	 * @param Tx_Extbase_Object_ObjectManager $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_Manager $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 

@@ -3,3 +3,6 @@ excludeCompatibleExtensions = 0
 
 # cat=basic/Overrides; type=string; label=TYPO3 target version override: By default the latest LTS version (6.2 at the time of writing) is used to exclude compatible extensions. You can override that value here.
 targetVersionOverride =
+
+# cat=basic/Overrides; type=string; label=Excluded extensions: A comma separated list of extensions to exclude from checks and migrations
+excludedExtensions = phpunit,div,lib,dam,dam_index
