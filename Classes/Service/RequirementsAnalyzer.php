@@ -1,5 +1,25 @@
 <?php
-
+/**
+ *  Copyright notice
+ *
+ *  ⓒ 2014 Michiel Roos <michiel@maxserv.nl>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is free
+ *  software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation;
+ *  either version 2 of the License, or (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful, but
+ *  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ *  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ *  more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * Class CheckRegistry
@@ -118,7 +138,8 @@ class Tx_Smoothmigration_Service_RequirementsAnalyzer implements t3lib_Singleton
 			$requiredExtensions = $this->normalizeExtensionRequirementArray($requiredExtensions);
 			foreach ($requiredExtensions as $extensionKey => $versionRequirements) {
 				if (!array_key_exists($extensionKey, $this->installedTypo3Extensions) ||
-					!$this->checkVersionRange($this->installedTypo3Extensions[$extensionKey], $versionRequirements['minimum'], $versionRequirements['maximum'])) {
+				    !$this->checkVersionRange($this->installedTypo3Extensions[$extensionKey], $versionRequirements['minimum'], $versionRequirements['maximum'])
+				) {
 					$checkActive = FALSE;
 					break;
 				}
@@ -129,12 +150,14 @@ class Tx_Smoothmigration_Service_RequirementsAnalyzer implements t3lib_Singleton
 			$conflictingExtensions = $this->normalizeExtensionRequirementArray($conflictingExtensions);
 			foreach ($conflictingExtensions as $extensionKey => $versionRequirements) {
 				if (array_key_exists($extensionKey, $this->installedTypo3Extensions) &&
-					$this->checkVersionRange($this->installedTypo3Extensions[$extensionKey], $versionRequirements['minimum'], $versionRequirements['maximum'])) {
+				    $this->checkVersionRange($this->installedTypo3Extensions[$extensionKey], $versionRequirements['minimum'], $versionRequirements['maximum'])
+				) {
 					$checkActive = FALSE;
 					break;
 				}
 			}
 		}
+
 		return $checkActive;
 	}
 
@@ -169,16 +192,21 @@ class Tx_Smoothmigration_Service_RequirementsAnalyzer implements t3lib_Singleton
 				}
 			}
 		}
+
 		return $normalizedData;
 	}
+
 	/**
 	 * Loads all Extension-Versions from ext_emconf files
 	 *
 	 * @return void
 	 */
 	protected function initializeTypo3ExtensionArray() {
+
 		foreach (array_keys($GLOBALS['TYPO3_LOADED_EXT']) as $extensionKey) {
-			$this->installedTypo3Extensions[$extensionKey] = t3lib_extMgm::getExtensionVersion($extensionKey);
+			if ($extensionKey !== '_CACHEFILE') {
+				$this->installedTypo3Extensions[$extensionKey] = t3lib_extMgm::getExtensionVersion($extensionKey);
+			}
 		}
 	}
 
@@ -193,4 +221,3 @@ class Tx_Smoothmigration_Service_RequirementsAnalyzer implements t3lib_Singleton
 		return $actual >= $minimum && $actual <= $maximum;
 	}
 }
-?>
