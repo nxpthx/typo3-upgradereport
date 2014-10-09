@@ -27,7 +27,7 @@
  *
  * @author Michiel Roos
  */
-interface Tx_Smoothmigration_Domain_Interface_ResultAnalyzer extends t3lib_Singleton {
+interface Tx_Smoothmigration_Domain_Interface_ResultAnalyzer {
 
 	/**
 	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
