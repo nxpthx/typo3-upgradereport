@@ -31,6 +31,9 @@ if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
 
 	// I can haz color / use unicode?
 if (DIRECTORY_SEPARATOR !== '\\') {
+	/**
+	 *
+	 */
 	define('USE_COLOR', function_exists('posix_isatty') && posix_isatty(STDOUT));
 	define('UNICODE', TRUE);
 } else {
@@ -187,14 +190,17 @@ class tx_smoothmigration_cli extends t3lib_cli {
 		$issues = 0;
 		$registry = Tx_Smoothmigration_Service_Check_Registry::getInstance();
 		$checks = $registry->getActiveChecks();
+
+		/** @var Tx_Smoothmigration_Domain_Interface_Check $singleCheck */
 		foreach ($checks as $singleCheck) {
 			$processor = $singleCheck->getProcessor();
+			$this->headerMessage('Check: ' . $singleCheck->getTitle());
 			$processor->execute();
 			foreach ($processor->getIssues() as $issue) {
 				$this->issueRepository->add($issue);
 			}
 			$issues = $issues + count($processor->getIssues());
-			$this->infoMessage('Check: ' . $singleCheck->getTitle() . ' has ' . count($processor->getIssues()) . ' issues ');
+			$this->infoMessage(count($processor->getIssues()) . ' issues found');
 		}
 		$persistenceManger = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
 		$persistenceManger->persistAll();
