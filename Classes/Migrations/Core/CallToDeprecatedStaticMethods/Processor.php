@@ -49,7 +49,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 	 */
 	public function execute() {
 		$this->cliDispatcher->headerMessage($this->parentMigration->getTitle(), 'info');
-		$this->issues = $this->getIssues();
+		$this->getPendingIssues($this->parentMigration->getIdentifier());
 		if (count($this->issues)) {
 			foreach ($this->issues as $issue) {
 				$this->handleIssue($issue);
@@ -61,18 +61,6 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
 		$persistenceManger->persistAll();
-	}
-
-	/**
-	 * See if there are any issues
-	 *
-	 * @return array
-	 */
-	public function getIssues() {
-		if ($this->issues === NULL) {
-			$this->issues = $this->issueRepository->findPendingByInspection($this->parentMigration->getIdentifier())->toArray();
-		}
-		return $this->issues;
 	}
 
 	/**

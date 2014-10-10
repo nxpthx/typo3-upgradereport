@@ -30,9 +30,36 @@
 abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implements Tx_Smoothmigration_Domain_Interface_MigrationProcessor {
 
 	/**
+	 * @var tx_smoothmigration_cli
+	 */
+	protected $cliDispatcher;
+
+	/**
+	 * @var boolean
+	 */
+	protected $encounteredExperimentalIssues = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $experimental;
+
+	/**
+	 * @var string
+	 */
+	protected $extensionKey;
+
+	/**
 	 * @var Tx_Smoothmigration_Domain_Repository_IssueRepository
 	 */
 	protected $issueRepository;
+
+	/**
+	 * The issues found
+	 *
+	 * @var array
+	 */
+	protected $issues;
 
 	/**
 	 *
@@ -41,26 +68,9 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	protected $objectManager;
 
 	/**
-	 * @var tx_smoothmigration_cli
+	 * @var Tx_Smoothmigration_Migrations_AbstractMigrationDefinition
 	 */
-	protected $cliDispatcher;
-
-	/**
-	 * @var boolean
-	 */
-	protected $experimental;
-
-	/**
-	 * @var boolean
-	 */
-	protected $encounteredExperimentalIssues = FALSE;
-
-	/**
-	 * The issues found
-	 *
-	 * @var array
-	 */
-	protected $issues;
+	protected $parentMigration;
 
 	/**
 	 * @var Tx_Extbase_Utility_Localization
@@ -119,9 +129,15 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	}
 
 	/**
-	 * @var Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Definition
+	 * @param string $extensionKey
+	 *
+	 * @return $this to allow for chaining
 	 */
-	protected $parentMigration;
+	public function setExtensionKey($extensionKey) {
+		$this->extensionKey = $extensionKey;
+
+		return $this;
+	}
 
 	/**
 	 * @param Tx_Smoothmigration_Domain_Interface_Migration $migration
@@ -149,13 +165,33 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	}
 
 	/**
-	 * See if there are any issues
+	 * Get all issues
 	 *
 	 * @return array
 	 */
 	public function getIssues() {
 		if ($this->issues === NULL) {
-			$this->issues = $this->issueRepository->findByInspection($this->parentMigration->getIdentifier())->toArray();
+			if ($this->extensionKey) {
+				$this->issues = $this->issueRepository->findByInspectionAndExtensionKey($this->parentMigration->getIdentifier(), $this->extensionKey)->toArray();
+			} else {
+				$this->issues = $this->issueRepository->findByInspection($this->parentMigration->getIdentifier())->toArray();
+			}
+		}
+		return $this->issues;
+	}
+
+	/**
+	 * Get pending issues
+	 *
+	 * @return array
+	 */
+	public function getPendingIssues() {
+		if ($this->issues === NULL) {
+			if ($this->extensionKey) {
+				$this->issues = $this->issueRepository->findPendingByInspectionAndExtensionKey($this->parentMigration->getIdentifier(), $this->extensionKey)->toArray();
+			} else {
+				$this->issues = $this->issueRepository->findByInspection($this->parentMigration->getIdentifier())->toArray();
+			}
 		}
 		return $this->issues;
 	}
@@ -171,5 +207,3 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 		return $this->translator->translate($key, 'smoothmigration', $arguments);
 	}
 }
-
-?>

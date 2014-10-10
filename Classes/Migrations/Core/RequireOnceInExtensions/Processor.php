@@ -36,7 +36,7 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 	 */
 	public function execute() {
 		$this->cliDispatcher->headerMessage($this->parentMigration->getTitle(), 'info');
-		$this->getIssues();
+		$this->getPendingIssues($this->parentMigration->getIdentifier());
 		if (count($this->issues)) {
 			foreach ($this->issues as $issue) {
 				$this->handleIssue($issue);
@@ -101,5 +101,3 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 	}
 
 }
-
-?>

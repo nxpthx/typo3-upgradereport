@@ -66,6 +66,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['%s'] = array('className' => '%s')
 			<label index="check.typo3-extension-code-obsolete.description">Extensions can specify in their ext_emconf.php status field if they are obsolete.</label>
 			<label index='result.typo3-extension-code-obsolete.explanation'>Obsolete extension</label>
 			<label index='result.typo3-extension-code-obsolete.solution'>Replace extension '%s' with another extension.</label>
+			<label index="migration.typo3-core-code-namespace.title">Replace old core classnames with namespaced versions</label>
 			<label index="migration.typo3-core-code-requireOnceInExtensions.title">Try and replace all reported require/include calls</label>
 			<label index="migration.typo3-core-code-callToDeprecatedStaticMethods.title">Replace deprecated methods method calls with new ones</label>
 			<label index="migration.typo3-core-code-callToDeprecatedStaticMethods.shortDescription">Replace deprecated methods method calls with new ones.</label>

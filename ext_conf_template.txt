@@ -5,4 +5,4 @@ excludeCompatibleExtensions = 0
 targetVersionOverride =
 
 # cat=basic/Overrides; type=string; label=Excluded extensions: A comma separated list of extensions to exclude from checks and migrations
-excludedExtensions = phpunit,div,lib,dam,dam_index
+excludedExtensions = phpunit,div,lib,dam,dam_index,dam_catedit,dam_cron,dam_filelinks,dam_pages,dam_ttcontent,dam_ttnews,extbase_dam

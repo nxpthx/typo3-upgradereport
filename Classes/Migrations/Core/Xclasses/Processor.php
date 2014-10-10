@@ -36,7 +36,7 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 	 */
 	public function execute() {
 		$this->cliDispatcher->headerMessage($this->parentMigration->getTitle(), 'info');
-		$this->getIssues();
+		$this->getPendingIssues($this->parentMigration->getIdentifier())->toArray();
 		if (count($this->issues)) {
 			foreach ($this->issues as $issue) {
 				$this->handleIssue($issue);
@@ -55,63 +55,61 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 	 * Handle issue
 	 *
 	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
+	 *
 	 * @return void
 	 */
 	protected function handleIssue(Tx_Smoothmigration_Domain_Model_Issue $issue) {
-		
-		// first retrieve the old ext_localconf.php that contained the xclass
-		$physicalPath = str_replace('EXT:', 'ext/',$issue->getFilePath());
 
-		if(file_exists(PATH_site . 'typo3conf/' . $physicalPath)) {
+		// first retrieve the old ext_localconf.php that contained the xclass
+		$physicalPath = str_replace('EXT:', 'ext/', $issue->getFilePath());
+
+		if (file_exists(PATH_site . 'typo3conf/' . $physicalPath)) {
 			$physicalPath = PATH_site . 'typo3conf/' . $physicalPath;
-		} elseif(file_exists(PATH_site . 'typo3/sys' . $physicalPath)) {
+		} elseif (file_exists(PATH_site . 'typo3/sys' . $physicalPath)) {
 			$physicalPath = PATH_site . 'typo3/sys' . $physicalPath;
-		} elseif(file_exists($originalFilePath = PATH_site . $physicalPath)) {
+		} elseif (file_exists(PATH_site . $physicalPath)) {
 			$physicalPath = PATH_site . $physicalPath;
 		} else {
 			return;
 		}
 
 		$additionalInfo = $issue->getAdditionalInformation();
-		$extName = dirname($physicalPath);
-		$extPath = substr(0,-17, $physicalPath);
-		
-		if(file_exists(substr(0,-4,$physicalPath).'.obsolete.php')) {
-		// if it has already been processed, because it contains more than just one xclass, rebuild the new ext_localconf.php and ext_autoload.php by adding the current classes etc
-			
-			$xClasses = require $extPath.'ext_autoload.php';
-			
-			$extLocalconfSource = substr(0, -2,file_get_contents($physicalPath));
-			
+		$extPath = substr(0, -17, $physicalPath);
+
+		if (file_exists(substr(0, -4, $physicalPath) . '.obsolete.php')) {
+			// if it has already been processed, because it contains more than just one xclass, rebuild the new ext_localconf.php and ext_autoload.php by adding the current classes etc
+
+			$xClasses = require $extPath . 'ext_autoload.php';
+
+			$extLocalconfSource = substr(0, -2, file_get_contents($physicalPath));
+
 			$xClasses[$additionalInfo['IMPLEMENTATION_CLASS']] = $additionalInfo['IMPLEMENTATION_CLASS_FILENAME'];
-			
+
 			$extLocalconfSource .= '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'Objects\'][\'' . $additionalInfo['ORIGINAL_CLASS'] . '\'] = array(\'className\' => \'' . $additionalInfo['IMPLEMENTATION_CLASS'] . '\');' . "\n?>";
-			
+
 			file_put_contents($physicalPath, $extLocalconfSource);
 			unset($extLocalconfSource);
-			
+
 			$newAutoloadSource = '<?php return array(' . "\n";
-			
-			foreach($xClasses as $xclass => $path) {
+
+			foreach ($xClasses as $xclass => $path) {
 				$newAutoloadSource .= '\'' . $xclass . '\' => \'' . $path . '\',' . "\n";
 			}
-			
+
 			file_put_contents($extPath . 'ext_autoload.php', $newAutoloadSource . '); ?>');
-			
+
 		} else {
 			// else rename the ext_localconf.php and create a new one with the new style and also create the ext_autoload.php
 			rename($physicalPath, substr(0, -4, $physicalPath) . '.obsolete.php');
-			
+
 			$extLocalconfSource = "<?php\n" . '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'Objects\'][\'' . $additionalInfo['ORIGINAL_CLASS'] . '\'] = array(\'className\' => \'' . $additionalInfo['IMPLEMENTATION_CLASS'] . '\');' . "\n?>";
-			
+
 			file_put_contents($physicalPath, $extLocalconfSource);
-			
+
 			$xClassCode = "<php\n" . 'return array(\'' . $additionalInfo['IMPLEMENTATION_CLASS'] . '\'=> \'' . ['IMPLEMENTATION_CLASS_FILENAME'] . '\',);' . "\n?>";
-			
-			file_put_contents($extPath.'ext_autoload.php', $xClassCode);
+
+			file_put_contents($extPath . 'ext_autoload.php', $xClassCode);
 		}
 	}
 
 }
-
-?>
