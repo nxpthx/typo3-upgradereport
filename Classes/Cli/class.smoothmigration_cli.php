@@ -211,6 +211,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 */
 	private function migrate($migrationTaskKey, $experimental) {
 		$migrationTask = NULL;
+		/** @var Tx_Smoothmigration_Service_Migration_Registry $registry */
 		$registry = Tx_Smoothmigration_Service_Migration_Registry::getInstance();
 
 		if (!empty($migrationTaskKey)) {
