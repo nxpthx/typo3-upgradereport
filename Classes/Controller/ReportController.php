@@ -108,10 +108,7 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 			if ($selectedExtension) {
 				$correctClassNames[$selectedExtension] = t3lib_extMgm::getCN($selectedExtension);
 			} else {
-				$extensionKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
-				$extensionKeys = array_flip($extensionKeys);
-				unset($extensionKeys['_CACHEFILE']);
-				$extensionKeys = array_flip($extensionKeys);
+				$extensionKeys = Tx_Smoothmigration_Utility_ExtensionUtility::getLoadedExtensions();
 				foreach ($extensionKeys as $key) {
 					$correctClassNames[$key] = t3lib_extMgm::getCN($key);
 				}
