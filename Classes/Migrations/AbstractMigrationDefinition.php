@@ -193,5 +193,3 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationDefinition impleme
 		return $this->getIdentifier();
 	}
 }
-
-?>

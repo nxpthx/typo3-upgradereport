@@ -57,7 +57,7 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 		$this->classAliasMap = $this->classAliasProvider->getClassAliasMap();
 
 		$this->cliDispatcher->headerMessage($this->parentMigration->getTitle(), 'info');
-		$this->issues = $this->getIssues();
+		$this->getPendingIssues($this->parentMigration->getIdentifier());
 		if (count($this->issues)) {
 			foreach ($this->issues as $issue) {
 				$this->handleIssue($issue);
@@ -69,19 +69,6 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
 		$persistenceManger->persistAll();
-	}
-
-	/**
-	 * See if there are any issues
-	 *
-	 * @return array
-	 */
-	public function getIssues() {
-		if ($this->issues === NULL) {
-			$this->issues = $this->issueRepository->findPendingByInspection($this->parentMigration->getIdentifier())->toArray();
-		}
-
-		return $this->issues;
 	}
 
 	/**
@@ -162,7 +149,7 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 			if ($lineNumber + 1 != $locationInfo->getLineNumber()) {
 				$newFileContent .= $lineContent;
 			} else {
-				$newLineContent = str_replace($locationInfo->getMatchedString(), '', $lineContent);
+				$newLineContent = str_replace($search, $replacement, $lineContent);
 				if ($newLineContent == $lineContent) {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
 					$this->cliDispatcher->errorMessage('Error, file not changed', TRUE);

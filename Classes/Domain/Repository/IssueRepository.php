@@ -51,20 +51,64 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 
 		// 4 -> SORT_NATURAL
 		ksort($groups, 4);
+
 		return $groups;
+	}
+
+	/**
+	 * Find all issues by inspection and extensionkey
+	 *
+	 * @param string $inspection
+	 * @param string $extensionKey
+	 *
+	 * @return array
+	 */
+	public function findByInspectionAndExtensionKey($inspection, $extensionKey) {
+		$query = $this->createQuery();
+
+		return $query->matching(
+			$query->logicalAnd(
+				$query->equals('inspection', $inspection),
+				$query->equals('extension', $extensionKey)
+			)
+		)->execute();
 	}
 
 	/**
 	 * Find all pending issues grouped by inspection
 	 *
 	 * @param string $inspection
+	 *
 	 * @return array
 	 */
 	public function findPendingByInspection($inspection) {
 		$query = $this->createQuery();
+
 		return $query->matching(
 			$query->logicalAnd(
 				$query->equals('inspection', $inspection),
+				$query->logicalNot(
+					$query->equals('migrationStatus', Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS)
+				)
+			)
+		)->execute();
+	}
+
+	/**
+	 * Find all pending issues grouped by inspection
+	 *
+	 * @param string $inspection
+	 * @param string $extensionKey
+	 *
+	 * @return array
+	 */
+	public function findPendingByInspectionAndExtensionKey($inspection, $extensionKey) {
+		$query = $this->createQuery();
+
+		return $query->matching(
+			$query->logicalAnd(
+				$query->equals('inspection', $inspection),
+				$query->equals('extension', $extensionKey),
 				$query->logicalNot(
 					$query->equals('migrationStatus', Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS)
 				)
@@ -93,6 +137,7 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 
 		// 4 -> SORT_NATURAL
 		ksort($groups, 4);
+
 		return $groups;
 	}
 
@@ -100,6 +145,7 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 	 * Add an issue
 	 *
 	 * @param Tx_Smoothmigration_Domain_Model_Issue $object
+	 *
 	 * @return void
 	 */
 	public function add($object) {
@@ -108,7 +154,8 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 				'tx_smoothmigration_domain_model_issue',
 				'inspection = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getInspection(), 'tx_smoothmigration_domain_model_issue') .
 				' AND identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($object->getIdentifier(), 'tx_smoothmigration_domain_model_issue')
-			) == 0) {
+			) == 0
+		) {
 			parent::add($object);
 		}
 	}
@@ -117,7 +164,9 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 	 * Delete all by inspection
 	 *
 	 * @param string $inspection
-	 * @return int	$issueCount	count of how many entries were deleted, -1 on error
+	 *
+	 * @return int   $issueCount   count of how many entries were deleted, -1
+	 *    on error
 	 */
 	public function deleteAllByInspection($inspection) {
 		$issueCount =
@@ -128,16 +177,15 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 			);
 		if ($issueCount > 0) {
 			if (!$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-					'tx_smoothmigration_domain_model_issue',
-					'inspection = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($inspection, 'tx_smoothmigration_domain_model_issue')
-				)
+				'tx_smoothmigration_domain_model_issue',
+				'inspection = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($inspection, 'tx_smoothmigration_domain_model_issue')
+			)
 			) {
 				return -1;
 			}
 		}
+
 		return $issueCount;
 	}
 
 }
-
-?>
