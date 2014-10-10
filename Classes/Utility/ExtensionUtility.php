@@ -27,6 +27,21 @@
 class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 
 	/**
+	 * @var null
+	 */
+	static $installedExtensions = NULL;
+
+	/**
+	 * @var null
+	 */
+	static $loadedExtensions = NULL;
+
+	/**
+	 * @var null
+	 */
+	static $loadedExtensionsFiltered = NULL;
+
+	/**
 	 * Current TYPO3 LTS version
 	 */
 	const CURRENT_LTS_VERSION = '6.2.0';
@@ -64,6 +79,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 				}
 			}
 		}
+
 		return $compatibleExtensions;
 	}
 
@@ -100,6 +116,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 				}
 			}
 		}
+
 		return $extensions;
 	}
 
@@ -125,7 +142,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		foreach ($list as $extensionName => $extensionData) {
 			if (isset($extensionData['EM_CONF']['category'])) {
 				if ((trim($extensionData['EM_CONF']['category']) === 'plugin') ||
-					(trim($extensionData['EM_CONF']['category']) === 'fe')
+				    (trim($extensionData['EM_CONF']['category']) === 'fe')
 				) {
 					if ((bool)$onlyKeys) {
 						array_push($extensions, $extensionName);
@@ -135,6 +152,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 				}
 			}
 		}
+
 		return $extensions;
 	}
 
@@ -144,6 +162,9 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 	 * @return array Array of installed
 	 */
 	public static function getInstalledExtensions() {
+		if (self::$installedExtensions !== NULL) {
+			return self::$installedExtensions;
+		}
 		if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
 			/** @var $extensionList tx_em_Extensions_List */
 			$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List');
@@ -151,6 +172,8 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		} else {
 			$list = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
 		}
+		self::$installedExtensions = $list;
+
 		return $list;
 	}
 
@@ -160,6 +183,9 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 	 * @return array Array of installed
 	 */
 	public static function getLoadedExtensions() {
+		if (self::$loadedExtensions !== NULL) {
+			return self::$loadedExtensions;
+		}
 		$loadedExtensions = array();
 		$list = self::getInstalledExtensions();
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $key => $data) {
@@ -167,7 +193,81 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 				$loadedExtensions[] = $key;
 			}
 		}
+		self::$loadedExtensions = $loadedExtensions;
+
 		return $loadedExtensions;
+	}
+
+	/**
+	 * Get a filtered list of loaded / active extensions
+	 *
+	 * Compatible extensions can be filtered out.
+	 * Ignored extensions can be filtered out.
+	 * System extensions can be filtered out.
+	 * Smoothmigration is filtered out.
+	 *
+	 * @param bool $removeCompatible
+	 * @param bool $removeIgnored
+	 * @param bool $removeSystem
+	 *
+	 * @return array Array of installed
+	 */
+	public static function getLoadedExtensionsFiltered(
+		$removeCompatible = TRUE,
+		$removeIgnored = TRUE,
+		$removeSystem = TRUE
+	) {
+		if (self::$loadedExtensionsFiltered !== NULL) {
+			return self::$loadedExtensionsFiltered;
+		}
+
+		// get extension configuration
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['smoothmigration']);
+
+		$loadedExtensionsFiltered = self::getLoadedExtensions();
+
+		$loadedExtensionsFiltered = array_flip($loadedExtensionsFiltered);
+		unset($loadedExtensionsFiltered['smoothmigration']);
+
+		if ($removeCompatible) {
+			if (isset($configuration['excludeCompatibleExtensions']) &&
+			    intval($configuration['excludeCompatibleExtensions']) > 0
+			) {
+				$targetVersion = NULL;
+				if (isset($configuration['targetVersionOverride']) &&
+				    trim($configuration['targetVersionOverride'])
+				) {
+					$targetVersion = trim($configuration['targetVersionOverride']);
+				}
+				$compatibleExtensions = Tx_Smoothmigration_Utility_ExtensionUtility::getCompatibleExtensions($targetVersion);
+				foreach ($compatibleExtensions as $key => $_) {
+					unset($loadedExtensionsFiltered[$key]);
+				}
+			}
+		}
+
+		if ($removeIgnored) {
+			if (isset($configuration['excludedExtensions']) &&
+			    trim($configuration['excludedExtensions']) !== ''
+			) {
+				$ingoreExtensions = explode(',', str_replace(' ', '', $configuration['excludedExtensions']));
+				foreach ($ingoreExtensions as $key) {
+					unset($loadedExtensionsFiltered[$key]);
+				}
+			}
+		}
+
+		if ($removeSystem) {
+			foreach($loadedExtensionsFiltered as $key => $_) {
+				if ($GLOBALS['TYPO3_LOADED_EXT'][$key]['type'] === 'S') {
+					unset($loadedExtensionsFiltered[$key]);
+				}
+			}
+		}
+
+		self::$loadedExtensionsFiltered = array_flip($loadedExtensionsFiltered);
+
+		return self::$loadedExtensionsFiltered;
 	}
 
 	/**
@@ -191,6 +291,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 				}
 			}
 		}
+
 		return $extensions;
 	}
 
