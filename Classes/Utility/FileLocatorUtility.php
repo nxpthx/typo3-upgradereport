@@ -46,9 +46,13 @@ class Tx_Smoothmigration_Utility_FileLocatorUtility implements t3lib_Singleton {
 		foreach (new SplFileObject($haystackFilePath) as $lineNumber => $lineContent) {
 			$matches = array();
 			if (preg_match('/' . trim($searchPattern, '/') . '/i', $lineContent, $matches)) {
-				$positions[] = array('line' => $lineNumber + 1, 'match' => $matches[0]);
+				$positions[] = array(
+					'line' => $lineNumber + 1,
+					'match' => $matches[0]
+				);
 			}
 		}
+
 		return $positions;
 	}
 
@@ -62,36 +66,10 @@ class Tx_Smoothmigration_Utility_FileLocatorUtility implements t3lib_Singleton {
 	public static function searchInExtensions($fileNamePattern, $searchPattern, $excludedExtensions = array()) {
 		$locations = array();
 
-		// get extension configuration
-		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['smoothmigration']);
-		if (isset($configuration['excludeCompatibleExtensions']) &&
-			intval($configuration['excludeCompatibleExtensions']) > 0
-		) {
-			$targetVersion = NULL;
-			if (isset($configuration['targetVersionOverride']) &&
-				trim($configuration['targetVersionOverride'])) {
-				$targetVersion = trim($configuration['targetVersionOverride']);
-			}
-			$compatibleExtensions = Tx_Smoothmigration_Utility_ExtensionUtility::getCompatibleExtensions($targetVersion);
-			$excludedExtensions = array_merge($excludedExtensions, array_keys($compatibleExtensions));
-		}
+		$loadedExtensions = Tx_Smoothmigration_Utility_ExtensionUtility::getLoadedExtensionsFiltered();
 
-		// Ignore self
-		array_push($excludedExtensions, 'smoothmigration');
-
-		// Extensions excluded in the extension manager
-		if (isset($configuration['excludedExtensions']) &&
-			trim($configuration['excludedExtensions']) !== ''
-		) {
-			$ingoreExtensions = explode(',', str_replace(' ', '', $configuration['excludedExtensions']));
-			$excludedExtensions = array_merge($excludedExtensions, $ingoreExtensions);
-		}
-
-		$extensionKeys = Tx_Smoothmigration_Utility_ExtensionUtility::getLoadedExtensions();
-		foreach ($extensionKeys as $extensionKey) {
-			if ($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'] == 'S' ||
-			    in_array($extensionKey, $excludedExtensions)
-			) {
+		foreach ($loadedExtensions as $extensionKey) {
+			if (in_array($extensionKey, $excludedExtensions)) {
 				continue;
 			}
 			$locations = array_merge(self::searchInExtension($extensionKey, $fileNamePattern, $searchPattern), $locations);
@@ -121,6 +99,7 @@ class Tx_Smoothmigration_Utility_FileLocatorUtility implements t3lib_Singleton {
 				$positions[] = new Tx_Smoothmigration_Domain_Model_IssueLocation_File($extensionKey, str_replace(PATH_site, '', $fileInfo->getPathname()), $location['line'], $location['match']);
 			}
 		}
+
 		return $positions;
 	}
 }
