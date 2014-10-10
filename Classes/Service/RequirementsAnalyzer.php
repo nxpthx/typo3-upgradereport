@@ -202,11 +202,12 @@ class Tx_Smoothmigration_Service_RequirementsAnalyzer implements t3lib_Singleton
 	 * @return void
 	 */
 	protected function initializeTypo3ExtensionArray() {
-
-		foreach (array_keys($GLOBALS['TYPO3_LOADED_EXT']) as $extensionKey) {
-			if ($extensionKey !== '_CACHEFILE') {
-				$this->installedTypo3Extensions[$extensionKey] = t3lib_extMgm::getExtensionVersion($extensionKey);
-			}
+		$extensionKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
+		$extensionKeys = array_flip($extensionKeys);
+		unset($extensionKeys['_CACHEFILE']);
+		$extensionKeys = array_flip($extensionKeys);
+		foreach ($extensionKeys as $extensionKey) {
+			$this->installedTypo3Extensions[$extensionKey] = t3lib_extMgm::getExtensionVersion($extensionKey);
 		}
 	}
 

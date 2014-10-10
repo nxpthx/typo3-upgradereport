@@ -88,16 +88,18 @@ class Tx_Smoothmigration_Utility_FileLocatorUtility implements t3lib_Singleton {
 		}
 
 		$extensionKeys = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
-		array_pop($extensionKeys);
+		$extensionKeys = array_flip($extensionKeys);
+		unset($extensionKeys['_CACHEFILE']);
+		$extensionKeys = array_flip($extensionKeys);
 		foreach ($extensionKeys as $extensionKey) {
 			if ($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'] == 'S' ||
-				in_array($extensionKey, $excludedExtensions)
+			    in_array($extensionKey, $excludedExtensions)
 			) {
 				continue;
 			}
 			$locations = array_merge(self::searchInExtension($extensionKey, $fileNamePattern, $searchPattern), $locations);
-
 		}
+
 		return $locations;
 	}
 
