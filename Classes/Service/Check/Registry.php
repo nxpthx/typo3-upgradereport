@@ -11,6 +11,7 @@ class Tx_Smoothmigration_Service_Check_Registry implements t3lib_Singleton {
 
 	/**
 	 * @param string $className
+	 *
 	 * @return void
 	 */
 	public function registerCheck($className) {
@@ -19,9 +20,9 @@ class Tx_Smoothmigration_Service_Check_Registry implements t3lib_Singleton {
 		}
 	}
 
-
 	/**
 	 * @param array $classNames
+	 *
 	 * @return void
 	 */
 	public function registerChecks(array $classNames) {
@@ -63,6 +64,7 @@ class Tx_Smoothmigration_Service_Check_Registry implements t3lib_Singleton {
 				return $check;
 			}
 		}
+
 		return NULL;
 	}
 
@@ -73,5 +75,3 @@ class Tx_Smoothmigration_Service_Check_Registry implements t3lib_Singleton {
 		return t3lib_div::makeInstance('Tx_Smoothmigration_Service_Check_Registry');
 	}
 }
-
-?>

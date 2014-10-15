@@ -36,14 +36,23 @@ class Tx_Smoothmigration_Checks_Core_Mysql_Processor extends Tx_Smoothmigration_
 	 * @return void
 	 */
 	public function execute() {
-		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions('.*\.(php|inc)$',
-			'/(mysql_[a-z_]*)\s?\(/'
-		);
+		$regularExpression = '/(mysql_[a-z_]*)\s?\(/';
+
+		if ($this->getExtensionKey()) {
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
+				$this->getExtensionKey(),
+				'.*\.(php|inc)$',
+				$regularExpression
+			);
+		} else {
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
+				'.*\.(php|inc)$',
+				$regularExpression
+			);
+		}
 		foreach ($locations as $location) {
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}
 	}
 
 }
-
-?>

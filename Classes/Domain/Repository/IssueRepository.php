@@ -38,6 +38,7 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 	public function findAllGroupedByInspection($checks) {
 		$issues = $this->findAll();
 		$groups = array();
+		/** @var Tx_Smoothmigration_Checks_AbstractCheckDefinition $check */
 		foreach ($checks as $check) {
 			$groups[$check->getIdentifier()] = array();
 		}
@@ -123,6 +124,33 @@ class Tx_Smoothmigration_Domain_Repository_IssueRepository extends Tx_Extbase_Pe
 	 */
 	public function findAllGroupedByExtensionAndInspection() {
 		$issues = $this->findAll();
+		$groups = array();
+		/** @var Tx_Smoothmigration_Domain_Model_Issue $issue */
+		foreach ($issues as $issue) {
+			if (!array_key_exists($issue->getExtension(), $groups)) {
+				$groups[$issue->getExtension()] = array();
+			}
+			if (!array_key_exists($issue->getInspection(), $groups[$issue->getExtension()])) {
+				$groups[$issue->getExtension()][$issue->getInspection()] = array();
+			}
+			$groups[$issue->getExtension()][$issue->getInspection()][] = $issue;
+		}
+
+		// 4 -> SORT_NATURAL
+		ksort($groups, 4);
+
+		return $groups;
+	}
+
+	/**
+	 * Find by extension and group by inspection
+	 *
+	 * @param string $extensionKey
+	 *
+	 * @return array
+	 */
+	public function findByExtensionGroupedByInspection($extensionKey = '') {
+		$issues = $this->findByExtension($extensionKey);
 		$groups = array();
 		/** @var Tx_Smoothmigration_Domain_Model_Issue $issue */
 		foreach ($issues as $issue) {

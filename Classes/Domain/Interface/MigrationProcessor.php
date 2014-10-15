@@ -37,10 +37,8 @@ interface Tx_Smoothmigration_Domain_Interface_MigrationProcessor extends Tx_Smoo
 	/**
 	 * Set the CLI dispatcher
 	 *
-	 * @param tx_smoothmigration_cli $cliDispatcher
+	 * @param Tx_Smoothmigration_Controller_SmoothmigrationCommandController $cliDispatcher
 	 * @return void
 	 */
-	public function setCliDispatcher(tx_smoothmigration_cli $cliDispatcher);
+	public function setCommandController(Tx_Smoothmigration_Controller_SmoothmigrationCommandController $cliDispatcher);
 }
-
-?>

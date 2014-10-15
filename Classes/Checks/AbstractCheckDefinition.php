@@ -36,16 +36,16 @@ abstract class Tx_Smoothmigration_Checks_AbstractCheckDefinition implements Tx_S
 	 *
 	 * @var Tx_Extbase_Object_ObjectManager
 	 */
-	protected $objectManagager;
+	protected $objectManager;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
-			$this->objectManagager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+			$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		} else {
-			$this->objectManagager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
+			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
 		}
 	}
 
@@ -170,6 +170,13 @@ abstract class Tx_Smoothmigration_Checks_AbstractCheckDefinition implements Tx_S
 		return $this->getLanguageLabelForCheck('description');
 	}
 
+	/**
+	 * Get language label for check
+	 *
+	 * @param $field
+	 *
+	 * @return mixed
+	 */
 	protected function getLanguageLabelForCheck($field) {
 		$classParts = explode('_', __CLASS__);
 		$extensionName = strtolower($classParts[1]);
@@ -177,6 +184,14 @@ abstract class Tx_Smoothmigration_Checks_AbstractCheckDefinition implements Tx_S
 			'LLL:EXT:' . $extensionName . '/Resources/Private/Language/locallang.xml:check.' . $this->getIdentifier() . '.' . $field
 		);
 	}
-}
 
-?>
+	/**
+	 * Get objectManager
+	 *
+	 * @return Tx_Extbase_Object_ObjectManager
+	 */
+	public function getObjectManager() {
+		return $this->objectManager;
+	}
+
+}

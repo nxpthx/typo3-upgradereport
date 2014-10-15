@@ -36,15 +36,24 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Processor extends T
 	 * @return void
 	 */
 	public function execute() {
-		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
-			'.*\.(php|inc)$',
-			'^\s*(require|require_once|include|include_once)(\s*\(?\s*|\s+)(\$BACK_PATH|PATH_t3lib|PATH_tslib|PATH_typo3|PATH_site\s*\.\s*TYPO3_mainDir)\s?\.\s?(?![\'"]init\.php[\'"]).*\)?\s*;?'
-		);
+		$regularExpression = '^\s*(require|require_once|include|include_once)(\s*\(?\s*|\s+)(\$BACK_PATH|PATH_t3lib|PATH_tslib|PATH_typo3|PATH_site\s*\.\s*TYPO3_mainDir)\s?\.\s?(?![\'"]init\.php[\'"]).*\)?\s*;?';
+
+
+		if ($this->getExtensionKey()) {
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
+				$this->getExtensionKey(),
+				'.*\.(php|inc)$',
+				$regularExpression
+			);
+		} else {
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
+				'.*\.(php|inc)$',
+				$regularExpression
+			);
+		}
 		foreach ($locations as $location) {
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}
 	}
 
 }
-
-?>

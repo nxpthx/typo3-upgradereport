@@ -27,16 +27,16 @@
  *
  * @author Michiel Roos
  */
- 
+
 include_once t3lib_extMgm::extPath('smoothmigration') . 'Classes/Migrations/AbstractMigrationProcessor.php';
- 
+
 class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition extends Tx_Smoothmigration_Migrations_AbstractMigrationDefinition {
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_MigrationProcessor
 	 */
 	public function getProcessor() {
-		return $this->objectManagager->get('Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor', $this);
+		return $this->objectManager->get('Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor', $this);
 	}
 
 	/**

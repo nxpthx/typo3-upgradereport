@@ -36,14 +36,14 @@ class Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_Definition
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
 	 */
 	public function getProcessor() {
-		return $this->objectManagager->get('Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_Processor', $this);
+		return $this->objectManager->get('Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_Processor', $this);
 	}
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
 	 */
 	public function getResultAnalyzer() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_ResultAnalyzer', $this);
+		return $this->objectManager->get('Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_ResultAnalyzer', $this);
 	}
 
 	/**

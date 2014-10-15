@@ -37,19 +37,35 @@ class Tx_Smoothmigration_Checks_Core_Namespace_Processor extends Tx_Smoothmigrat
 		/** @var Tx_Smoothmigration_Service_ClassAliasProvider $classAliasProvider */
 		$classAliasProvider = t3lib_div::makeInstance('Tx_Smoothmigration_Service_ClassAliasProvider');
 
-		// Legacy Classes
-		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
-			'.*\.(php|inc)$',
-			'(' . implode('|', (array_keys($classAliasProvider->getLegacyClasses()))) . ')'
-		);
-		foreach ($locations as $location) {
+		if ($this->getExtensionKey()) {
+			// Legacy Classes
+			$legacyLocations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
+				$this->getExtensionKey(),
+				'.*\.(php|inc)$',
+				'(' . implode('|', (array_keys($classAliasProvider->getLegacyClasses()))) . ')'
+			);
+			// Class Alias Map
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
+				$this->getExtensionKey(),
+				'.*\.(php|inc)$',
+				'(' . implode('|', (array_keys($classAliasProvider->getClassAliasMap()))) . ')'
+			);
+		} else {
+			// Legacy Classes
+			$legacyLocations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
+				'.*\.(php|inc)$',
+				'(' . implode('|', (array_keys($classAliasProvider->getLegacyClasses()))) . ')'
+			);
+			// Class Alias Map
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
+				'.*\.(php|inc)$',
+				'(' . implode('|', (array_keys($classAliasProvider->getClassAliasMap()))) . ')'
+			);
+		}
+
+		foreach ($legacyLocations as $location) {
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}
-		// Class Alias Map
-		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
-			'.*\.(php|inc)$',
-			'(' . implode('|', (array_keys($classAliasProvider->getClassAliasMap()))) . ')'
-		);
 		foreach ($locations as $location) {
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}

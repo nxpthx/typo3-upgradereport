@@ -23,6 +23,8 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 			'labels' => 'LLL:EXT:smoothmigration/Resources/Private/Language/locallang_mod.xml'
 		)
 	);
+
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']['smoothMigration'] = 'Tx_Smoothmigration_Controller_SmoothmigrationCommandController';
 }
 
 $TCA['tx_smoothmigration_domain_model_issue'] = array(
@@ -36,7 +38,7 @@ $TCA['tx_smoothmigration_domain_model_issue'] = array(
 	)
 );
 
-// allow issues on normal pages
+// allow test results on normal pages
 t3lib_extMgm::allowTableOnStandardPages('tx_smoothmigration_domain_model_issue');
 
 $TCA['tx_smoothmigration_domain_model_deprecation'] = array(

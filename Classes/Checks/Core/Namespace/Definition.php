@@ -32,14 +32,14 @@ class Tx_Smoothmigration_Checks_Core_Namespace_Definition extends Tx_Smoothmigra
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
 	 */
 	public function getProcessor() {
-		return $this->objectManagager->get('Tx_Smoothmigration_Checks_Core_Namespace_Processor', $this);
+		return $this->objectManager->get('Tx_Smoothmigration_Checks_Core_Namespace_Processor', $this);
 	}
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
 	 */
 	public function getResultAnalyzer() {
-		return $this->objectManagager->get('Tx_Smoothmigration_Checks_Core_Namespace_ResultAnalyzer', $this);
+		return $this->objectManager->get('Tx_Smoothmigration_Checks_Core_Namespace_ResultAnalyzer', $this);
 	}
 
 	/**

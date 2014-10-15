@@ -33,7 +33,7 @@ class Tx_Smoothmigration_Migrations_Core_Xclasses_Definition extends Tx_Smoothmi
 	 * @return Tx_Smoothmigration_Domain_Interface_MigrationProcessor
 	 */
 	public function getProcessor() {
-		return $this->objectManagager->get('Tx_Smoothmigration_Migrations_Core_Xclasses_Processor', $this);
+		return $this->objectManager->get('Tx_Smoothmigration_Migrations_Core_Xclasses_Processor', $this);
 	}
 
 	/**

@@ -13,8 +13,9 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
+ *  A copy is found in the textfile GPL.txt and important notices to the
+ * license from the author is found in LICENSE.txt distributed with these
+ * scripts.
  *
  *
  *  This script is distributed in the hope that it will be useful,
@@ -26,7 +27,7 @@
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Domain_Interface_CheckProcessor
+ * Class Tx_Smoothmigration_Domain_Model_Issue
  *
  * @author Steffen Ritter
  */
@@ -85,6 +86,7 @@ class Tx_Smoothmigration_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abst
 		$this->additionalInformation = unserialize($this->additionalInfo);
 		$this->location = unserialize($this->locationInfo);
 	}
+
 	/**
 	 * @return string
 	 */
@@ -118,6 +120,7 @@ class Tx_Smoothmigration_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abst
 		if ($this->location == NULL && $this->locationInfo !== NULL) {
 			$this->location = unserialize($this->locationInfo);
 		}
+
 		return $this->location;
 	}
 
@@ -205,14 +208,11 @@ class Tx_Smoothmigration_Domain_Model_Issue extends Tx_Extbase_DomainObject_Abst
 	 * Set the migration status
 	 *
 	 * @param integer $migrationStatus
+	 *
 	 * @return void
 	 */
 	public function setMigrationStatus($migrationStatus) {
 		$this->migrationStatus = $migrationStatus;
 	}
 
-
-
 }
-
-?>

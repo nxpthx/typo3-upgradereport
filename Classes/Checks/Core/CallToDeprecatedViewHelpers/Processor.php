@@ -50,9 +50,18 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_Processor exten
 	 * @return void
 	 */
 	public function execute() {
-		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions('.*\.(html)$',
-			$this->generateRegularExpression()
-		);
+		if ($this->getExtensionKey()) {
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
+				$this->getExtensionKey(),
+				'.*\.(html)$',
+				$this->generateRegularExpression()
+			);
+		} else {
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
+				'.*\.(html)$',
+				$this->generateRegularExpression()
+			);
+		}
 		foreach ($locations as $location) {
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}

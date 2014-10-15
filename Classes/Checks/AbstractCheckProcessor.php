@@ -27,7 +27,12 @@
  *
  * @author Michiel Roos
  */
-abstract class Tx_Smoothmigration_Checks_AbstractCheckProcessor implements Tx_Smoothmigration_Domain_Interface_CheckProcessor{
+abstract class Tx_Smoothmigration_Checks_AbstractCheckProcessor implements Tx_Smoothmigration_Domain_Interface_CheckProcessor {
+
+	/**
+	 * @var string
+	 */
+	private $extensionKey = NULL;
 
 	/**
 	 * @var Tx_Smoothmigration_Domain_Model_Issue[]
@@ -60,6 +65,22 @@ abstract class Tx_Smoothmigration_Checks_AbstractCheckProcessor implements Tx_Sm
 		return count($this->issues) > 0;
 	}
 
-}
+	/**
+	 * @return string
+	 */
+	public function getExtensionKey() {
+		return $this->extensionKey;
+	}
 
-?>
+	/**
+	 * @param string $extensionKey
+	 *
+	 * @return $this to allow for chaining
+	 */
+	public function setExtensionKey($extensionKey) {
+		$this->extensionKey = $extensionKey;
+
+		return $this;
+	}
+
+}

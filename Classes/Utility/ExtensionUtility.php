@@ -103,16 +103,35 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		}
 		$extensions = array();
 		$list = self::getInstalledExtensions();
-		foreach ($list as $extensionName => $extensionData) {
-			if (isset($extensionData['EM_CONF']['constraints']['depends']['typo3'])) {
-				$versionRange = tx_em_Tools::splitVersionRange($extensionData['EM_CONF']['constraints']['depends']['typo3']);
-				if ((bool)$ignoreOpenEnd) {
-					$upperBound = $versionRange[1] !== '0.0.0' && version_compare($version, $versionRange[1], '>');
-				} else {
-					$upperBound = $versionRange[1] === '0.0.0' || version_compare($version, $versionRange[1], '>');
+		if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
+			foreach ($list as $extensionName => $extensionData) {
+				if (isset($extensionData['EM_CONF']['constraints']['depends']['typo3'])) {
+					$versionRange = tx_em_Tools::splitVersionRange($extensionData['EM_CONF']['constraints']['depends']['typo3']);
+					if ((bool)$ignoreOpenEnd) {
+						$upperBound = $versionRange[1] !== '0.0.0' && version_compare($version, $versionRange[1], '>');
+					} else {
+						$upperBound = $versionRange[1] === '0.0.0' || version_compare($version, $versionRange[1], '>');
+					}
+					if (($versionRange[0] !== '0.0.0' && version_compare($version, $versionRange[0], '<=')) || $upperBound) {
+						$extensions[$extensionName] = $versionRange;
+					}
 				}
-				if (($versionRange[0] !== '0.0.0' && version_compare($version, $versionRange[0], '<=')) || $upperBound) {
-					$extensions[$extensionName] = $versionRange;
+			}
+		} else {
+			/** @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility */
+			$emConfUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility');
+			foreach ($list as $extensionName) {
+				if (isset($extensionData['EM_CONF']['constraints']['depends']['typo3'])) {
+					$extensionData = array(); // FIXME . . .  use \TYPO3\CMS\Core\Package\PackageManager
+					$versionRange = tx_em_Tools::splitVersionRange($extensionData['EM_CONF']['constraints']['depends']['typo3']);
+					if ((bool)$ignoreOpenEnd) {
+						$upperBound = $versionRange[1] !== '0.0.0' && version_compare($version, $versionRange[1], '>');
+					} else {
+						$upperBound = $versionRange[1] === '0.0.0' || version_compare($version, $versionRange[1], '>');
+					}
+					if (($versionRange[0] !== '0.0.0' && version_compare($version, $versionRange[0], '<=')) || $upperBound) {
+						$extensions[$extensionName] = $versionRange;
+					}
 				}
 			}
 		}
@@ -188,8 +207,9 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		}
 		$loadedExtensions = array();
 		$list = self::getInstalledExtensions();
+		$extensionKeys = array_keys($list);
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $key => $data) {
-			if (array_key_exists($key, $list)) {
+			if (in_array($key, $extensionKeys)) {
 				$loadedExtensions[] = $key;
 			}
 		}
@@ -224,7 +244,13 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		// get extension configuration
 		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['smoothmigration']);
 
-		$loadedExtensionsFiltered = self::getLoadedExtensions();
+		if (isset($configuration['includeInactiveExtensions']) &&
+		    intval($configuration['includeInactiveExtensions']) > 0
+		) {
+			$loadedExtensionsFiltered = self::getLoadedExtensions();
+		} else {
+			$loadedExtensionsFiltered = self::getInstalledExtensions();
+		}
 
 		$loadedExtensionsFiltered = array_flip($loadedExtensionsFiltered);
 		unset($loadedExtensionsFiltered['smoothmigration']);
@@ -258,7 +284,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		}
 
 		if ($removeSystem) {
-			foreach($loadedExtensionsFiltered as $key => $_) {
+			foreach ($loadedExtensionsFiltered as $key => $_) {
 				if ($GLOBALS['TYPO3_LOADED_EXT'][$key]['type'] === 'S') {
 					unset($loadedExtensionsFiltered[$key]);
 				}

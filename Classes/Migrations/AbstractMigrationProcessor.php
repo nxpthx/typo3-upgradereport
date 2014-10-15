@@ -30,9 +30,9 @@
 abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implements Tx_Smoothmigration_Domain_Interface_MigrationProcessor {
 
 	/**
-	 * @var tx_smoothmigration_cli
+	 * @var Tx_Smoothmigration_Controller_SmoothmigrationCommandController
 	 */
-	protected $cliDispatcher;
+	protected $commandController;
 
 	/**
 	 * @var boolean
@@ -109,13 +109,13 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	}
 
 	/**
-	 * Set the CLI dispatcher
+	 * Set the Command Controller
 	 *
-	 * @param tx_smoothmigration_cli $cliDispatcher
+	 * @param Tx_Smoothmigration_Controller_SmoothmigrationCommandController $commandController
 	 * @return void
 	 */
-	public function setCliDispatcher(tx_smoothmigration_cli $cliDispatcher) {
-		$this->cliDispatcher = $cliDispatcher;
+	public function setCommandController(Tx_Smoothmigration_Controller_SmoothmigrationCommandController $commandController) {
+		$this->commandController = $commandController;
 	}
 
 	/**

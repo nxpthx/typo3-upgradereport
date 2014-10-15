@@ -36,14 +36,14 @@ class Tx_Smoothmigration_Checks_Extension_Obsolete_Definition
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
 	 */
 	public function getProcessor() {
-		return $this->objectManagager->get('Tx_Smoothmigration_Checks_Extension_Obsolete_Processor', $this);
+		return $this->objectManager->get('Tx_Smoothmigration_Checks_Extension_Obsolete_Processor', $this);
 	}
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
 	 */
 	public function getResultAnalyzer() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Extension_Obsolete_ResultAnalyzer', $this);
+		return $this->objectManager->ge('Tx_Smoothmigration_Checks_Extension_Obsolete_ResultAnalyzer', $this);
 	}
 
 	/**

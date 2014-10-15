@@ -53,9 +53,18 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor ext
 	 * @return void
 	 */
 	public function execute() {
-		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions('.*\.(php|inc)$',
-			$this->generateRegularExpression()
-		);
+		if ($this->getExtensionKey()) {
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
+				$this->getExtensionKey(),
+				'.*\.(php|inc)$',
+				$this->generateRegularExpression()
+			);
+		} else {
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
+				'.*\.(php|inc)$',
+				$this->generateRegularExpression()
+			);
+		}
 		foreach ($locations as $location) {
 			$issue = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 			$issue->setAdditionalInformation($this->getRepleacabilityReport($location));
@@ -65,7 +74,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor ext
 
 	/**
 	 * See if we can replace the found deprecation
-	 * @param $location
+	 * @param Tx_Smoothmigration_Domain_Model_IssueLocation_File $location
 	 * @return array
 	 */
 	protected function getRepleacabilityReport($location) {
@@ -102,5 +111,3 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor ext
 	}
 
 }
-
-?>

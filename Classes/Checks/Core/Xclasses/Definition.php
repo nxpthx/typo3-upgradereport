@@ -36,14 +36,14 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Definition extends Tx_Smoothmigrat
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
 	 */
 	public function getProcessor() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_Xclasses_Processor', $this);
+		return $this->objectManager->get('Tx_Smoothmigration_Checks_Core_Xclasses_Processor', $this);
 	}
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
 	 */
 	public function getResultAnalyzer() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer', $this);
+		return $this->objectManager->get('Tx_Smoothmigration_Checks_Core_Xclasses_ResultAnalyzer', $this);
 	}
 
 	/**
@@ -66,5 +66,3 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Definition extends Tx_Smoothmigrat
 	}
 
 }
-
-?>

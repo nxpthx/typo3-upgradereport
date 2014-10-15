@@ -36,14 +36,14 @@ class Tx_Smoothmigration_Checks_Core_Mysql_Definition extends Tx_Smoothmigration
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckProcessor
 	 */
 	public function getProcessor() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_Mysql_Processor', $this);
+		return $this->getObjectManager()->get('Tx_Smoothmigration_Checks_Core_Mysql_Processor', $this);
 	}
 
 	/**
 	 * @return Tx_Smoothmigration_Domain_Interface_CheckResultAnalyzer
 	 */
 	public function getResultAnalyzer() {
-		return t3lib_div::makeInstance('Tx_Smoothmigration_Checks_Core_Mysql_ResultAnalyzer', $this);
+		return $this->getObjectManager()->get('Tx_Smoothmigration_Checks_Core_Mysql_ResultAnalyzer', $this);
 	}
 
 	/**
@@ -57,5 +57,3 @@ class Tx_Smoothmigration_Checks_Core_Mysql_Definition extends Tx_Smoothmigration
 	}
 
 }
-
-?>

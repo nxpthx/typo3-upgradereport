@@ -37,7 +37,11 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Processor extends Tx_Smoothmigrati
 	 */
 	public function execute() {
 		$contexts = array('BE', 'FE');
-		$extensionList = Tx_Smoothmigration_Utility_ExtensionUtility::getLoadedExtensionsFiltered();
+		if ($this->getExtensionKey()) {
+			$extensionList = array($this->getExtensionKey());
+		} else {
+			$extensionList = Tx_Smoothmigration_Utility_ExtensionUtility::getLoadedExtensionsFiltered();
+		}
 
 		foreach ($contexts as $context) {
 			if (is_array($GLOBALS['TYPO3_CONF_VARS'][$context]['XCLASS']) && count($GLOBALS['TYPO3_CONF_VARS'][$context]['XCLASS']) > 0) {
@@ -126,5 +130,3 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Processor extends Tx_Smoothmigrati
 		}
 	}
 }
-
-?>

@@ -26,7 +26,8 @@
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition
+ * Class
+ * Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition
  *
  * @author Peter Beernink
  */
@@ -37,7 +38,7 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Processor extends Tx_Smooth
 	 *
 	 * @var array
 	 */
-	protected $damClasses  = array(
+	protected $damClasses = array(
 		'tx_dam\w+',
 		'tx_damcatedit_positionMap',
 		'tx_damcatedit_db',
@@ -48,20 +49,29 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Processor extends Tx_Smooth
 	 * @return void
 	 */
 	public function execute() {
-		$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions('.*\.(php|inc)$',
-			$this->generateRegularExpression(),
-			array(
-				'dam',
-				'dam_catedit',
-				'dam_cron',
-				'dam_filelinks',
-				'dam_index',
-				'dam_pages',
-				'dam_ttcontent',
-				'dam_ttnews',
-				'extbase_dam'
-			)
-		);
+		if ($this->getExtensionKey()) {
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
+				$this->getExtensionKey(),
+				'.*\.(php|inc)$',
+				$this->generateRegularExpression()
+			);
+		} else {
+			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
+				'.*\.(php|inc)$',
+				$this->generateRegularExpression(),
+				array(
+					'dam',
+					'dam_catedit',
+					'dam_cron',
+					'dam_filelinks',
+					'dam_index',
+					'dam_pages',
+					'dam_ttcontent',
+					'dam_ttnews',
+					'extbase_dam'
+				)
+			);
+		}
 		foreach ($locations as $location) {
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}
@@ -75,16 +85,15 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Processor extends Tx_Smooth
 	protected function generateRegularExpression() {
 		$regularExpression = array();
 		foreach ($this->damClasses as $damClass) {
-				// static call
+			// static call
 			$regularExpression[] = '(' . $damClass . '\:\:\w+)';
-				// makeInstance call
+			// makeInstance call
 			$regularExpression[] = '(makeInstance\((\"|\')' . $damClass . '(\"|\')\))';
-				// new-call
+			// new-call
 			$regularExpression[] = '(new\s+' . $damClass . '\s*\;)';
 		}
+
 		return implode('|', $regularExpression);
 	}
 
 }
-
-?>

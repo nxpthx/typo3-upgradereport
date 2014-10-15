@@ -30,7 +30,7 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Definition extends Tx_Smoothm
 	 * @return Tx_Smoothmigration_Domain_Interface_MigrationProcessor
 	 */
 	public function getProcessor() {
-		return $this->objectManagager->get('Tx_Smoothmigration_Migrations_Core_Namespace_Processor', $this);
+		return $this->objectManager->get('Tx_Smoothmigration_Migrations_Core_Namespace_Processor', $this);
 	}
 
 	/**

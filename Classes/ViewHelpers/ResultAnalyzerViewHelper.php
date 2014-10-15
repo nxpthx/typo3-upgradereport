@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 class Tx_Smoothmigration_ViewHelpers_ResultAnalyzerViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 
@@ -40,20 +39,22 @@ class Tx_Smoothmigration_ViewHelpers_ResultAnalyzerViewHelper extends Tx_Fluid_C
 
 	/**
 	 * @param Tx_Smoothmigration_Domain_Model_Issue $issue
+	 *
+	 * @return mixed
 	 */
 	public function render($issue) {
 		$check = Tx_Smoothmigration_Service_Check_Registry::getInstance()->getActiveCheckByIdentifier($issue->getInspection());
 
-		$this->templateVariableContainer->add('explanation', $check->getResultAnalyzer()->getExplanation($issue));
-		$this->templateVariableContainer->add('solution', $check->getResultAnalyzer()->getSolution($issue));
+		if ($check !== NULL) {
+			$this->templateVariableContainer->add('explanation', $check->getResultAnalyzer()->getExplanation($issue));
+			$this->templateVariableContainer->add('solution', $check->getResultAnalyzer()->getSolution($issue));
 
-		$content = $this->renderChildren();
+			$content = $this->renderChildren();
 
-		$this->templateVariableContainer->remove('explanation');
-		$this->templateVariableContainer->remove('solution');
+			$this->templateVariableContainer->remove('explanation');
+			$this->templateVariableContainer->remove('solution');
+		}
+
 		return $content;
 	}
 }
-
-
-?>

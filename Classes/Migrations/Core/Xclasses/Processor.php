@@ -23,11 +23,11 @@
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor
+ * Class Tx_Smoothmigration_Migrations_Core_Xclasses_Processor
  *
  * @author Tizian Schmidlin
  */
-class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor extends Tx_Smoothmigration_Migrations_AbstractMigrationProcessor {
+class Tx_Smoothmigration_Migrations_Core_Xclasses_Processor extends Tx_Smoothmigration_Migrations_AbstractMigrationProcessor {
 
 	/**
 	 * Execute migration
@@ -35,16 +35,15 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 	 * @return void
 	 */
 	public function execute() {
-		$this->cliDispatcher->headerMessage($this->parentMigration->getTitle(), 'info');
-		$this->getPendingIssues($this->parentMigration->getIdentifier())->toArray();
+		$this->getPendingIssues($this->parentMigration->getIdentifier());
 		if (count($this->issues)) {
 			foreach ($this->issues as $issue) {
 				$this->handleIssue($issue);
-				$this->cliDispatcher->message();
+				$this->commandController->message();
 				$this->issueRepository->update($issue);
 			}
 		} else {
-			$this->cliDispatcher->successMessage('No issues found', TRUE);
+			$this->commandController->successMessage('No issues found', TRUE);
 		}
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
@@ -59,9 +58,16 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 	 * @return void
 	 */
 	protected function handleIssue(Tx_Smoothmigration_Domain_Model_Issue $issue) {
+		if (is_string($issue->getLocationInfo())) {
+			$locationInfo = unserialize($issue->getLocationInfo());
+		} else {
+			$locationInfo = $issue->getLocationInfo();
+		}
+
+		$physicalLocation = $locationInfo->getPhysicalLocation();
 
 		// first retrieve the old ext_localconf.php that contained the xclass
-		$physicalPath = str_replace('EXT:', 'ext/', $issue->getFilePath());
+		$physicalPath = str_replace('EXT:', 'ext/', $physicalLocation->getFilePath());
 
 		if (file_exists(PATH_site . 'typo3conf/' . $physicalPath)) {
 			$physicalPath = PATH_site . 'typo3conf/' . $physicalPath;
