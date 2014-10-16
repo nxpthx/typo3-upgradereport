@@ -134,6 +134,7 @@ Extensions can specify in their ext_emconf.php status field if they are obsolete
 
 	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-extension-code-obsolete
 
+.. only:: html
 
 	.. contents:: Available Migrations
 		:local:
