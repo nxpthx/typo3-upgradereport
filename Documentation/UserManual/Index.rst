@@ -80,6 +80,16 @@ The new TYPO3 LTS version uses namespaced classes. Update the old core classname
 
 	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-core-code-mysql [extensionKey]
 
+Check for use of non-namespaced classnames
+==========================================
+
+The new TYPO3 LTS version uses namespaced classes. Update the old core classnames to the namespaced versions.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-core-code-namespace [extensionKey]
+
+
 Check for removed constants
 ===========================
 
@@ -158,6 +168,16 @@ Try and replace all reported require/include calls. Multiple checks and migratio
 .. code-block:: bash
 
 	php typo3/cli_dispatch.phpsh extbase smoothmigration:migration typo3-core-code-requireOnceInExtensions [extensionKey]
+
+Migrate non-namespaced classnames
+=================================
+
+Replace old core classnames with namespaced versions.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:migration typo3-core-code-namespace [extensionKey]
+
 
 Make database UTF-8 ready
 =========================
