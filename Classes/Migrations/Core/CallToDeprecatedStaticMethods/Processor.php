@@ -183,7 +183,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 
 		if ($newContent == $contentToProcess) {
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
-			$this->commandController->errorMessage('Error, file not changed', TRUE);
+			$this->commandController->errorMessage($this->ll('migrationsstatus.4'), TRUE);
 			return;
 		}
 

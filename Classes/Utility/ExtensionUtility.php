@@ -178,7 +178,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 	/**
 	 * Get a list of installed extensions
 	 *
-	 * @return array Array of installed
+	 * @return array of installed extensions
 	 */
 	public static function getInstalledExtensions() {
 		if (self::$installedExtensions !== NULL) {
@@ -188,11 +188,11 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 			/** @var $extensionList tx_em_Extensions_List */
 			$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List');
 			list($list,) = $extensionList->getInstalledExtensions();
+			$list = array_keys($list);
 		} else {
 			$list = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
 		}
 		self::$installedExtensions = $list;
-
 		return $list;
 	}
 
@@ -206,10 +206,11 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 			return self::$loadedExtensions;
 		}
 		$loadedExtensions = array();
-		$list = self::getInstalledExtensions();
-		$extensionKeys = array_keys($list);
-		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $key => $data) {
-			if (in_array($key, $extensionKeys)) {
+
+		$installedExtensions = self::getInstalledExtensions();
+		$typo3LoadedExt = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
+		foreach ($installedExtensions as $key) {
+			if (in_array($key, $typo3LoadedExt)) {
 				$loadedExtensions[] = $key;
 			}
 		}
@@ -247,12 +248,11 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		if (isset($configuration['includeInactiveExtensions']) &&
 		    intval($configuration['includeInactiveExtensions']) > 0
 		) {
-			$loadedExtensionsFiltered = self::getLoadedExtensions();
-		} else {
 			$loadedExtensionsFiltered = self::getInstalledExtensions();
+		} else {
+			$loadedExtensionsFiltered = self::getLoadedExtensions();
 		}
 
-		$loadedExtensionsFiltered = array_flip($loadedExtensionsFiltered);
 		unset($loadedExtensionsFiltered['smoothmigration']);
 
 		if ($removeCompatible) {
@@ -291,7 +291,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 			}
 		}
 
-		self::$loadedExtensionsFiltered = array_flip($loadedExtensionsFiltered);
+		self::$loadedExtensionsFiltered = $loadedExtensionsFiltered;
 
 		return self::$loadedExtensionsFiltered;
 	}

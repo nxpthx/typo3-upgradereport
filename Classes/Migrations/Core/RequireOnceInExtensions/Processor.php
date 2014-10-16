@@ -30,6 +30,13 @@
 class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor extends Tx_Smoothmigration_Migrations_AbstractMigrationProcessor {
 
 	/**
+	 * Removed line count registry
+	 *
+	 * @var array
+	 */
+	private $locationCounters = array();
+
+	/**
 	 * Execute migration
 	 *
 	 * @return void
@@ -37,6 +44,8 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 	public function execute() {
 		$this->getPendingIssues($this->parentMigration->getIdentifier());
 		if (count($this->issues)) {
+			$this->commandController->message(count($this->issues) . ' issues found');
+
 			foreach ($this->issues as $issue) {
 				$this->handleIssue($issue);
 				$this->commandController->message();
@@ -81,14 +90,20 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 			return;
 		}
 		$fileObject = new SplFileObject($locationInfo->getFilePath());
+		// If more than one line needs to be removed from the same file, only the
+		// first would succeed as the line numbering will change after removing
+		// the first line. Therefore we need to keep track of the number of lines
+		// removed per file. We use this offset to read the file.
+		$lineOffset = $this->locationCounters[$locationInfo->getFilePath()];
+
 		foreach ($fileObject as $lineNumber => $lineContent) {
-			if ($lineNumber + 1 != $locationInfo->getLineNumber()) {
+			if ($lineNumber + 1 + $lineOffset != $locationInfo->getLineNumber()) {
 				$newFileContent .= $lineContent;
 			} else {
 				$newLineContent = str_replace($locationInfo->getMatchedString(), '', $lineContent);
 				if ($newLineContent == $lineContent) {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
-					$this->commandController->errorMessage('Error, file not changed', TRUE);
+					$this->commandController->errorMessage($this->ll('migrationsstatus.4'), TRUE);
 					return;
 				}
 				$newFileContent .= $newLineContent;
@@ -97,6 +112,11 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 		file_put_contents($locationInfo->getFilePath(), $newFileContent);
 		$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
 		$this->commandController->successMessage('Succes', TRUE);
+		if (!isset($this->locationCounters[$locationInfo->getFilePath()])) {
+			$this->locationCounters[$locationInfo->getFilePath()] = 1;
+		} else {
+			$this->locationCounters[$locationInfo->getFilePath()]++;
+		}
 	}
 
 }

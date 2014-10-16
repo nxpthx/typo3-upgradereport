@@ -151,7 +151,7 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 				$newLineContent = str_replace($search, $replacement, $lineContent);
 				if ($newLineContent == $lineContent) {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
-					$this->commandController->errorMessage('Error, file not changed', TRUE);
+					$this->commandController->errorMessage($this->ll('migrationsstatus.4'), TRUE);
 
 					return;
 				}
