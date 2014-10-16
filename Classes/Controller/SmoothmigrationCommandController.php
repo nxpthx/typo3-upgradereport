@@ -62,7 +62,8 @@ class Tx_Smoothmigration_Controller_SmoothmigrationCommandController extends Tx_
 				/** @var Tx_Smoothmigration_Domain_Interface_Check $check */
 				$check = $this->commandManager->getCommandByTypeAndIdentifier('Check', $commandIdentifier);
 				if ($check) {
-					$this->headerMessage('Check: ' . $check->getTitle());
+					$forExtension = (trim($extensionKey)) ? ' in extension: ' . $extensionKey : '';
+					$this->headerMessage('Check: \'' . $check->getTitle() . '\'' . $forExtension);
 					/** @var Tx_Smoothmigration_Checks_AbstractCheckProcessor $processor */
 					$processor = $check->getProcessor();
 					if (trim($extensionKey)) {
@@ -78,7 +79,7 @@ class Tx_Smoothmigration_Controller_SmoothmigrationCommandController extends Tx_
 					$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
 					$persistenceManger->registerRepositoryClassName('Tx_Smoothmigration_Domain_Repository_IssueRepository');
 					$persistenceManger->persistAll();
-					$this->issueReport(count($processor->getIssues()));
+					$this->issueReport(count($processor->getIssues()), $extensionKey);
 				}
 			} catch (Tx_Extbase_MVC_Exception_Command $exception) {
 				$this->message($exception->getMessage());
@@ -91,7 +92,6 @@ class Tx_Smoothmigration_Controller_SmoothmigrationCommandController extends Tx_
 	/**
 	 * Run all checks on all- or on a single extension
 	 *
-	 * @param string $commandIdentifier Identifier of a command for more details
 	 * @param string $extensionKey A single extension to migratie
 	 *
 	 * @return void
@@ -101,33 +101,7 @@ class Tx_Smoothmigration_Controller_SmoothmigrationCommandController extends Tx_
 		/** @var Tx_Smoothmigration_Checks_AbstractCheckDefinition $command */
 		foreach ($availableCommands['check'] as $command) {
 			$commandIdentifier = $command->getIdentifier();
-			try {
-				/** @var Tx_Smoothmigration_Domain_Interface_Check $check */
-				$check = $this->commandManager->getCommandByTypeAndIdentifier('Check', $commandIdentifier);
-				if ($check) {
-					$this->headerMessage('Check: ' . $check->getTitle());
-					/** @var Tx_Smoothmigration_Checks_AbstractCheckProcessor $processor */
-					$processor = $check->getProcessor();
-					if (trim($extensionKey)) {
-						$processor->setExtensionKey($extensionKey);
-					}
-					$processor->execute();
-					$issueRepository = $this->objectManager->get('Tx_Smoothmigration_Domain_Repository_IssueRepository');
-					foreach ($processor->getIssues() as $issue) {
-						$issueRepository->add($issue);
-					}
-
-					/** @var Tx_Extbase_Persistence_Manager $persistenceManger */
-					$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
-					$persistenceManger->registerRepositoryClassName('Tx_Smoothmigration_Domain_Repository_IssueRepository');
-					$persistenceManger->persistAll();
-					$this->issueReport(count($processor->getIssues()));
-				}
-			} catch (Tx_Extbase_MVC_Exception_Command $exception) {
-				$this->message($exception->getMessage());
-
-				return;
-			}
+			$this->checkCommand($commandIdentifier, $extensionKey);
 		}
 	}
 
@@ -150,7 +124,8 @@ class Tx_Smoothmigration_Controller_SmoothmigrationCommandController extends Tx_
 				/** @var Tx_Smoothmigration_Domain_Interface_Migration $migration */
 				$migration = $this->commandManager->getCommandByTypeAndIdentifier('Migration', $commandIdentifier);
 				if ($migration) {
-					$this->headerMessage('Migration: ' . $migration->getTitle());
+					$forExtension = (trim($extensionKey)) ? ' for extension: ' . $extensionKey : '';
+					$this->headerMessage('Migration: \'' . $migration->getTitle() . '\'' . $forExtension);
 					/** @var Tx_Smoothmigration_Migrations_AbstractMigrationProcessor $processor */
 					$processor = $migration->getProcessor();
 					if (trim($extensionKey)) {
@@ -192,23 +167,27 @@ class Tx_Smoothmigration_Controller_SmoothmigrationCommandController extends Tx_
 		} else {
 			$issuesWithInspections = $issueRepository->findAllGroupedByExtensionAndInspection();
 		}
-		foreach ($issuesWithInspections as $extensionKey => $inspections) {
-			$count = 0;
-			foreach ($inspections as $issues) {
-				/** @var Tx_Smoothmigration_Domain_Model_Issue $singleIssue */
-				foreach ($issues as $singleIssue) {
-					if ($count == 0) {
-						// Render Extension Key
-						$this->headerMessage('Extension : ' . $singleIssue->getExtension(), 'info');
-					}
-					$check = $registry->getActiveCheckByIdentifier($singleIssue->getInspection());
-					if ($check) {
-						$this->message($check->getResultAnalyzer()->getSolution($singleIssue));
-						$count++;
+		if (count($issuesWithInspections)) {
+			foreach ($issuesWithInspections as $extensionKey => $inspections) {
+				$count = 0;
+				foreach ($inspections as $issues) {
+					/** @var Tx_Smoothmigration_Domain_Model_Issue $singleIssue */
+					foreach ($issues as $singleIssue) {
+						if ($count == 0) {
+							// Render Extension Key
+							$this->headerMessage('Extension : ' . $singleIssue->getExtension(), 'info');
+						}
+						$check = $registry->getActiveCheckByIdentifier($singleIssue->getInspection());
+						if ($check) {
+							$this->message($check->getResultAnalyzer()->getSolution($singleIssue));
+							$count++;
+						}
 					}
 				}
+				$this->issueReport($count, $extensionKey);
 			}
-			$this->successMessage('Total: ' . $count . ' issues in ' . $extensionKey . LF);
+		} else {
+			$this->issueReport('0', $extensionKey);
 		}
 	}
 
@@ -280,19 +259,21 @@ class Tx_Smoothmigration_Controller_SmoothmigrationCommandController extends Tx_
 	/**
 	 * Show an issue report
 	 *
-	 * @param $count
+	 * @param integer $count
+	 * @param string $extensionKey
 	 */
-	protected function issueReport($count) {
+	protected function issueReport($count, $extensionKey = '') {
 
+		$forExtension = (trim($extensionKey)) ? ' for extension: ' . $extensionKey : '';
 		switch ((int)$count) {
 			case 0:
-				$this->successMessage('No issues found ', TRUE);
+				$this->successMessage('No issues found' . $forExtension, TRUE);
 				break;
 			case 1:
-				$this->warningMessage($count . ' issue found ', TRUE);
+				$this->warningMessage($count . ' issue found' . $forExtension, TRUE);
 				break;
 			default:
-				$this->warningMessage($count . ' issues found ', TRUE);
+				$this->warningMessage($count . ' issues found' . $forExtension, TRUE);
 		}
 	}
 }

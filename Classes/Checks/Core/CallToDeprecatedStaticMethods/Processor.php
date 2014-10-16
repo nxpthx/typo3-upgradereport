@@ -13,8 +13,9 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
+ *  A copy is found in the textfile GPL.txt and important notices to the
+ * license from the author is found in LICENSE.txt distributed with these
+ * scripts.
  *
  *
  *  This script is distributed in the hope that it will be useful,
@@ -26,7 +27,8 @@
  ***************************************************************/
 
 /**
- * Class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition
+ * Class
+ * Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Definition
  *
  * @author Peter Beernink
  */
@@ -41,6 +43,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor ext
 	 * Inject the deprecation repository
 	 *
 	 * @param Tx_Smoothmigration_Domain_Repository_DeprecationRepository $deprecationRepository
+	 *
 	 * @return void
 	 */
 	public function injectDeprecationRepository(Tx_Smoothmigration_Domain_Repository_DeprecationRepository $deprecationRepository) {
@@ -53,28 +56,33 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor ext
 	 * @return void
 	 */
 	public function execute() {
-		if ($this->getExtensionKey()) {
-			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
-				$this->getExtensionKey(),
-				'.*\.(php|inc)$',
-				$this->generateRegularExpression()
-			);
-		} else {
-			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
-				'.*\.(php|inc)$',
-				$this->generateRegularExpression()
-			);
-		}
-		foreach ($locations as $location) {
-			$issue = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
-			$issue->setAdditionalInformation($this->getRepleacabilityReport($location));
-			$this->issues[] = $issue;
+		$regularExpression = $this->generateRegularExpression();
+		if (trim($regularExpression)) {
+			if ($this->getExtensionKey()) {
+				$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
+					$this->getExtensionKey(),
+					'.*\.(php|inc)$',
+					$regularExpression
+				);
+			} else {
+				$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
+					'.*\.(php|inc)$',
+					$regularExpression
+				);
+			}
+			foreach ($locations as $location) {
+				$issue = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
+				$issue->setAdditionalInformation($this->getRepleacabilityReport($location));
+				$this->issues[] = $issue;
+			}
 		}
 	}
 
 	/**
 	 * See if we can replace the found deprecation
+	 *
 	 * @param Tx_Smoothmigration_Domain_Model_IssueLocation_File $location
+	 *
 	 * @return array
 	 */
 	protected function getRepleacabilityReport($location) {
@@ -94,6 +102,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor ext
 		} else {
 			$report['isReplaceable'] = FALSE;
 		}
+
 		return $report;
 	}
 
@@ -107,6 +116,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor ext
 		foreach ($deprecatedMethods as $deprecatedMethod) {
 			$regularExpression[] = '(' . $deprecatedMethod->getClass() . '::' . $deprecatedMethod->getMethod() . '\s?\(' . ')';
 		}
+
 		return implode('|', $regularExpression);
 	}
 
