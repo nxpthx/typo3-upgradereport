@@ -7,14 +7,14 @@
 
 .. _start:
 
-=============================================================
-DAM to FAL migration
-=============================================================
+================
+Smooth Migration
+================
 
 .. only:: html
 
 	:Classification:
-		dam_falmigration
+		smoothmigration
 
 	:Version:
 		|release|
@@ -23,19 +23,19 @@ DAM to FAL migration
 		en
 
 	:Description:
-		This manual will guide you through the steps necessary to migrate your DAM records, references and metadata to TYPO3's new file abstraction layer (FAL).
+		This manual will guide you through the steps necessary to prepare your TYPO3 4.5 installation for an upgrate to TYPO3 6.2
 
 	:Keywords:
-		dam, fal, migration
+		lts, migration
 
 	:Copyright:
 		2014
 
 	:Author:
-		Benni Mack
+		Michiel Roos
 
 	:Email:
-		benni.mack@typo3.org
+		michiel@maxserv.nl
 
 	:License:
 		This document is published under the Open Content License

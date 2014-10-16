@@ -5,42 +5,22 @@
 This Extensions is one part of the "SmootMigration" program set up by the TYPO3 Active Contributors preparing the upgrade from TYPO3 4.5 LTS to TYPO3 6.2 LTS.
 For further information see **[TYPO3 CMS 6.2 LTS Kickoff](http://typo3.org/news/article/typo3-cms-62-lts-kick-off/)** and **[Announcement Smooth Migration Project](http://forge.typo3.org/news/649)**
 
-## Extension Usage
+All tasks are now executed from the command line.
 
-### Installation
+Installation and Usage
+======================
 
-Just install the extension into a TYPO3 4.5 LTS instance from TER.
+More information on [Installation](Documentation/Installation/Index.rst) and [Usage](Documentation/UserManual/Index.rst) can be found in the [documentation folder](Documentation/Index.rst).
 
-If cloning from github, make sure your extension folder is named "smoothmigration":
-```
-cd typo3conf/ext/
-git clone https://github.com/nxpthx/typo3-upgradereport.git smoothmigration
-```
 
-### Running migrations
-
-Go to the new backend module 'ADMIN TOOLS -> Smooth Migration' and run the tests. We plan on having a more versatile Interface allowing to export the results.
-
-### Running migrations
-
-Migrations can be run using the command line interface. Migrations can only be run for checks that have already been executed.
-
-1. Create a cli user: _cli_smoothmigration
-2. Choose a migration:
-```
-typo3/cli_dispatch.phpsh smoothmigration migrate
-```
-3. Execute a migration:
-```
-typo3/cli_dispatch.phpsh smoothmigration migrate requireOnce
-```
-
-## Extension Development
+Extension Development
+=====================
 
 The Extension is Developed at github. All issues are tracked at http://forge.typo3.org/projects/typo3cms-smoothmigration/issues using the according categories about "upgradecheck".
 The Smooth upgrade project and this extension is coordinated by [Steffen Ritter](mailto:steffen.ritter@typo3.org).
 
-## Participating in Development
+Participating in Development
+============================
 
 The development of such an extension is an huge task. If you read about all the other things a smooth upgrade is about you got to know, that it will only work out with your participation.
 

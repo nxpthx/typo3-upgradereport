@@ -5,14 +5,14 @@
 ---
 conf.py:
   copyright: 2014
-  project: DAM to FAL migration
-  version: 0.1.4
-  release: 0.1.4
+  project: Smooth Migration
+  version: 1.1.0
+  release: 1.1.0
   latex_documents:
   - - Index
-    - dam_falmigration.tex
-    - DAM to FAL migration
-    - Benni Mack
+    - smoothmigration.tex
+    - Smooth Migration
+    - Michiel Roos
     - manual
   latex_elements:
     papersize: a4paper

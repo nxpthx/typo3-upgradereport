@@ -27,132 +27,142 @@ The available migration tasks can be found under the *extbase* cliKey:
 
 	The following commands are currently available:
 
-	EXTENSION "DAM_FALMIGRATION":
+	EXTENSION "SMOOTHMIGRATION":
 	-------------------------------------------------------------------------------
-	  dammigration:connectdamrecordswithsysfile goes through all DAM files and
-	                                           checks if they have a counterpart in
-	                                           the sys_file
-	  dammigration:migratedammetadata          migrates DAM metadata to FAL
-	                                           metadata
-	  dammigration:migratemediatagsinrte       Migrates the <media DAM_UID target
-	                                           title>Linktext</media> to <link
-	                                           file:29643 -
-	                                           download>Linktext</link>
-	  dammigration:migratedamcategories        Migrate DAM categories to FAL
-	                                           categories
-	  dammigration:migratedamcategoriestofalcollections migrate all DAM categories to
-	                                           sys_file_collection records,
-	  dammigration:migratedamfrontendplugins   migrate all damfrontend_pi1 plugins
-	                                           to tt_content.uploads with
-	                                           file_collection
-	  dammigration:cleanupduplicatefalcollectionreferences checks if there are multiple entries
-	                                           in sys_file_reference that contain
-	  dammigration:updatereferenceindex        updates the reference index
-	  dammigration:migraterelations            migrate relations to dam records
-	                                           that dam_ttcontent
-
+	  smoothmigration:check                    Display available checks
+	  smoothmigration:checkall                 Run all checks on all- or on a
+	                                           single extension
+	  smoothmigration:migration                Display available migrations
+	  smoothmigration:report                   Display report for all issues or for
+	                                           a single extension
 
 .. note::
 	Some commands accept parameters. See '/usr/bin/php typo3/cli_dispatch.phpsh extbase help <command identifier>' for more information about a specific command.
 
+To see all available checks and migrations:
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:migration
+
 .. only:: html
 
-	.. contents:: Available Migration Tasks
+	.. contents:: Available Checks
 		:local:
 		:depth: 1
 		:backlinks: top
 
-Step 1: Converting DAM to FAL records
-=====================================
+Check for calls to deprecated static methods
+============================================
 
-This task goes through all DAM records and checks if they have a counterpart in the sys_file
-table. If not, fetch the file (via the storage, which indexes the file directly)
-and update the DAM DB table. Please note that this does not migrate the metadata.
-This command can be run multiple times.
-A sys_file record that was migrated from tx_dam holds the uid of the original tx_dam record uid in the _migrateddamuid field.
+Calling deprecated methods will give an error as they have been removed. From the 4.5 release some view helpers have been deprecated. Changing them to their respective new view helpers would solve the issue.
 
 .. code-block:: bash
 
-	php typo3/cli_dispatch.phpsh extbase dammigration:connectdamrecordswithsysfile
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-core-code-callToDeprecatedStaticMethods [extensionKey]
 
-Step 2: Migrate metadata
-========================
-
-This task migrates DAM metadata to FAL metadata. It searches for all sys_file
-records with a value in the _migrateddamuid field but without a title.
-
-.. code-block:: bash
-
-	php typo3/cli_dispatch.phpsh extbase dammigration:migratedammetadata
-
-Step 3: Migrate RTE media tags
-==============================
-
-This task migrates the <media DAM_UID target title>Linktext</media> to
-<link file:29643 - download>My link to a file</link>
-
-.. code-block:: bash
-
-	php typo3/cli_dispatch.phpsh extbase dammigration:migratemediatagsinrte
-
-Step 4: Migrate DAM categories to FAL categories
-================================================
-
-This task migrates the tx_dam_cat records to sys_category records.
-
-.. code-block:: bash
-
-	php typo3/cli_dispatch.phpsh extbase dammigration:migratedamcategories
-
-Step 5: Migrate categories to collections
+Check for calls to deprecated viewhelpers
 =========================================
 
-This task migrates all DAM categories to sys_file_collection records,
-while also migrating the references if they don't exist yet as a pre-requisite,
-there needs to be sys_file records that have been migrated from DAM.
+From the 4.5 release some view helpers have been deprecated. Changing them to their respective new view helpers would solve the issue.
 
 .. code-block:: bash
 
-	php typo3/cli_dispatch.phpsh extbase dammigration:migratedamcategoriestofalcollections
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-core-code-callToDeprecatedViewHelpers [extensionKey]
 
-Step 6: Migrate EXT: dam_frontend
-=================================
-
-This task migrates all damfrontend_pi1 plugins to tt_content.uploads with file_collection.
-Usually used in conjunction with / after migrateDamCategoriesToFalCollectionsCommand().
-
-.. code-block:: bash
-
-	php typo3/cli_dispatch.phpsh extbase dammigration:migratedamfrontendplugins
-
-Step 7: Remove duplicate collection references
-==============================================
-
-.. note::
-	This command is usually *NOT* necessary, only if something went wrong.
-
-This task checks if there are multiple entries in sys_file_reference that contain
-the same uid_local and uid_foreign with sys_file_collection references
-and removes the duplicates.
-
-.. code-block:: bash
-
-	php typo3/cli_dispatch.phpsh extbase dammigration:cleanupduplicatefalcollectionreferences
-
-Step 8: Migrate content relations
-=================================
-
-This task migrates relations to dam records that dam_ttcontent and dam_uploads introduced.
-
-.. code-block:: bash
-
-	php typo3/cli_dispatch.phpsh extbase dammigration:migraterelations
-
-Step 9: Update the reference index
+Check for use of mysql_* functions
 ==================================
 
-This task updates the reference index.
+The new TYPO3 LTS version uses namespaced classes. Update the old core classnames to the namespaced versions.
 
 .. code-block:: bash
 
-	php typo3/cli_dispatch.phpsh extbase dammigration:updatereferenceindex
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-core-code-mysql [extensionKey]
+
+Check for removed constants
+===========================
+
+The constant PATH_t3lib has been removed. The code in the old t3lib directory has been relocated. You may solve most of the issues found by this check by first running the check and migration for 'requireOnceInExtensions'.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-core-code-removedConstants [extensionKey]
+
+Check for require_once // include_once
+======================================
+
+While namespacing all the classes have been restructured, relocated and renamed. Including old files therefore will fail. Since TYPO3 CMS 4.3 there is an autoloader which makes manual requiring superfluous: simply use the needed classes.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-core-code-requireOnceInExtensions [extensionKey]
+
+Check for usage of DAM Classes
+==============================
+
+Since DAM won't work in 6.x anymore, you should remove all calls to DAM-Methods and Instances of DAM-Classes and change them to use FAL/Media.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-dam-code-callToDamClasses [extensionKey]
+
+Check for datbase UTF-8 readiness
+=================================
+
+UTF-8 ensures your database will be able to store multiple languages without any data conversions being done while storing or retrieving the values.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-database-database-utf8
+
+Check for extensions incompatible with current LTS
+==================================================
+
+Extensions can specify the TYPO3 versions they are compatible with.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-extension-code-incompatiblewithlts
+
+Check for obsolete extensions
+=============================
+
+Extensions can specify in their ext_emconf.php status field if they are obsolete.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:check typo3-extension-code-obsolete
+
+
+	.. contents:: Available Migrations
+		:local:
+		:depth: 1
+		:backlinks: top
+
+Migrate calls to deprecated static methods
+==========================================
+
+Replace deprecated methods method calls with new ones.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:migration typo3-core-code-callToDeprecatedStaticMethods [extensionKey] [experimental]
+
+Migrate calls to require_once // include_once
+=============================================
+
+Try and replace all reported require/include calls. Multiple checks and migrations may be needed.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:migration typo3-core-code-requireOnceInExtensions [extensionKey]
+
+Make database UTF-8 ready
+=========================
+
+Fix database, table and collumn character set and collation.
+
+.. code-block:: bash
+
+	php typo3/cli_dispatch.phpsh extbase smoothmigration:migration typo3-database-database-utf8 [extensionKey]
