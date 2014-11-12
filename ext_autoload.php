@@ -81,6 +81,7 @@ return array(
 	'tx_smoothmigration_migrations_database_utf8_processor' => $extensionClassesPath . 'Migrations/Database/Utf8/Processor.php',
 	'tx_smoothmigration_service_check_registry' => $extensionClassesPath . 'Service/Check/Registry.php',
 	'tx_smoothmigration_service_classaliasprovider' => $extensionClassesPath . 'Service/ClassAliasProvider.php',
+	'tx_smoothmigration_service_messageservice' => $extensionClassesPath . 'Service/MessageService.php',
 	'tx_smoothmigration_service_migration_registry' => $extensionClassesPath . 'Service/Migration/Registry.php',
 	'tx_smoothmigration_service_requirementsanalyzer' => $extensionClassesPath . 'Service/RequirementsAnalyzer.php',
 	'tx_smoothmigration_userfunctions_tca' => $extensionClassesPath . 'UserFunctions/Tca.php',
