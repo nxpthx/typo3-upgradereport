@@ -29,26 +29,6 @@ if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
 	require_once(PATH_t3lib . 'class.t3lib_cli.php');
 }
 
-	// I can haz color / use unicode?
-if (DIRECTORY_SEPARATOR !== '\\') {
-	/**
-	 *
-	 */
-	define('USE_COLOR', function_exists('posix_isatty') && posix_isatty(STDOUT));
-	define('UNICODE', TRUE);
-} else {
-	define('USE_COLOR', getenv('ANSICON') !== FALSE);
-	define('UNICODE', FALSE);
-}
-
-	// Get terminal width
-if (@exec('tput cols')) {
-	define('TERMINAL_WIDTH', exec('tput cols'));
-} else {
-	define('TERMINAL_WIDTH', 79);
-}
-
-
 /**
  * Class tx_smoothmigration_cli
  */
@@ -85,7 +65,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$this->issueRepository = $this->objectManager->get('Tx_Smoothmigration_Domain_Repository_IssueRepository');
-		$this->messageBus = $this->objectManager->get('\Tx_Smoothmigration_Service_MessageService');
+		$this->messageBus = $this->objectManager->get('Tx_Smoothmigration_Service_MessageService');
 
 			// Adding options to help archive:
 		$this->cli_options = array();
