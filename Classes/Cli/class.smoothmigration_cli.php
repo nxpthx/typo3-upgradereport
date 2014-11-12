@@ -167,7 +167,9 @@ class tx_smoothmigration_cli extends t3lib_cli {
 						$this->messageBus->headerMessage('Extension : ' . $singleIssue->getExtension(), 'info');
 					}
 					$check = $registry->getActiveCheckByIdentifier($singleIssue->getInspection());
-					$this->messageBus->message($check->getResultAnalyzer()->getSolution($singleIssue));
+					if ($check) {
+						$this->messageBus->message($check->getResultAnalyzer()->getSolution($singleIssue));
+					}
 					$count ++;
 				}
 			}
