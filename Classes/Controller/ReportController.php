@@ -221,7 +221,7 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 
 		$resourcePath = t3lib_extMgm::extRelPath('smoothmigration') . 'Resources/Public/JavaScript/';
 
-		$this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/GridFilters.css');
+		//$this->pageRenderer->addCssFile($resourcePath . 'gridfilters/css/GridFilters.css');
 
 		$jsFiles = array();
 
