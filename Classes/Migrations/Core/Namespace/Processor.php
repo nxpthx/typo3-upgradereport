@@ -63,7 +63,7 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 				$this->issueRepository->update($issue);
 			}
 		} else {
-			$this->commandController->successMessage('No issues found', TRUE);
+			$this->commandController->getMessageBus()->successMessage('No issues found', TRUE);
 		}
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
@@ -117,25 +117,25 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 		$search = trim($locationInfo->getMatchedString());
 		$replacement = $this->getReplacementClass($search);
 
-		$this->commandController->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
+		$this->commandController->getMessageBus()->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
 		                              'Replacing [' . $search . '] =>' .
 		                              ' [' . $replacement . ']');
 
 		if ($issue->getMigrationStatus() != 0) {
-			$this->commandController->successMessage('already migrated', TRUE);
+			$this->commandController->getMessageBus()->successMessage('already migrated', TRUE);
 
 			return;
 		}
 
 		if (!file_exists($locationInfo->getFilePath())) {
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_FOUND);
-			$this->commandController->errorMessage('Error, file not found', TRUE);
+			$this->commandController->getMessageBus()->errorMessage('Error, file not found', TRUE);
 
 			return;
 		}
 		if (!is_writable($locationInfo->getFilePath())) {
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_WRITABLE);
-			$this->commandController->errorMessage('Error, file not writable', TRUE);
+			$this->commandController->getMessageBus()->errorMessage('Error, file not writable', TRUE);
 
 			return;
 		}
@@ -151,7 +151,7 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 				$newLineContent = str_replace($search, $replacement, $lineContent);
 				if ($newLineContent == $lineContent) {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
-					$this->commandController->errorMessage($this->ll('migrationsstatus.4'), TRUE);
+					$this->commandController->getMessageBus()->errorMessage($this->ll('migrationsstatus.4'), TRUE);
 
 					return;
 				}
@@ -161,7 +161,7 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 
 		file_put_contents($locationInfo->getFilePath(), $newFileContent);
 		$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-		$this->commandController->successMessage('Succes' . LF, TRUE);
+		$this->commandController->getMessageBus()->successMessage('Succes' . LF, TRUE);
 	}
 
 }

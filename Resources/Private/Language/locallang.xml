@@ -51,6 +51,8 @@
 			<label index="migration.typo3-core-code-requireOnceInExtensions.title">Try and replace all reported require/include calls</label>
 			<label index="migration.typo3-core-code-xclasses.shortDescription">The way of registering xClasses has been changed. Migrate the notation to the new form.</label>
 			<label index="migration.typo3-core-code-xclasses.title">Fix xclass notation</label>
+			<label index="migration.typo3-database-database-createmissingtablesandfields.shortDescription">Create missing tables and fields.</label>
+			<label index="migration.typo3-database-database-createmissingtablesandfields.title">Create missing tables and fields.</label>
 			<label index="migration.typo3-database-database-utf8.shortDescription">Fix database, table and collumn character set and collation</label>
 			<label index="migration.typo3-database-database-utf8.title">Fix database</label>
 			<label index="migrationsstatus">Migration status:</label>

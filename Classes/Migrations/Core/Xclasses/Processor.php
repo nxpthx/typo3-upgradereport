@@ -39,11 +39,11 @@ class Tx_Smoothmigration_Migrations_Core_Xclasses_Processor extends Tx_Smoothmig
 		if (count($this->issues)) {
 			foreach ($this->issues as $issue) {
 				$this->handleIssue($issue);
-				$this->commandController->message();
+				$this->commandController->getMessageBus()->message();
 				$this->issueRepository->update($issue);
 			}
 		} else {
-			$this->commandController->successMessage('No issues found', TRUE);
+			$this->commandController->getMessageBus()->successMessage('No issues found', TRUE);
 		}
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');

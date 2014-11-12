@@ -32,31 +32,27 @@ class Tx_Smoothmigration_Cli_CommandManager extends Tx_Extbase_MVC_CLI_CommandMa
 	/**
 	 * Returns an array of all commands
 	 *
-	 * @param string $type
-	 *
 	 * @return array<Tx_Extbase_MVC_CLI_Command>
 	 * @api
 	 */
-	public function getAvailableCommands($type = '') {
+	public function getAvailableCommands() {
 		if ($this->availableCommands === NULL) {
 			$this->availableCommands = array();
 
-			if ($type === 'check') {
-				/** @var Tx_Smoothmigration_Service_Check_Registry $checkRegistry */
-				$checkRegistry = $this->objectManager->get('Tx_Smoothmigration_Service_Check_Registry');
-				$checks = $checkRegistry->getActiveChecks();
-				foreach ($checks as $command) {
-					$commandIdentifier = $command->getIdentifier();
-					$this->availableCommands['check'][$commandIdentifier] = $command;
-				}
-			} else {
-				/** @var Tx_Smoothmigration_Service_Migration_Registry $migrationRegistry */
-				$migrationRegistry = $this->objectManager->get('Tx_Smoothmigration_Service_Migration_Registry');
-				$migrations = $migrationRegistry->getActiveMigrations();
-				foreach ($migrations as $command) {
-					$commandIdentifier = $command->getIdentifier();
-					$this->availableCommands['migration'][$commandIdentifier] = $command;
-				}
+			/** @var Tx_Smoothmigration_Service_Check_Registry $checkRegistry */
+			$checkRegistry = $this->objectManager->get('Tx_Smoothmigration_Service_Check_Registry');
+			$checks = $checkRegistry->getActiveChecks();
+			foreach ($checks as $command) {
+				$commandIdentifier = $command->getIdentifier();
+				$this->availableCommands['check'][$commandIdentifier] = $command;
+			}
+
+			/** @var Tx_Smoothmigration_Service_Migration_Registry $migrationRegistry */
+			$migrationRegistry = $this->objectManager->get('Tx_Smoothmigration_Service_Migration_Registry');
+			$migrations = $migrationRegistry->getActiveMigrations();
+			foreach ($migrations as $command) {
+				$commandIdentifier = $command->getIdentifier();
+				$this->availableCommands['migration'][$commandIdentifier] = $command;
 			}
 		}
 		return $this->availableCommands;
@@ -85,7 +81,7 @@ class Tx_Smoothmigration_Cli_CommandManager extends Tx_Extbase_MVC_CLI_CommandMa
 			$commandIdentifier = 'extbase:help:help';
 		}
 		$matchedCommands = array();
-		$availableCommands = $this->getAvailableCommands($type);
+		$availableCommands = $this->getAvailableCommands();
 		foreach ($availableCommands as $commandType => $commands) {
 			if ($type === $commandType) {
 				foreach ($commands as $identifier => $command) {
