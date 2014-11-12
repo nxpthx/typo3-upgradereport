@@ -35,11 +35,6 @@ if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
 class tx_smoothmigration_cli extends t3lib_cli {
 
 	/**
-	 * @var Tx_Smoothmigration_Controller_SmoothmigrationCommandController
-	 */
-	protected $commandController;
-
-	/**
 	 * The issue repostitory
 	 *
 	 * @var Tx_Smoothmigration_Domain_Repository_IssueRepository
@@ -69,7 +64,6 @@ class tx_smoothmigration_cli extends t3lib_cli {
 		}
 
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$this->commandController = $this->objectManager->get('Tx_Smoothmigration_Controller_SmoothmigrationCommandController');
 		$this->issueRepository = $this->objectManager->get('Tx_Smoothmigration_Domain_Repository_IssueRepository');
 		$this->messageBus = $this->objectManager->get('Tx_Smoothmigration_Service_MessageService');
 
@@ -232,7 +226,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 
 		/** @var Tx_Smoothmigration_Migrations_AbstractMigrationProcessor $processor */
 		$processor = $migrationTask->getProcessor();
-		$processor->setCommandController($this->commandController);
+		$processor->setMessageService($this->messageBus);
 		$processor->setExperimental($experimental);
 		$processor->setExtensionKey($extensionKey);
 		$processor->execute();

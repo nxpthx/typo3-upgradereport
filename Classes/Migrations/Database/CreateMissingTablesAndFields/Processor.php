@@ -58,17 +58,17 @@ class Tx_Smoothmigration_Migrations_Database_CreateMissingTablesAndFields_Proces
 			$allowedStatementTypes = array('add', 'create_table');
 
 			if (!empty($updateStatements)) {
-				$this->commandController->warningMessage('Difference detected in table definitions. Statement types: ' . implode(',', array_keys($updateStatements)), TRUE);
+				$this->messageService->warningMessage('Difference detected in table definitions. Statement types: ' . implode(',', array_keys($updateStatements)), TRUE);
 
 				foreach ($allowedStatementTypes as $statementType) {
 					if (array_key_exists($statementType, $updateStatements) && is_array($updateStatements[$statementType])) {
 						foreach ($updateStatements[$statementType] as $statement) {
-							$this->commandController->infoMessage('Executing "' . $statement . '"');
+							$this->messageService->infoMessage('Executing "' . $statement . '"');
 
 							$result = $databaseConnection->admin_query($statement);
 
 							if ($result !== TRUE) {
-								$this->commandController->warningMessage('Executing query failed!');
+								$this->messageService->warningMessage('Executing query failed!');
 							}
 						}
 					}

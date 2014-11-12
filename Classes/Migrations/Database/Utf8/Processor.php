@@ -40,7 +40,7 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				$this->issueRepository->update($issue);
 			}
 		} else {
-			$this->commandController->getMessageBus()->successMessage('No issues found', TRUE);
+			$this->messageService->successMessage('No issues found', TRUE);
 		}
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
@@ -88,7 +88,7 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 
 		switch ($additionalInformation['type']) {
 			case 'configuration':
-				$this->commandController->getMessageBus()->message($this->ll(
+				$this->messageService->message($this->ll(
 					'result.typo3-database-database-utf8.databaseServerSetting',
 					array(
 						$additionalInformation['setting'],
@@ -96,11 +96,11 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 						$additionalInformation['preferredValue']
 					)
 				));
-				$this->commandController->getMessageBus()->warningMessage($this->ll('migration.manualInterventionNeeded'), TRUE);
-				$this->commandController->getMessageBus()->message();
+				$this->messageService->warningMessage($this->ll('migration.manualInterventionNeeded'), TRUE);
+				$this->messageService->message();
 				break;
 			case 'databaseCollation':
-				$this->commandController->getMessageBus()->message($this->ll(
+				$this->messageService->message($this->ll(
 					'result.typo3-database-database-utf8.databaseCollation',
 					array(
 						$additionalInformation['characterSet'],
@@ -113,12 +113,12 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				}
 
 				if ($issue->getMigrationStatus() != 0) {
-					$this->commandController->getMessageBus()->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
+					$this->messageService->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
 					return;
 				}
 
 				$query = 'ALTER DATABASE CHARACTER SET utf8 COLLATE ' . $collation . ';';
-				$this->commandController->getMessageBus()->message($this->ll(
+				$this->messageService->message($this->ll(
 					'migration.executingQuery',
 					array (
 						$query
@@ -126,13 +126,13 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				));
 				$GLOBALS['TYPO3_DB']->sql_query($query);
 				if ($sqlError = $GLOBALS['TYPO3_DB']->sql_error()) {
-					$this->commandController->getMessageBus()->errorMessage($sqlError . LF, TRUE);
+					$this->messageService->errorMessage($sqlError . LF, TRUE);
 				}
 				$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-				$this->commandController->getMessageBus()->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
+				$this->messageService->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
 				break;
 			case 'tableCollation':
-				$this->commandController->getMessageBus()->message($this->ll(
+				$this->messageService->message($this->ll(
 					'result.typo3-database-database-utf8.databaseTableCollation',
 					array(
 						$additionalInformation['tableName'],
@@ -142,12 +142,12 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				));
 
 				if ($issue->getMigrationStatus() != 0) {
-					$this->commandController->getMessageBus()->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
+					$this->messageService->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
 					return;
 				}
 
 				$query = 'ALTER TABLE `' . $additionalInformation['tableName'] . '` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;';
-				$this->commandController->getMessageBus()->message($this->ll(
+				$this->messageService->message($this->ll(
 					'migration.executingQuery',
 					array (
 						$query
@@ -155,14 +155,14 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				));
 				$GLOBALS['TYPO3_DB']->sql_query($query);
 				if ($sqlError = $GLOBALS['TYPO3_DB']->sql_error()) {
-					$this->commandController->getMessageBus()->errorMessage($sqlError . LF, TRUE);
+					$this->messageService->errorMessage($sqlError . LF, TRUE);
 				} else {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-					$this->commandController->getMessageBus()->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
+					$this->messageService->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
 				}
 				break;
 			case 'columnCollation':
-				$this->commandController->getMessageBus()->message($this->ll(
+				$this->messageService->message($this->ll(
 					'result.typo3-database-database-utf8.databaseColumnCollation',
 					array(
 						$additionalInformation['tableName'],
@@ -173,12 +173,12 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				));
 
 				if ($issue->getMigrationStatus() != 0) {
-					$this->commandController->getMessageBus()->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
+					$this->messageService->successMessage($this->ll('migration.alreadyMigrated'), TRUE);
 					return;
 				}
 
 				$query = 'ALTER TABLE `' . $additionalInformation['tableName'] . '` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;';
-				$this->commandController->getMessageBus()->message($this->ll(
+				$this->messageService->message($this->ll(
 					'migration.executingQuery',
 					array (
 						$query
@@ -186,10 +186,10 @@ class Tx_Smoothmigration_Migrations_Database_Utf8_Processor extends Tx_Smoothmig
 				));
 				$GLOBALS['TYPO3_DB']->sql_query($query);
 				if ($sqlError = $GLOBALS['TYPO3_DB']->sql_error()) {
-					$this->commandController->getMessageBus()->errorMessage($sqlError . LF, TRUE);
+					$this->messageService->errorMessage($sqlError . LF, TRUE);
 				} else {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-					$this->commandController->getMessageBus()->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
+					$this->messageService->successMessage($this->ll('migrationsstatus.1') . LF, TRUE);
 				}
 				break;
 			default:

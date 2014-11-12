@@ -269,7 +269,7 @@ class Tx_Smoothmigration_Controller_SmoothmigrationCommandController extends Tx_
 					if ((bool)$experimental) {
 						$processor->setExperimental($experimental);
 					}
-					$processor->setCommandController($this);
+					$processor->setMessageService($this->messageBus);
 					$processor->execute();
 
 					/** @var Tx_Extbase_Persistence_Manager $persistenceManger */

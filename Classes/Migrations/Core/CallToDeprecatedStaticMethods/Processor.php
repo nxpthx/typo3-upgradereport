@@ -55,7 +55,7 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 				$this->issueRepository->update($issue);
 			}
 		} else {
-			$this->commandController->getMessageBus()->successMessage('No issues found', TRUE);
+			$this->messageService->successMessage('No issues found', TRUE);
 		}
 
 		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
@@ -89,23 +89,23 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 			if ($this->experimental) {
 				$this->performReplacement($issue, $locationInfo, $additionalInformation);
 			} elseif (!$this->encounteredExperimentalIssues) {
-				$this->commandController->getMessageBus()->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
+				$this->messageService->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
 					'Method [' . trim($locationInfo->getMatchedString()) . '] is not easily replaceable.' . LF .
 					$additionalInformation['deprecationMessage']
 				);
-				$this->commandController->getMessageBus()->warningMessage('But you can try fixing. Run again with parameter --experimental=yes');
-				$this->commandController->getMessageBus()->warningMessage($this->ll('migration.manualInterventionNeeded'), TRUE);
+				$this->messageService->warningMessage('But you can try fixing. Run again with parameter --experimental=yes');
+				$this->messageService->warningMessage($this->ll('migration.manualInterventionNeeded'), TRUE);
 				$this->encounteredExperimentalIssues = TRUE;
 			}
 		} else {
-			$this->commandController->getMessageBus()->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
+			$this->messageService->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
 			'Method [' . trim($locationInfo->getMatchedString()) . '] is not easily replaceable.' . LF .
 			$additionalInformation['deprecationMessage']);
 			if ($additionalInformation['replacementMessage']) {
-				$this->commandController->getMessageBus()->message($additionalInformation['replacementMessage']);
+				$this->messageService->message($additionalInformation['replacementMessage']);
 			}
-			$this->commandController->getMessageBus()->warningMessage($this->ll('migration.manualInterventionNeeded'), TRUE);
-			$this->commandController->getMessageBus()->message();
+			$this->messageService->warningMessage($this->ll('migration.manualInterventionNeeded'), TRUE);
+			$this->messageService->message();
 		}
 	}
 
@@ -125,23 +125,23 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 		if ($additionalInformation['replacementClass'] == '') {
 			$concatenator = '';
 		}
-		$this->commandController->getMessageBus()->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
+		$this->messageService->message($locationInfo->getFilePath() . ' line: ' . $locationInfo->getLineNumber() . LF .
 		'Replacing [' . trim($locationInfo->getMatchedString()) . '] =>' .
 		' [' . $additionalInformation['replacementClass'] . $concatenator . $additionalInformation['replacementMethod'] . '(]');
 
 		if ($issue->getMigrationStatus() != 0) {
-			$this->commandController->getMessageBus()->successMessage('already migrated', TRUE);
+			$this->messageService->successMessage('already migrated', TRUE);
 			return;
 		}
 
 		if (!file_exists($locationInfo->getFilePath())) {
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_FOUND);
-			$this->commandController->getMessageBus()->errorMessage('Error, file not found', TRUE);
+			$this->messageService->errorMessage('Error, file not found', TRUE);
 			return;
 		}
 		if (!is_writable($locationInfo->getFilePath())) {
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_WRITABLE);
-			$this->commandController->getMessageBus()->errorMessage('Error, file not writable', TRUE);
+			$this->messageService->errorMessage('Error, file not writable', TRUE);
 			return;
 		}
 		$fileObject = new SplFileObject($locationInfo->getFilePath());
@@ -183,13 +183,13 @@ class Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Processor
 
 		if ($newContent == $contentToProcess) {
 			$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
-			$this->commandController->getMessageBus()->errorMessage($this->ll('migrationsstatus.4'), TRUE);
+			$this->messageService->errorMessage($this->ll('migrationsstatus.4'), TRUE);
 			return;
 		}
 
 		file_put_contents($locationInfo->getFilePath(), $contentBefore . $newContent . $contentAfter);
 		$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::SUCCESS);
-		$this->commandController->getMessageBus()->successMessage('Succes' . LF, TRUE);
+		$this->messageService->successMessage('Succes' . LF, TRUE);
 	}
 
 }

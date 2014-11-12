@@ -30,9 +30,9 @@
 abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implements Tx_Smoothmigration_Domain_Interface_MigrationProcessor {
 
 	/**
-	 * @var Tx_Smoothmigration_Controller_SmoothmigrationCommandController
+	 * @var Tx_Smoothmigration_Service_MessageService
 	 */
-	protected $commandController;
+	protected $messageService;
 
 	/**
 	 * @var boolean
@@ -109,16 +109,6 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 	}
 
 	/**
-	 * Set the Command Controller
-	 *
-	 * @param Tx_Smoothmigration_Controller_SmoothmigrationCommandController $commandController
-	 * @return void
-	 */
-	public function setCommandController(Tx_Smoothmigration_Controller_SmoothmigrationCommandController $commandController) {
-		$this->commandController = $commandController;
-	}
-
-	/**
 	 * When set, try to process experimental migrations as well if any
 	 *
 	 * @param boolean $experimental
@@ -137,6 +127,16 @@ abstract class Tx_Smoothmigration_Migrations_AbstractMigrationProcessor implemen
 		$this->extensionKey = $extensionKey;
 
 		return $this;
+	}
+
+	/**
+	 * Set the Message Service
+	 *
+	 * @param Tx_Smoothmigration_Service_MessageService $messageService
+	 * @return void
+	 */
+	public function setMessageService(Tx_Smoothmigration_Service_MessageService $messageService) {
+		$this->messageService = $messageService;
 	}
 
 	/**
