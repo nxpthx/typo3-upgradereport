@@ -148,7 +148,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 	 */
 	public static function getFrontendExtensions($onlyKeys = TRUE) {
 		$extensions = array();
-		if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
+		if (t3lib_div::int_from_ver(TYPO3_version) < 6001000) {
 			$list = array();
 			/** @var $extensionList tx_em_Extensions_List */
 			$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List');
