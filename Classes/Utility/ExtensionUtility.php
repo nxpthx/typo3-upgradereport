@@ -105,7 +105,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		$list = self::getInstalledExtensions();
 		if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
 			foreach ($list as $extensionName => $extensionData) {
-				if (isset($extensionData['EM_CONF']['constraints']['depends']['typo3'])) {
+				if (is_array($extensionData) && isset($extensionData['EM_CONF']['constraints']['depends']['typo3'])) {
 					$versionRange = tx_em_Tools::splitVersionRange($extensionData['EM_CONF']['constraints']['depends']['typo3']);
 					if ((bool)$ignoreOpenEnd) {
 						$upperBound = $versionRange[1] !== '0.0.0' && version_compare($version, $versionRange[1], '>');
@@ -120,8 +120,8 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		} else {
 			/** @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility */
 			$emConfUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility');
-			foreach ($list as $extensionName) {
-				if (isset($extensionData['EM_CONF']['constraints']['depends']['typo3'])) {
+			foreach ($list as $extensionName => $extensionData) {
+				if (is_array($extensionData) && isset($extensionData['EM_CONF']['constraints']['depends']['typo3'])) {
 					$extensionData = array(); // FIXME . . .  use \TYPO3\CMS\Core\Package\PackageManager
 					$versionRange = tx_em_Tools::splitVersionRange($extensionData['EM_CONF']['constraints']['depends']['typo3']);
 					if ((bool)$ignoreOpenEnd) {
@@ -208,9 +208,8 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		$loadedExtensions = array();
 
 		$installedExtensions = self::getInstalledExtensions();
-		$typo3LoadedExt = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
 		foreach ($installedExtensions as $key) {
-			if (in_array($key, $typo3LoadedExt)) {
+			if (count($GLOBALS['TYPO3_LOADED_EXT'][$key]) > 2) {
 				$loadedExtensions[] = $key;
 			}
 		}
@@ -253,6 +252,8 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 			$loadedExtensionsFiltered = self::getLoadedExtensions();
 		}
 
+		$loadedExtensionsFiltered = array_flip($loadedExtensionsFiltered);
+
 		unset($loadedExtensionsFiltered['smoothmigration']);
 
 		if ($removeCompatible) {
@@ -290,6 +291,8 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 				}
 			}
 		}
+
+		$loadedExtensionsFiltered = array_flip($loadedExtensionsFiltered);
 
 		self::$loadedExtensionsFiltered = $loadedExtensionsFiltered;
 
