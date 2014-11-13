@@ -184,7 +184,7 @@ class Tx_Smoothmigration_Utility_ExtensionUtility implements t3lib_Singleton {
 		if (self::$installedExtensions !== NULL) {
 			return self::$installedExtensions;
 		}
-		if (t3lib_div::int_from_ver(TYPO3_version) < 6002000) {
+		if (t3lib_div::int_from_ver(TYPO3_version) < 6001000) {
 			/** @var $extensionList tx_em_Extensions_List */
 			$extensionList = t3lib_div::makeInstance('tx_em_Extensions_List');
 			list($list,) = $extensionList->getInstalledExtensions();
