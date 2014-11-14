@@ -51,13 +51,4 @@ class Tx_Smoothmigration_Checks_Core_Namespace_Definition extends Tx_Smoothmigra
 	public function getIdentifier() {
 		return 'typo3-core-code-namespace';
 	}
-
-	/**
-	 * Return the maximal TYPO3 Version the checks needs to be executed on.
-	 *
-	 * @return string
-	 */
-	public function getMaximalTypo3Version() {
-		return '4.7.999';
-	}
 }

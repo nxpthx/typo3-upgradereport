@@ -114,10 +114,10 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_Processor ext
 
 		$deprecatedMethods = $this->deprecationRepository->findByIsStatic(TRUE);
 		foreach ($deprecatedMethods as $deprecatedMethod) {
-			$regularExpression[] = '(' . $deprecatedMethod->getClass() . '::' . $deprecatedMethod->getMethod() . '\s?\(' . ')';
+			$regularExpression[] = $deprecatedMethod->getClass() . '::' . $deprecatedMethod->getMethod() . '\s?\(';
 		}
 
-		return implode('|', $regularExpression);
+		return '(' . implode('|', $regularExpression) . ')';
 	}
 
 }

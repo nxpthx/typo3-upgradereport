@@ -305,6 +305,7 @@ class Tx_Smoothmigration_Controller_SmoothmigrationCommandController extends Tx_
 		if (count($issuesWithInspections)) {
 			foreach ($issuesWithInspections as $extensionKey => $inspections) {
 				$count = 0;
+				$notMigratedCount = 0;
 				foreach ($inspections as $issues) {
 					/** @var Tx_Smoothmigration_Domain_Model_Issue $singleIssue */
 					foreach ($issues as $singleIssue) {
@@ -322,12 +323,13 @@ class Tx_Smoothmigration_Controller_SmoothmigrationCommandController extends Tx_
 									break;
 								default:
 									$this->messageBus->message($check->getResultAnalyzer()->getSolution($singleIssue));
-									$count++;
+									$notMigratedCount++;
 							}
 						}
+						$count++;
 					}
 				}
-				$this->issueReport($count, $extensionKey);
+				$this->issueReport($notMigratedCount, $extensionKey);
 			}
 		} else {
 			$this->issueReport('0', $extensionKey);

@@ -73,9 +73,9 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_Processor exten
 	protected function generateRegularExpression() {
 		$regularExpression = array();
 		foreach ($this->viewHelpers as $viewHelper) {
-			$regularExpression[] = '(<f\:' . $viewHelper . ')';
+			$regularExpression[] = '<f\:' . $viewHelper;
 		}
-		return implode('|', $regularExpression);
+		return '(' . implode('|', $regularExpression) . ')';
 	}
 
 }

@@ -57,13 +57,4 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Definition extends Tx_Smoothm
 	public function getCliKey() {
 		return 'namespace';
 	}
-
-	/**
-	 * Return the maximal TYPO3 Version the checks needs to be executed on.
-	 *
-	 * @return string
-	 */
-	public function getMaximalTypo3Version() {
-		return '4.7.999';
-	}
 }
