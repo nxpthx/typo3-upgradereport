@@ -112,7 +112,7 @@ class Tx_Smoothmigration_Migrations_Core_Xclasses_Processor extends Tx_Smoothmig
 
 			file_put_contents($physicalPath, $extLocalconfSource);
 
-			$xClassCode = "<php\n" . 'return array(\'' . $additionalInfo['IMPLEMENTATION_CLASS'] . '\'=> \'' . ['IMPLEMENTATION_CLASS_FILENAME'] . '\',);' . "\n?>";
+			$xClassCode = "<php\n" . 'return array(\'' . $additionalInfo['IMPLEMENTATION_CLASS'] . '\'=> \'' . $additionalInfo['IMPLEMENTATION_CLASS_FILENAME'] . '\',);' . "\n?>";
 
 			file_put_contents($extPath . 'ext_autoload.php', $xClassCode);
 		}
