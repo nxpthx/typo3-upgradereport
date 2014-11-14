@@ -50,7 +50,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedStaticMethods_ResultAnalyze
 		return $this->ll(
 			'result.typo3-core-code-callToDeprecatedStaticMethods.solution',
 			array(
-				substr($issue->getLocation()->getMatchedString(), 0, -1),
+				$issue->getLocation()->getMatchedString(),
 				$issue->getLocation()->getFilePath(),
 				$issue->getLocation()->getLineNumber()
 			)
