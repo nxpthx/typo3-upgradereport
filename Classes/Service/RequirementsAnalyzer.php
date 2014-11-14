@@ -123,7 +123,7 @@ class Tx_Smoothmigration_Service_RequirementsAnalyzer implements t3lib_Singleton
 	}
 
 	/**
-	 * @param Tx_Smoothmigration_Domain_Interface_CheckRequirements $check
+	 * @param Tx_Smoothmigration_Domain_Interface_Requirements $check
 	 *
 	 * @return boolean
 	 */

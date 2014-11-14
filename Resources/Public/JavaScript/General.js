@@ -11,7 +11,7 @@
         $element.find('.feedback .running').show();
         $.ajax({
             type: 'POST',
-            url: 'mod.php?M=tools_SmoothmigrationSmoothmigration' + moduleToken,
+            url: 'mod.php?M=tools_SmoothmigrationSmoothmigration&moduleToken=' + moduleToken,
             dataType: 'json',
             data: {
                 tx_smoothmigration_tools_smoothmigrationsmoothmigration: {
@@ -50,7 +50,7 @@
         $element.find('.feedback .clearing').show();
         $.ajax({
             type: 'POST',
-            url: 'mod.php?M=tools_SmoothmigrationSmoothmigration' + moduleToken,
+            url: 'mod.php?M=tools_SmoothmigrationSmoothmigration&moduleToken=' + moduleToken,
             dataType: 'json',
             data: {
                 tx_smoothmigration_tools_smoothmigrationsmoothmigration: {

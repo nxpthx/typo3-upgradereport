@@ -62,8 +62,8 @@ class Tx_Smoothmigration_Controller_AbstractModuleController extends Tx_Extbase_
 		$this->pageRenderer->addJsLibrary('sprintf', t3lib_extMgm::extRelPath('smoothmigration') . 'Resources/Public/JavaScript/sprintf.min.js');
 		$this->pageRenderer->addJsFile(t3lib_extMgm::extRelPath('smoothmigration') . 'Resources/Public/JavaScript/General.js');
 
-		if (t3lib_div::int_from_ver(TYPO3_version) > 6002000) {
-			$this->moduleToken = '&moduleToken=' . \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', 'tools_SmoothmigrationSmoothmigration');
+		if (t3lib_div::int_from_ver(TYPO3_version) > 6001000) {
+			$this->moduleToken = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('moduleCall', 'tools_SmoothmigrationSmoothmigration');
 		}
 	}
 
