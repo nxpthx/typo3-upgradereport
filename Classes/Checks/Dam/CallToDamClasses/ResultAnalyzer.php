@@ -50,7 +50,7 @@ class Tx_Smoothmigration_Checks_Dam_CallToDamClasses_ResultAnalyzer extends Tx_S
 		return $this->ll(
 			'result.typo3-core-code-mysql.solution',
 			array(
-				substr($issue->getLocation()->getMatchedString(), 0, -1),
+				$issue->getLocation()->getMatchedString(),
 				$issue->getLocation()->getFilePath(),
 				$issue->getLocation()->getLineNumber()
 			)

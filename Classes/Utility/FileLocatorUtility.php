@@ -48,7 +48,7 @@ class Tx_Smoothmigration_Utility_FileLocatorUtility implements t3lib_Singleton {
 			if (preg_match('/' . trim($searchPattern, '/') . '/i', $lineContent, $matches)) {
 				$positions[] = array(
 					'line' => $lineNumber + 1,
-					'match' => $matches[0]
+					'match' => $matches[1]
 				);
 			}
 		}

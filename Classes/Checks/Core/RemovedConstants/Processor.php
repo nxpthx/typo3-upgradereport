@@ -30,9 +30,9 @@
 class Tx_Smoothmigration_Checks_Core_RemovedConstants_Processor extends Tx_Smoothmigration_Checks_AbstractCheckProcessor {
 
 	/**
-	 * @var string
+	 * @var array
 	 */
-	protected $constants = "(PATH_t3lib)";
+	protected $constants = array('PATH_t3lib');
 
 	/**
 	 * Execute the check
@@ -44,16 +44,27 @@ class Tx_Smoothmigration_Checks_Core_RemovedConstants_Processor extends Tx_Smoot
 			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
 				$this->getExtensionKey(),
 				'.*\.(php|inc)$',
-				'(PATH_t3lib)'
+				$this->generateRegularExpression()
 			);
 		} else {
 			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
 				'.*\.(php|inc)$',
-				'(PATH_t3lib)'
+				$this->generateRegularExpression()
 			);
 		}
 		foreach ($locations as $location) {
 			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
 		}
+	}
+
+	/**
+	 * Generate a regular expression to search for all deprecated static calls
+	 */
+	protected function generateRegularExpression() {
+		$regularExpression = array();
+		foreach ($this->constants as $constant) {
+			$regularExpression[] = $constant;
+		}
+		return '(' . implode('|', $regularExpression) . ')';
 	}
 }

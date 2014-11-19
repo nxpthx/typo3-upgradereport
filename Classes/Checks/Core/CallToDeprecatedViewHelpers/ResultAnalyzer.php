@@ -50,7 +50,7 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedViewHelpers_ResultAnalyzer 
 		return $this->ll(
 			'result.typo3-core-code-callToDeprecatedViewHelpers.solution',
 			array (
-				substr($issue->getLocation()->getMatchedString(), 1),
+				$issue->getLocation()->getMatchedString(),
 				$issue->getLocation()->getFilePath(),
 				$issue->getLocation()->getLineNumber()
 			)

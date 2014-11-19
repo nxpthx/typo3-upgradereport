@@ -31,43 +31,45 @@ class Tx_Smoothmigration_Checks_Core_Namespace_Processor extends Tx_Smoothmigrat
 	/**
 	 * Execute the check
 	 *
+	 * The regex can become quite large. We try to reduce the size by making the
+	 * keys unique and splitting the array in several parts.
+	 *
 	 * @return void
 	 */
 	public function execute() {
 		/** @var Tx_Smoothmigration_Service_ClassAliasProvider $classAliasProvider */
 		$classAliasProvider = t3lib_div::makeInstance('Tx_Smoothmigration_Service_ClassAliasProvider');
 
-		if ($this->getExtensionKey()) {
-			// Legacy Classes
-			$legacyLocations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
-				$this->getExtensionKey(),
-				'.*\.(php|inc)$',
-				'(' . implode('|', (array_keys($classAliasProvider->getLegacyClasses()))) . ')'
-			);
-			// Class Alias Map
-			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
-				$this->getExtensionKey(),
-				'.*\.(php|inc)$',
-				'(' . implode('|', (array_keys($classAliasProvider->getClassAliasMap()))) . ')'
-			);
-		} else {
-			// Legacy Classes
-			$legacyLocations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
-				'.*\.(php|inc)$',
-				'(' . implode('|', (array_keys($classAliasProvider->getLegacyClasses()))) . ')'
-			);
-			// Class Alias Map
-			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
-				'.*\.(php|inc)$',
-				'(' . implode('|', (array_keys($classAliasProvider->getClassAliasMap()))) . ')'
-			);
-		}
+		$legacyClasses = array_keys($classAliasProvider->getLegacyClasses());
+		$classAaliases = array_keys($classAliasProvider->getClassAliasMap());
 
-		foreach ($legacyLocations as $location) {
-			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
-		}
-		foreach ($locations as $location) {
-			$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
+		$classes = array_unique(array_merge($legacyClasses, $classAaliases), SORT_REGULAR);
+
+		$count = count($classes);
+
+		$classChunks = array_chunk($classes, $count / 4);
+
+		if ($this->getExtensionKey()) {
+			foreach ($classChunks as $chunk) {
+				$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(
+					$this->getExtensionKey(),
+					'.*\.(php|inc)$',
+					'(?:^|\s+|[^\/\.a-zA-Z0-9_]+)(' . implode('|', $chunk) . ')(?:[^\/\.a-zA-Z0-9_]+)'
+				);
+				foreach ($locations as $location) {
+					$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
+				}
+			}
+		} else {
+			foreach ($classChunks as $chunk) {
+				$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtensions(
+					'.*\.(php|inc)$',
+					'(?:^|\s+|[^\/\.a-zA-Z0-9_]+)(' . implode('|', $chunk) . ')(?:[^\/\.a-zA-Z0-9_]+)'
+				);
+				foreach ($locations as $location) {
+					$this->issues[] = new Tx_Smoothmigration_Domain_Model_Issue($this->parentCheck->getIdentifier(), $location);
+				}
+			}
 		}
 	}
 }

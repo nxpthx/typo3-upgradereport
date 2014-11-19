@@ -38,16 +38,18 @@ class Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Processor extends T
 	public function execute() {
 		$regularExpression = '(?x)
 		^\s*
-		(require|require_once|include|include_once)
-		(\s*\(?\s*|\s+)
 		(
-			(\$BACK_PATH|PATH_t3lib|PATH_tslib|PATH_typo3|PATH_txdam|PATH_site\s*\.\s*TYPO3_mainDir)
-			\s?\.\s?
-			(?![\'"]init\.php[\'"])
-			|
-			t3lib_extMgm::extPath[^\)]*\)
-		)
-		.*\)?\s*;?';
+			(?:require|require_once|include|include_once)
+			(?:\s*\(?\s*|\s+)
+			(?:
+				(?:\$BACK_PATH|PATH_t3lib|PATH_tslib|PATH_typo3|PATH_txdam|PATH_site\s*\.\s*TYPO3_mainDir)
+				\s?\.\s?
+				(?![\'"]init\.php[\'"])
+				|
+				t3lib_extMgm::extPath[^\)]*\)
+			)
+			.*\)?\s*;?
+		)';
 
 		if ($this->getExtensionKey()) {
 			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(

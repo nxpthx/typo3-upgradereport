@@ -36,7 +36,7 @@ class Tx_Smoothmigration_Checks_Core_Mysql_Processor extends Tx_Smoothmigration_
 	 * @return void
 	 */
 	public function execute() {
-		$regularExpression = '/[^>](mysql_[a-z_]*)\s?\(/';
+		$regularExpression = '/[^>\*#]\s*(mysql_[a-z_]*)\s?\(/';
 
 		if ($this->getExtensionKey()) {
 			$locations = Tx_Smoothmigration_Utility_FileLocatorUtility::searchInExtension(

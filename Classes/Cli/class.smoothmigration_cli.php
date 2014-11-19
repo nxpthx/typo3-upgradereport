@@ -96,7 +96,8 @@ class tx_smoothmigration_cli extends t3lib_cli {
 		switch ($task) {
 			case 'check':
 				$checkKey = ((string)$this->cli_args['_DEFAULT'][2]) ?: '';
-				$this->check($checkKey);
+				$extension = trim((string)$this->cli_args['--extension'][0]);
+				$this->check($checkKey, $extension);
 				break;
 			case 'executeAllChecks':
 				$this->executeAllChecks();
@@ -121,9 +122,10 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 * Check
 	 *
 	 * @param string $checkKey
+	 * @param string $extensionKey
 	 * @return void
 	 */
-	private function check($checkKey) {
+	private function check($checkKey, $extensionKey = '') {
 		$check = NULL;
 		/** @var Tx_Smoothmigration_Service_Check_Registry $registry */
 		$registry = Tx_Smoothmigration_Service_Check_Registry::getInstance();
@@ -139,6 +141,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 
 		/** @var Tx_Smoothmigration_Checks_AbstractCheckProcessor $processor */
 		$processor = $check->getProcessor();
+		$processor->setExtensionKey($extensionKey);
 		$processor->execute();
 		foreach ($processor->getIssues() as $issue) {
 			$this->issueRepository->add($issue);

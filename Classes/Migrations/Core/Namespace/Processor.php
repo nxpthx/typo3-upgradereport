@@ -54,7 +54,9 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 	public function execute() {
 		$this->classAliasProvider = $this->objectManager->get('Tx_Smoothmigration_Service_ClassAliasProvider');
 		$this->legacyClasses = $this->classAliasProvider->getLegacyClasses();
+		$this->legacyClasses = array_change_key_case($this->legacyClasses, CASE_LOWER);
 		$this->classAliasMap = $this->classAliasProvider->getClassAliasMap();
+		$this->classAliasMap = array_change_key_case($this->classAliasMap, CASE_LOWER);
 
 		$this->getPendingIssues($this->parentMigration->getIdentifier());
 		if (count($this->issues)) {
@@ -79,6 +81,7 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 	 */
 	protected function getReplacementClass($class) {
 		$replacement = '';
+		$class = strtolower($class);
 		if (array_key_exists($class, $this->legacyClasses)) {
 			$replacement = $this->legacyClasses[$class];
 		} elseif (array_key_exists($class, $this->classAliasMap)) {
@@ -148,7 +151,11 @@ class Tx_Smoothmigration_Migrations_Core_Namespace_Processor extends Tx_Smoothmi
 			if ($lineNumber + 1 != $locationInfo->getLineNumber()) {
 				$newFileContent .= $lineContent;
 			} else {
-				$newLineContent = str_replace($search, $replacement, $lineContent);
+				$newLineContent = preg_replace(
+					'/(^|\s+|[^\/\.a-zA-Z0-9_]+)(' . $search . ')([^\/\.a-zA-Z0-9_]+)/',
+					'$1' . $replacement . '$3',
+					$lineContent
+				);
 				if ($newLineContent == $lineContent) {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
 					$this->messageService->errorMessage($this->ll('migrationsstatus.4'), TRUE);
