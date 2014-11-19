@@ -19,6 +19,7 @@ return array(
 	'tx_smoothmigration_checks_core_mysql_resultanalyzer' => $extensionClassesPath . 'Checks/Core/Mysql/ResultAnalyzer.php',
 	'tx_smoothmigration_checks_core_namespace_definition' => $extensionClassesPath . 'Checks/Core/Namespace/Definition.php',
 	'tx_smoothmigration_checks_core_namespace_processor' => $extensionClassesPath . 'Checks/Core/Namespace/Processor.php',
+	'tx_smoothmigration_checks_core_namespace_resultanalyzer' => $extensionClassesPath . 'Checks/Core/Namespace/ResultAnalyzer.php',
 	'tx_smoothmigration_checks_core_removedconstants_definition' => $extensionClassesPath . 'Checks/Core/RemovedConstants/Definition.php',
 	'tx_smoothmigration_checks_core_removedconstants_processor' => $extensionClassesPath . 'Checks/Core/RemovedConstants/Processor.php',
 	'tx_smoothmigration_checks_core_removedconstants_resultanalyzer' => $extensionClassesPath . 'Checks/Core/RemovedConstants/ResultAnalyzer.php',
