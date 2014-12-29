@@ -100,7 +100,7 @@ class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Processor exten
 			if ($lineNumber + 1 + $lineOffset != $locationInfo->getLineNumber()) {
 				$newFileContent .= $lineContent;
 			} else {
-				$newLineContent = str_replace($locationInfo->getMatchedString(), chr(10), $lineContent);
+				$newLineContent = str_replace($locationInfo->getMatchedString(), LF, $lineContent);
 				if ($newLineContent == $lineContent) {
 					$issue->setMigrationStatus(Tx_Smoothmigration_Domain_Interface_Migration::ERROR_FILE_NOT_CHANGED);
 					$this->messageService->errorMessage($this->ll('migrationsstatus.4'), TRUE);
