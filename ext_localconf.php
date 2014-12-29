@@ -12,6 +12,7 @@ $checkArray = array(
 	'Tx_Smoothmigration_Checks_Core_RemovedConstants_Definition',
 	'Tx_Smoothmigration_Checks_Core_RequireOnceInExtensions_Definition',
 	'Tx_Smoothmigration_Checks_Core_Xclasses_Definition',
+	'Tx_Smoothmigration_Checks_Core_MissingAddPluginParameter_Definition',
 	'Tx_Smoothmigration_Checks_Dam_CallToDamClasses_Definition',
 	'Tx_Smoothmigration_Checks_Database_Utf8_Definition',
 	'Tx_Smoothmigration_Checks_Extension_IncompatibleWithLts_Definition',
@@ -23,6 +24,7 @@ $migrationArray = array(
 	'Tx_Smoothmigration_Migrations_Core_CallToDeprecatedStaticMethods_Definition',
 	'Tx_Smoothmigration_Migrations_Core_Namespace_Definition',
 	'Tx_Smoothmigration_Migrations_Core_RequireOnceInExtensions_Definition',
+	'Tx_Smoothmigration_Migrations_Core_MissingAddPluginParameter_Definition',
 	// 'Tx_Smoothmigration_Migrations_Core_Xclasses_Definition', FIXME Does not work for me.
 	'Tx_Smoothmigration_Migrations_Database_CreateMissingTablesAndFields_Definition',
 	'Tx_Smoothmigration_Migrations_Database_Utf8_Definition',
