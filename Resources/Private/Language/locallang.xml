@@ -27,6 +27,9 @@
 			<label index="check.typo3-core-code-xclasses.description">When changing you might also need to change the location/name of the hook or add the file to the ext_autoload.php.</label>
 			<label index="check.typo3-core-code-xclasses.shortDescription">The way of registering xClasses has been changed. Check if xClassing is used.</label>
 			<label index="check.typo3-core-code-xclasses.title">Check for xClasses</label>
+			<label index="check.typo3-core-code-missingaddpluginparameter.description">If t3lib_extMgm::addPlugin() is called from a place other than an ext_tables.php or Configuration/TCA/Overrides file the extension key is now required as a third parameter.</label>
+			<label index="check.typo3-core-code-missingaddpluginparameter.shortDescription">Lists the extensions incompatible with missing parameter for t3lib_extMgm::addPlugin().</label>
+			<label index="check.typo3-core-code-missingaddpluginparameter.title">Missing third parameter for addPlugin()</label>
 			<label index="check.typo3-dam-code-callToDamClasses.description">Since DAM won't work in 6.x anymore, you should remove all calls to DAM-Methods and Instances of DAM-Classes and change them to use FAL/Media.</label>
 			<label index="check.typo3-dam-code-callToDamClasses.shortDescription">DAM will be gone in 6.x so you can't use it's Classes anymore.</label>
 			<label index="check.typo3-dam-code-callToDamClasses.title">Dam Classes</label>
@@ -55,6 +58,8 @@
 			<label index="migration.typo3-database-database-createmissingtablesandfields.title">Create missing tables and fields.</label>
 			<label index="migration.typo3-database-database-utf8.shortDescription">Fix database, table and collumn character set and collation</label>
 			<label index="migration.typo3-database-database-utf8.title">Fix database</label>
+			<label index="migration.typo3-core-code-missingaddpluginparameter.shortDescription">Add extension key as the missing third addPlugin() parameter</label>
+			<label index="migration.typo3-core-code-missingaddpluginparameter.title">Add missing addPlugin parameter</label>
 			<label index="migrationsstatus">Migration status:</label>
 			<label index="migrationsstatus.0">Not processed yet</label>
 			<label index="migrationsstatus.1">Succesfully processed</label>
@@ -99,6 +104,8 @@
 			<label index='result.typo3-core-code-namespace.solution'>Replace the call to %s in %s on line %s.</label>
 			<label index='result.typo3-core-code-removedConstants.explanation'>Call to removed constant</label>
 			<label index='result.typo3-core-code-removedConstants.solution'>Remove constant usage: %s in %s on line %s.</label>
+			<label index='result.typo3-core-code-missingaddpluginparameter.explanation'>Missing extension key</label>
+			<label index='result.typo3-core-code-missingaddpluginparameter.solution'>Add the extension key in %s on line %s.</label>
 			<label index='result.typo3-database-database-utf8.explanation'>Incorrect database setting</label>
 			<label index='result.typo3-extension-code-incompatiblewithlts.explanation'>Incompatible extension</label>
 			<label index='result.typo3-extension-code-incompatiblewithlts.solution'>Update extension '%s' to be compatible with the LTS version (current support: %s - %s) or use another extension.</label>
