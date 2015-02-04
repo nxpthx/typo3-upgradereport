@@ -10,6 +10,8 @@ All tasks are now executed from the command line.
 Installation and Usage
 ======================
 
+If cloning the extension from github, it should end up in typo3conf/ext/smoothmigration and not in typo3-upgradereport.
+
 More information on [Installation](Documentation/Installation/Index.rst) and [Usage](Documentation/UserManual/Index.rst) can be found in the [documentation folder](Documentation/Index.rst).
 
 
