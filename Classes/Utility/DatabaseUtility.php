@@ -47,7 +47,8 @@ class Tx_Smoothmigration_Utility_DatabaseUtility implements t3lib_Singleton {
 				FROM pages AS l' . $level . '
 				INNER JOIN (' . $q . ')
 					AS l' . $lowerLevel . '
-					ON l' . $lowerLevel . '.uid = l' . $level . '.pid';
+					ON l' . $lowerLevel . '.uid = l' . $level . '.pid ' .
+				'WHERE l' . $level . '.deleted = 0 AND l' . $level . '.hidden = 0';
 			$level--;
 			return self::getChildIds($level, $q);
 		}
@@ -69,7 +70,7 @@ class Tx_Smoothmigration_Utility_DatabaseUtility implements t3lib_Singleton {
 		$GLOBALS['TYPO3_DB']->sql_query('DROP TABLE IF EXISTS temp_child_ids;');
 		$GLOBALS['TYPO3_DB']->sql_query('CREATE TEMPORARY TABLE temp_child_ids (pid INT unsigned DEFAULT 0, doktype TINYINT unsigned DEFAULT 0);');
 
-		$query = 'SELECT l0.uid, l0.doktype FROM pages AS l0 WHERE l0.pid = ' . $pageUid;
+		$query = 'SELECT l0.uid, l0.doktype FROM pages AS l0 WHERE l0.pid = ' . $pageUid. ' AND l0.deleted = 0 AND l0.hidden = 0';
 
 		self::getChildIds(self::MAX_RECURSION_LEVELS, $query);
 		$res = $GLOBALS['TYPO3_DB']->sql_query('SELECT pid FROM temp_child_ids WHERE NOT doktype IN(3,6,199,254,255) ');

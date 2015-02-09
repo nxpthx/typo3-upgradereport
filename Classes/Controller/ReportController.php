@@ -92,6 +92,7 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 		}
 
 		if ($selectedSite) {
+			$values['pageCount'] = count(Tx_Smoothmigration_Utility_DatabaseUtility::getChildPagesArray($selectedSite, $limit));
 			$values['pageIds'] = implode(', ', Tx_Smoothmigration_Utility_DatabaseUtility::getChildPagesArray($selectedSite, $limit));
 			$values['domainRecords'] = Tx_Smoothmigration_Utility_DatabaseUtility::getDomainRecords($selectedSite);
 		}
