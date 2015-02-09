@@ -274,8 +274,14 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 		if (is_array($pages)) {
 			reset($pages);
 			static $i;
+			$isV4 = t3lib_div::int_from_ver(TYPO3_version) < 6002000;
 			foreach ($pages as $k => $v) {
-				if (t3lib_div::testInt($k)) {
+				if ($isV4) {
+					$valueIsInt = t3lib_div::testInt($k);
+				} else {
+					$valueIsInt = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k);
+				}
+				if ($valueIsInt) {
 					if (isset($pages[$k . "_"])) {
 						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . ($c * 10) . ' align="top">' .
