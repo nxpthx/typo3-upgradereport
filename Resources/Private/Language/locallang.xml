@@ -44,6 +44,7 @@
 			<label index="check.typo3-extension-code-obsolete.title">Obsolete extensions</label>
 			<label index="docheader.report.checks">Checks</label>
 			<label index="docheader.report.extension">Extension Report</label>
+			<label index="docheader.report.pageIdList">Page id list</label>
 			<label index="docheader.report.reportOverview">Report Overview</label>
 			<label index="docheader.report.show">Report</label>
 			<label index="migration.typo3-core-code-callToDeprecatedStaticMethods.shortDescription">Replace deprecated methods method calls with new ones.</label>

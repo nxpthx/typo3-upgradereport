@@ -1,0 +1,45 @@
+{namespace this=Tx_Smoothmigration_ViewHelpers}
+<f:layout name="module" />
+
+<f:section name="iconButtons">
+</f:section>
+
+<f:section name="main">
+	<h1 id="top">Page id list</h1>
+	<p>This report shows what page id's are attached to a certain site root. This can be usefull for automated before-after testing scripts. Only regular page types are taken into account. Types 3,6,199,254 and 255 are filtered out.</p>
+	<h2>Choose a site root and an limit</h2>
+	<f:form action="pageIdList" controller="Report" name="pageIdList">
+
+		<select class="docheader-funcmenu" id="site" name="{argumentPrefix}[site]" onchange="document.forms['pageIdList'].submit();">
+			<option value="0" selected="selected">Please select a site root</option>
+			<f:if condition="{sites}">
+				<f:for each="{sites}" as="title" key="id">
+					<f:if condition="{0: id} == {0: selectedSite}">
+						<f:then>
+							<option value="{id}" selected="selected">{title}</option>
+						</f:then>
+						<f:else>
+							<option value="{id}">{title}</option>
+						</f:else>
+					</f:if>
+				</f:for>
+			</f:if>
+		</select>
+		
+		<input type="text" id="limit" name="{argumentPrefix}[limit]" value="{f:if(condition: limit, then: '{limit}', else: '1000')}" onchange="document.forms['pageIdList'].submit();">
+	</f:form>
+
+	<f:if condition="{selectedSite}">
+		<f:if condition="{pageIds}">
+			<h2>Page id's for {selectedSite}</h2>
+			<f:if condition="{domainRecords}">
+				<ul>
+					<f:for each="{domainRecords}" as="domainRecord">
+					   <li>{domainRecord.domainName}</li>
+					</f:for>
+				</ul>
+			</f:if>
+			<textarea name="pageIds" id="" cols="60" rows="15">{pageIds}</textarea>
+		</f:if>
+	</f:if>
+</f:section>

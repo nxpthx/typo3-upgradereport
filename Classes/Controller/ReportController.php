@@ -59,6 +59,48 @@ class Tx_Smoothmigration_Controller_ReportController extends Tx_Smoothmigration_
 	}
 
 	/**
+	 * Page id list action
+	 * Lists page id's beneath each site root
+	 *
+	 * @return void
+	 */
+	public function pageIdListAction() {
+		$values = array();
+
+		// FIXME: It's unclear to me how to get this value programmatically
+		// There is a getArgumentPrefix method, but that only applies to widgets
+		$values['argumentPrefix'] = 'tx_smoothmigration_tools_smoothmigrationsmoothmigration';
+
+		// List of sites
+		$sites = Tx_Smoothmigration_Utility_DatabaseUtility::getSiteRoots();
+		$selectSites = array();
+		foreach ($sites as $siteUid => $siteData) {
+			$selectSites[$siteUid] = $siteUid . ': ' . $siteData['title'];
+		}
+		$values['sites'] = $selectSites;
+
+		$selectedSite = '';
+		if ($this->request->hasArgument('site')) {
+			$selectedSite = $this->request->getArgument('site');
+			$values['selectedSite'] = $selectedSite;
+		}
+
+		$limit = 1000;
+		if ($this->request->hasArgument('limit')) {
+			$limit = $this->request->getArgument('limit');
+			$values['limit'] = $limit;
+		}
+
+		if ($selectedSite) {
+			$values['pageIds'] = implode(', ', Tx_Smoothmigration_Utility_DatabaseUtility::getChildPagesArray($selectedSite, $limit));
+			$values['domainRecords'] = Tx_Smoothmigration_Utility_DatabaseUtility::getDomainRecords($selectedSite);
+		}
+
+		$this->view->assignMultiple($values);
+		$this->view->assign('moduleToken', $this->moduleToken);
+	}
+
+	/**
 	 * Extension action, displays extension report
 	 *
 	 * @return void
