@@ -80,12 +80,14 @@ class Tx_Smoothmigration_Checks_Core_Xclasses_Processor extends Tx_Smoothmigrati
 			$physicalLocation
 		);
 
+		// Cut off any possibly leading slash
+		$targetClass = ltrim($targetClass, '/');
 		if(file_exists(PATH_site . 'typo3conf/' . $targetClass)) {
 			$originalFilePath = PATH_site . 'typo3conf/' . $targetClass;
-		} elseif(file_exists(PATH_site . 'typo3/sys' . $targetClass)) {
-			$originalFilePath = PATH_site . 'typo3/sys' . $targetClass;
-		} elseif(file_exists(PATH_site . 'typo3/sysext/cms' . $targetClass)) {
-			$originalFilePath = PATH_site . 'typo3/sysext/cms' . $targetClass;
+		} elseif(file_exists(PATH_site . 'typo3/sys/' . $targetClass)) {
+			$originalFilePath = PATH_site . 'typo3/sys/' . $targetClass;
+		} elseif(file_exists(PATH_site . 'typo3/sysext/cms/' . $targetClass)) {
+			$originalFilePath = PATH_site . 'typo3/sysext/cms/' . $targetClass;
 		} else {
 			$originalFilePath = PATH_site . $targetClass;
 		}
